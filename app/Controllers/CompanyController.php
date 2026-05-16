@@ -88,6 +88,7 @@ class CompanyController extends BaseController
             'proxmox_host'  => $this->request->getPost('proxmox_host'),
             'active'        => $this->request->getPost('active') ? 1 : 0,
             'send_email'    => $this->request->getPost('send_email') ? 1 : 0,
+            'ai_enabled'    => $this->request->getPost('ai_enabled') ? 1 : 0,
             'webhook_token' => bin2hex(random_bytes(16)), // Token único y seguro
         ];
 
@@ -221,6 +222,7 @@ class CompanyController extends BaseController
             'proxmox_host' => $this->request->getPost('proxmox_host'),
             'active'    => $this->request->getPost('active') ? 1 : 0,
             'send_email' => $this->request->getPost('send_email') ? 1 : 0,
+            'ai_enabled' => $this->request->getPost('ai_enabled') ? 1 : 0,
         ];
 
         // Asegurar que tenga webhook_token

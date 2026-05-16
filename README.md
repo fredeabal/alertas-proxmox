@@ -13,10 +13,11 @@ Manual operativo y técnico para desplegar, configurar y usar **Proxmox Alert**.
 - [6. Gestión de empresas](#6-gestión-de-empresas)
 - [7. Integración con Proxmox (Webhook)](#7-integración-con-proxmox-webhook)
 - [8. Gestión de alertas](#8-gestión-de-alertas)
-- [9. Usuarios, grupos y permisos](#9-usuarios-grupos-y-permisos)
-- [10. Operación recomendada](#10-operación-recomendada)
-- [11. Resolución de problemas](#11-resolución-de-problemas)
-- [12. Rutas principales](#12-rutas-principales)
+- [9. Resumen de Alertas con IA](#9-resumen-de-alertas-con-ia)
+- [10. Usuarios, grupos y permisos](#10-usuarios-grupos-y-permisos)
+- [11. Operación recomendada](#11-operación-recomendada)
+- [12. Resolución de problemas](#12-resolución-de-problemas)
+- [13. Rutas principales](#13-rutas-principales)
 
 ## 1. Descripción
 **Proxmox Alert** centraliza alertas de múltiples entornos Proxmox VE en una única interfaz web.
@@ -137,8 +138,27 @@ Reglas de borrado:
 Reglas de correo automático:
 - Se envía email solo si `send_email` está activo y la empresa tiene email.
 - Se consideran críticas severidades que contengan: `error`, `crit`, `emerg` o `alert`.
+- No se enviará email si no se cumple la condición de severidad aunque el switch esté activo.
 
-## 9. Usuarios, grupos y permisos
+## 9. Resumen de Alertas con IA
+Ruta de configuración:
+- `https://tudominio.com/ai`
+
+Capacidades:
+- **Proveedores**: Soporte para Google Gemini (vía OpenAI Compatible API), OpenAI ChatGPT y Ollama (Local).
+- **Consolidación**: Convierte logs técnicos extensos en un resumen legible de máximo 2 frases en español.
+- **Detección de errores**: Capacidad para identificar fallos específicos dentro de una lista de tareas exitosas.
+
+Configuración:
+1. Ir al panel de **IA** y configurar el proveedor.
+2. Usar el botón **Probar Generación** para validar la conectividad.
+3. En la gestión de **Empresa**, activar el switch **Resumen IA**.
+
+Visualización:
+- **Tabla**: Icono de robot 🤖 y preview del resumen bajo el título de la alerta.
+- **Detalle**: Bloque destacado con el resumen completo dentro del modal de la alerta.
+
+## 10. Usuarios, grupos y permisos
 Rutas clave:
 - `/users`
 - `/users/create`
@@ -153,7 +173,7 @@ Control de acceso:
 Recomendación:
 - Aplicar principio de mínimo privilegio en cada perfil.
 
-## 10. Operación recomendada
+## 11. Operación recomendada
 1. Revisar alertas nuevas al inicio del turno.
 2. Marcar incidencias cerradas como `resolved`.
 3. Limpiar alertas informativas antiguas.

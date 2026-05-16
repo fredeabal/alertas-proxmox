@@ -1,0 +1,18 @@
+{
+  "name": "Proxmox Alert",
+  "short_name": "ProxmoxAlert",
+  "description": "Sistema de gestión de alertas de Proxmox",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111c2d",
+  "theme_color": "#5d87ff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/images/logos/logo-app.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

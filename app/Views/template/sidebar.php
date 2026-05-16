@@ -62,6 +62,14 @@
             <span class="hide-menu">Email</span>
           </a>
         </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="<?= base_url('ai') ?>" aria-expanded="false">
+            <span>
+              <i class="ti ti-robot"></i>
+            </span>
+            <span class="hide-menu">IA</span>
+          </a>
+        </li>
         <?php endif; ?>
         
       </ul>

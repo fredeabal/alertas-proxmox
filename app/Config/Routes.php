@@ -51,6 +51,13 @@ $routes->group('email', ['namespace' => 'App\Controllers', 'filter' => 'session'
     $routes->match(['GET', 'POST'], 'test', 'EmailController::test', ['filter' => 'group:admin,superadmin']);
 });
 
+// Configuración de IA
+$routes->group('ai', ['namespace' => 'App\Controllers', 'filter' => 'session'], function($routes) {
+    $routes->get('/', 'AIController::index', ['filter' => 'group:admin,superadmin']);
+    $routes->post('store', 'AIController::store', ['filter' => 'group:admin,superadmin']);
+    $routes->post('test', 'AIController::test', ['filter' => 'group:admin,superadmin']);
+});
+
 // Webhooks (Públicos o con validación de token propia)
 $routes->post('webhook/proxmox/(:any)', 'WebhookController::proxmox/$1');
 

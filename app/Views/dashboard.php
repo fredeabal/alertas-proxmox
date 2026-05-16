@@ -43,9 +43,14 @@
                             
                             <div id="status-text-<?= $empresa->id ?>" class="fw-semibold fs-2">
                                 <?php if ($empresa->alert_count > 0): ?>
-                                    <span class="text-danger">
-                                        <strong class="me-1 text-danger"><?= $empresa->alert_count ?></strong>
-                                        Fallo<?= $empresa->alert_count > 1 ? 's' : '' ?>
+                                    <?php 
+                                        $textWord = 'Aviso';
+                                        if ($empresa->pulse_color === 'danger') $textWord = 'Fallo';
+                                        if ($empresa->pulse_color === 'info') $textWord = 'Info';
+                                    ?>
+                                    <span class="text-<?= $empresa->pulse_color ?>">
+                                        <strong class="me-1 text-<?= $empresa->pulse_color ?>"><?= $empresa->alert_count ?></strong>
+                                        <?= $textWord ?><?= $empresa->alert_count > 1 ? 's' : '' ?>
                                     </span>
                                 <?php else: ?>
                                     <span class="text-success">Todo Correcto</span>
@@ -98,9 +103,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Actualizar texto de estado
                         let html = '';
                         if (empresa.alert_count > 0) {
-                            html = `<span class="text-danger">
-                                        <strong class="me-1 text-danger">${empresa.alert_count}</strong>
-                                        Fallo${empresa.alert_count > 1 ? 's' : ''}
+                            const textColor = empresa.pulse_color;
+                            let textWord = 'Aviso';
+                            if (textColor === 'danger') textWord = 'Fallo';
+                            if (textColor === 'info') textWord = 'Info';
+                            
+                            html = `<span class="text-${textColor}">
+                                        <strong class="me-1 text-${textColor}">${empresa.alert_count}</strong>
+                                        ${textWord}${empresa.alert_count > 1 ? 's' : ''}
                                     </span>`;
                         } else {
                             html = `<span class="text-success">Todo Correcto</span>`;
@@ -135,6 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
 .blob.bg-success { animation: pulse-success 2s infinite; }
 .blob.bg-danger { animation: pulse-danger 2s infinite; }
 .blob.bg-warning { animation: pulse-warning 2s infinite; }
+.blob.bg-info { animation: pulse-info 2s infinite; }
 
 @keyframes pulse-success {
     0% { box-shadow: 0 0 0 0 rgba(19, 222, 185, 0.7); }
@@ -150,5 +161,10 @@ document.addEventListener('DOMContentLoaded', function() {
     0% { box-shadow: 0 0 0 0 rgba(255, 174, 31, 0.7); }
     70% { box-shadow: 0 0 0 6px rgba(255, 174, 31, 0); }
     100% { box-shadow: 0 0 0 0 rgba(255, 174, 31, 0); }
+}
+@keyframes pulse-info {
+    0% { box-shadow: 0 0 0 0 rgba(83, 155, 255, 0.7); }
+    70% { box-shadow: 0 0 0 6px rgba(83, 155, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(83, 155, 255, 0); }
 }
 </style>

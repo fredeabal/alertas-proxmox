@@ -62,23 +62,25 @@ class HomeController extends BaseController
                                      ->where('status', 'new')
                                      ->findAll();
                                      
-        $empresa->border_class = ''; // Sin clase extra, usará el gris nativo del tema
-        $badgeCount = 0;
+        $empresa->border_class = ''; 
+        $badgeCount = count($alertasNuevas);
 
-        if (count($alertasNuevas) > 0) {
+        if ($badgeCount > 0) {
             $hasError = false;
             $hasWarning = false;
+            $hasInfo = false;
             
             foreach ($alertasNuevas as $alerta) {
-                $isError = (stripos($alerta->severity, 'error') !== false || stripos($alerta->severity, 'crit') !== false);
-                $isWarn  = (stripos($alerta->severity, 'warn') !== false);
+                $sev = strtolower($alerta->severity);
+                $isError = (strpos($sev, 'error') !== false || strpos($sev, 'crit') !== false || strpos($sev, 'emerg') !== false || strpos($sev, 'alert') !== false);
+                $isWarn  = (strpos($sev, 'warn') !== false || strpos($sev, 'notice') !== false);
 
                 if ($isError) {
                     $hasError = true;
-                    $badgeCount++; 
                 } elseif ($isWarn) {
                     $hasWarning = true;
-                    $badgeCount++; 
+                } else {
+                    $hasInfo = true;
                 }
             }
             
@@ -86,15 +88,23 @@ class HomeController extends BaseController
                 $empresa->border_class = 'border-danger';
             } elseif ($hasWarning) {
                 $empresa->border_class = 'border-warning';
+            } else {
+                $empresa->border_class = 'border-info';
             }
         }
         
         $empresa->alert_count = $badgeCount;
         
-        // Color para el LED parpadeante (seguimos usando verde para el pulso si todo está OK)
+        // Color para el LED parpadeante
         $pulseColor = 'success';
-        if (strpos($empresa->border_class, 'danger') !== false) $pulseColor = 'danger';
-        elseif (strpos($empresa->border_class, 'warning') !== false) $pulseColor = 'warning';
+        if (strpos($empresa->border_class, 'danger') !== false) {
+            $pulseColor = 'danger';
+        } elseif (strpos($empresa->border_class, 'warning') !== false) {
+            $pulseColor = 'warning';
+        } elseif (strpos($empresa->border_class, 'info') !== false) {
+            $pulseColor = 'info';
+        }
+        
         $empresa->pulse_color = $pulseColor;
     }
 }

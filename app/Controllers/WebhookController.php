@@ -85,6 +85,27 @@ class WebhookController extends BaseController
                 $this->sendAlertEmail($empresa, $alertaData);
             }
 
+            // Resumen IA (si está habilitado para esta empresa)
+            if ($empresa->ai_enabled) {
+                try {
+                    $aiService = new \App\Libraries\AIService();
+                    if ($aiService->isConfigured()) {
+                        $summary = $aiService->generateSummary(
+                            $alertaData['title'],
+                            $alertaData['message'],
+                            $alertaData['severity']
+                        );
+                        if ($summary) {
+                            $alertModel->update($alertModel->getInsertID(), [
+                                'ai_summary' => $summary
+                            ]);
+                        }
+                    }
+                } catch (\Exception $e) {
+                    log_message('error', '[AIService] Error generando resumen: ' . $e->getMessage());
+                }
+            }
+
             return $this->respondCreated([
                 'status'  => 'success',
                 'message' => 'Alerta procesada y guardada correctamente.'

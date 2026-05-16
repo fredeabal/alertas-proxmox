@@ -132,6 +132,11 @@
                                             </td>
                                             <td>
                                                 <h6 class="fw-semibold mb-1 text-wrap" style="max-width: 250px;"><?= esc($alerta->title) ?></h6>
+                                                <?php if (!empty($alerta->ai_summary)): ?>
+                                                    <p class="fs-2 text-muted mb-0 text-wrap" style="max-width: 250px;">
+                                                        <i class="ti ti-sparkles text-primary me-1"></i> <?= esc($alerta->ai_summary) ?>
+                                                    </p>
+                                                <?php endif; ?>
 
                                             </td>
                                             <td class="text-center text-nowrap d-none d-md-table-cell">
@@ -253,6 +258,15 @@
                     
                     <h6 class="fw-semibold mb-2">Mensaje:</h6>
                     <div class="p-3 rounded-3 text-dark font-monospace mb-4" style="white-space: pre-wrap; font-size: 0.85rem; border: 1px solid #e5eaef; overflow-x: auto;"><?= trim(esc($alerta->message)) ?></div>
+
+                    <?php if (!empty($alerta->ai_summary)): ?>
+                    <h6 class="fw-semibold mb-2 d-flex align-items-center">
+                        <i class="ti ti-sparkles text-primary me-2"></i> Resumen IA:
+                    </h6>
+                    <div class="p-3 rounded-3 bg-light-primary text-dark mb-4 border border-primary-subtle" style="font-size: 0.9rem; line-height: 1.5;">
+                        <?= esc($alerta->ai_summary) ?>
+                    </div>
+                    <?php endif; ?>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar Ventana</button>

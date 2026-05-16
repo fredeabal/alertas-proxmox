@@ -20,7 +20,8 @@ class AlertModel extends Model
         'hostname',
         'timestamp',
         'raw_data',
-        'status'
+        'status',
+        'ai_summary'
     ];
 
     protected bool $allowEmptyInserts = false;

@@ -92,13 +92,21 @@
                         </div>
 
                         <div class="row mb-4">
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="send_email" name="send_email" value="1" <?= $empresa->send_email ? 'checked' : '' ?>>
                                     <label class="form-check-label fw-bold text-dark" for="send_email">Enviar alertas por email</label>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="ai_enabled" name="ai_enabled" value="1" <?= $empresa->ai_enabled ? 'checked' : '' ?>>
+                                    <label class="form-check-label fw-bold text-dark" for="ai_enabled">
+                                        <i class="ti ti-robot text-primary me-1"></i> Resumen IA
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="active" name="active" value="1" <?= $empresa->active ? 'checked' : '' ?>>
                                     <label class="form-check-label fw-bold text-dark" for="active">Empresa Activa</label>

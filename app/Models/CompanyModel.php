@@ -22,7 +22,8 @@ class CompanyModel extends Model
         'proxmox_host',
         'active',
         'webhook_token',
-        'send_email'
+        'send_email',
+        'ai_enabled'
     ];
 
     protected bool $allowEmptyInserts = false;
