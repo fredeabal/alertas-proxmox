@@ -97,7 +97,7 @@
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="ai_enabled" name="ai_enabled" value="1">
                                     <label class="form-check-label fw-bold text-dark" for="ai_enabled">
-                                        <i class="ti ti-robot text-primary me-1"></i> Resumen IA
+                                        Resumen IA
                                     </label>
                                 </div>
                             </div>

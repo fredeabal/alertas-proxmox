@@ -251,15 +251,15 @@
                     </div>
                     
                     <?php if (!empty($alerta->ai_summary)): ?>
-                        <h6 class="fw-semibold mb-2 d-flex align-items-center">
-                            <i class="ti ti-sparkles text-primary me-2"></i> Análisis de Inteligencia Artificial:
+                        <h6 class="fw-semibold mb-2">
+                            <i class="ti ti-sparkles text-primary me-1"></i> Análisis IA:
                         </h6>
                         <div class="p-3 rounded-3 text-dark mb-4 border" style="font-size: 0.9rem; line-height: 1.5;">
                             <?= esc($alerta->ai_summary) ?>
                         </div>
                     <?php endif; ?>
 
-                    <h6 class="fw-semibold mb-2">Mensaje Técnico del Sistema:</h6>
+                    <h6 class="fw-semibold mb-2">Mensaje del Sistema:</h6>
                     <div class="p-3 rounded-3 text-dark font-monospace mb-4 border" style="white-space: pre-wrap; font-size: 0.85rem; overflow-x: auto;"><?= trim(esc($alerta->message)) ?></div>
                 </div>
                 <div class="modal-footer">
