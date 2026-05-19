@@ -1,3 +1,19 @@
+<?php
+    // ---------------------------------------------------------------------
+    // Mapa centralizado de severidades de Proxmox VE
+    // 'actionable' = true => requiere resolver antes de poder borrar
+    // ---------------------------------------------------------------------
+    $severityMap = [
+        'info'     => ['class' => 'bg-info',    'label' => 'Info',    'actionable' => false],
+        'notice'   => ['class' => 'bg-primary',  'label' => 'Aviso',   'actionable' => false],
+        'warning'  => ['class' => 'bg-warning',  'label' => 'Alerta',  'actionable' => true],
+        'error'    => ['class' => 'bg-danger',   'label' => 'Error',   'actionable' => true],
+        'critical' => ['class' => 'bg-danger',   'label' => 'Crítico', 'actionable' => true],
+        'unknown'  => ['class' => 'bg-dark',     'label' => 'Desc.',   'actionable' => true],
+    ];
+    $defaultSeverity = ['class' => 'bg-dark', 'label' => 'Desc.', 'actionable' => true];
+    $canEdit = auth()->user()->can('empresas.edit');
+?>
 <div class="container-fluid">
     <div class="card shadow-none position-relative overflow-hidden mb-4">
         <div class="card-body px-4 py-3">
@@ -61,7 +77,7 @@
                         <?= csrf_field() ?>
                         <input type="hidden" name="action" id="bulk-action-input" value="">
                         
-                        <?php if (auth()->user()->can('empresas.edit')): ?>
+                        <?php if ($canEdit): ?>
                         <!-- Barra de Acciones Masivas (Oculta por defecto) -->
                         <div id="bulk-actions-bar" class="bg-light-primary p-3 rounded-3 mb-4 d-none animate__animated animate__fadeIn">
                             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2">
@@ -84,7 +100,7 @@
                             <table class="table table-hover align-middle mb-0" id="alertas-table">
                                 <thead>
                                     <tr class="text-muted fw-semibold">
-                                        <?php if (auth()->user()->can('empresas.edit')): ?>
+                                        <?php if ($canEdit): ?>
                                         <th scope="col" style="width: 40px;">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="select-all">
@@ -100,9 +116,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($alertas as $alerta): ?>
+                                    <?php foreach ($alertas as $alerta): 
+                                        $sev = strtolower(trim($alerta->severity));
+                                        $severityUi = $severityMap[$sev] ?? $defaultSeverity;
+                                        $isActionable = $severityUi['actionable'];
+                                        $isResolved = ($alerta->status === 'resolved');
+                                        $canDelete = ($isResolved || !$isActionable);
+                                    ?>
                                         <tr class="transition-all">
-                                            <?php if (auth()->user()->can('empresas.edit')): ?>
+                                            <?php if ($canEdit): ?>
                                             <td>
                                                 <div class="form-check">
                                                     <input class="form-check-input alert-checkbox" type="checkbox" name="ids[]" value="<?= $alerta->id ?>">
@@ -114,33 +136,8 @@
                                                 <p class="mb-0 fs-2 text-muted"><?= date('H:i:s', strtotime($alerta->created_at)) ?></p>
                                             </td>
                                             <td class="text-nowrap">
-                                                <?php 
-                                                    $sev = strtolower(trim($alerta->severity));
-                                                    $severityClass = 'bg-dark';
-                                                    $severityLabel = 'Desc.';
-
-                                                    if ($sev === 'info') {
-                                                        $severityClass = 'bg-info';
-                                                        $severityLabel = 'Info';
-                                                    } elseif ($sev === 'notice') {
-                                                        $severityClass = 'bg-primary';
-                                                        $severityLabel = 'Aviso';
-                                                    } elseif ($sev === 'warning') {
-                                                        $severityClass = 'bg-warning';
-                                                        $severityLabel = 'Alerta';
-                                                    } elseif ($sev === 'error') {
-                                                        $severityClass = 'bg-danger';
-                                                        $severityLabel = 'Error';
-                                                    } elseif ($sev === 'critical') {
-                                                        $severityClass = 'bg-danger';
-                                                        $severityLabel = 'Crítico';
-                                                    } elseif ($sev === 'unknown') {
-                                                        $severityClass = 'bg-dark';
-                                                        $severityLabel = 'Desc.';
-                                                    }
-                                                ?>
-                                                <span class="badge <?= $severityClass ?> fw-semibold fs-2 px-2 py-1 d-inline-block text-center" style="width: 80px;">
-                                                    <?= $severityLabel ?>
+                                                <span class="badge <?= $severityUi['class'] ?> fw-semibold fs-2 px-2 py-1 d-inline-block text-center" style="width: 80px;">
+                                                    <?= $severityUi['label'] ?>
                                                 </span>
                                             </td>
                                             <td>
@@ -149,29 +146,25 @@
                                             <td class="text-center text-nowrap d-none d-md-table-cell">
                                                 <span class="text-dark fs-3"><?= esc($alerta->hostname ?: 'N/A') ?></span>
                                             </td>
+
+                                            <!-- Columna Estado -->
                                             <td class="text-center text-nowrap d-none d-sm-table-cell">
-                                                <?php 
-                                                    $isActionable = in_array(strtolower(trim($alerta->severity)), ['error', 'critical', 'warning', 'unknown']);
-                                                ?>
-                                                
-                                                <?php if ($isActionable): ?>
-                                                    <?php if ($alerta->status === 'resolved'): ?>
-                                                        <span class="badge bg-light-success text-success fw-semibold fs-2 px-2 py-1 d-inline-block text-center" style="width: 80px;">Resuelta</span>
-                                                    <?php else: ?>
-                                                        <?php if (auth()->user()->can('empresas.edit')): ?>
-                                                            <span class="badge bg-light-danger text-danger fw-semibold fs-2 px-2 py-1 cursor-pointer resolve-alert-btn d-inline-block text-center" 
-                                                                  style="width: 80px;"
-                                                                  data-url="<?= base_url('alerts/resolve/' . $alerta->id) ?>">
-                                                                Pendiente
-                                                            </span>
-                                                        <?php else: ?>
-                                                            <span class="badge bg-light-danger text-danger fw-semibold fs-2 px-2 py-1 d-inline-block text-center" style="width: 80px;">Pendiente</span>
-                                                        <?php endif; ?>
-                                                    <?php endif; ?>
-                                                <?php else: ?>
+                                                <?php if (!$isActionable): ?>
                                                     <span class="badge bg-light-info text-info fw-semibold fs-2 px-2 py-1 d-inline-block text-center" style="width: 80px;">OK</span>
+                                                <?php elseif ($isResolved): ?>
+                                                    <span class="badge bg-light-success text-success fw-semibold fs-2 px-2 py-1 d-inline-block text-center" style="width: 80px;">Resuelta</span>
+                                                <?php elseif ($canEdit): ?>
+                                                    <span class="badge bg-light-danger text-danger fw-semibold fs-2 px-2 py-1 cursor-pointer resolve-alert-btn d-inline-block text-center" 
+                                                          style="width: 80px;"
+                                                          data-url="<?= base_url('alerts/resolve/' . $alerta->id) ?>">
+                                                        Pendiente
+                                                    </span>
+                                                <?php else: ?>
+                                                    <span class="badge bg-light-danger text-danger fw-semibold fs-2 px-2 py-1 d-inline-block text-center" style="width: 80px;">Pendiente</span>
                                                 <?php endif; ?>
                                             </td>
+
+                                            <!-- Menú de Acciones -->
                                             <td class="text-center text-nowrap">
                                                 <div class="dropdown">
                                                     <a href="javascript:void(0)" class="text-muted" data-bs-toggle="dropdown" aria-expanded="false" title="Opciones">
@@ -183,17 +176,14 @@
                                                                 <i class="ti ti-eye fs-4"></i> Ver Detalles
                                                             </a>
                                                         </li>
-                                                        <?php if ($alerta->status !== 'resolved' && $isActionable && auth()->user()->can('empresas.edit')): ?>
+                                                        <?php if (!$isResolved && $isActionable && $canEdit): ?>
                                                         <li>
                                                             <a class="dropdown-item d-flex align-items-center gap-2 text-dark resolve-alert-btn" href="javascript:void(0)" data-url="<?= base_url('alerts/resolve/' . $alerta->id) ?>">
                                                                 <i class="ti ti-check fs-4"></i> Solucionar Alerta
                                                             </a>
                                                         </li>
                                                         <?php endif; ?>
-                                                        <?php 
-                                                            $canDelete = ($alerta->status === 'resolved' || !$isActionable);
-                                                        ?>
-                                                        <?php if ($canDelete && auth()->user()->can('empresas.edit')): ?>
+                                                        <?php if ($canDelete && $canEdit): ?>
                                                         <li>
                                                             <a class="dropdown-item d-flex align-items-center gap-2 text-dark delete-alert-btn" href="javascript:void(0)" data-url="<?= base_url('alerts/delete/' . $alerta->id) ?>">
                                                                 <i class="ti ti-trash fs-4"></i> Eliminar
@@ -234,7 +224,10 @@
 </div>
 
 <!-- Modales de Detalles (Fuera de la tabla para evitar problemas en móvil) -->
-<?php foreach ($alertas as $alerta): ?>
+<?php foreach ($alertas as $alerta): 
+    $sev = strtolower(trim($alerta->severity));
+    $severityUi = $severityMap[$sev] ?? $defaultSeverity;
+?>
     <div class="modal fade text-start" id="alertaModal<?= $alerta->id ?>" tabindex="-1" aria-labelledby="alertaModalLabel<?= $alerta->id ?>" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div class="modal-content">
@@ -246,32 +239,7 @@
                 </div>
                 <div class="modal-body p-4">
                     <div class="d-flex flex-wrap align-items-center mb-4 gap-2">
-                        <?php 
-                            $sevModal = strtolower(trim($alerta->severity));
-                            $severityClass = 'bg-dark';
-                            $severityLabel = 'Desc.';
-
-                            if ($sevModal === 'info') {
-                                $severityClass = 'bg-info';
-                                $severityLabel = 'Info';
-                            } elseif ($sevModal === 'notice') {
-                                $severityClass = 'bg-primary';
-                                $severityLabel = 'Aviso';
-                            } elseif ($sevModal === 'warning') {
-                                $severityClass = 'bg-warning';
-                                $severityLabel = 'Alerta';
-                            } elseif ($sevModal === 'error') {
-                                $severityClass = 'bg-danger';
-                                $severityLabel = 'Error';
-                            } elseif ($sevModal === 'critical') {
-                                $severityClass = 'bg-danger';
-                                $severityLabel = 'Crítico';
-                            } elseif ($sevModal === 'unknown') {
-                                $severityClass = 'bg-dark';
-                                $severityLabel = 'Desc.';
-                            }
-                        ?>
-                        <span class="badge <?= $severityClass ?> fw-semibold fs-2 px-2 py-1 d-inline-block text-center me-3" style="width: 80px;"><?= $severityLabel ?></span>
+                        <span class="badge <?= $severityUi['class'] ?> fw-semibold fs-2 px-2 py-1 d-inline-block text-center me-3" style="width: 80px;"><?= $severityUi['label'] ?></span>
                         <span class="text-muted fs-3"><i class="ti ti-calendar me-1"></i> <?= date('d/m/Y - H:i:s', strtotime($alerta->created_at)) ?></span>
                     </div>
                     
@@ -298,8 +266,8 @@
 <!-- Script para SweetAlert en el Borrado -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const deleteBtns = document.querySelectorAll('.delete-alert-btn');
-    deleteBtns.forEach(btn => {
+    // Botones de Eliminar
+    document.querySelectorAll('.delete-alert-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
             confirmDelete(this.getAttribute('data-url'));
@@ -307,8 +275,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Botones de Resolver Alerta
-    const resolveBtns = document.querySelectorAll('.resolve-alert-btn');
-    resolveBtns.forEach(btn => {
+    document.querySelectorAll('.resolve-alert-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
             confirmAction(
@@ -336,12 +303,7 @@ function updateBulkBar() {
     
     const checkedCount = document.querySelectorAll('.alert-checkbox:checked').length;
     selectedCountText.innerText = `${checkedCount} alertas seleccionadas`;
-    
-    if (checkedCount > 0) {
-        bulkActionsBar.classList.remove('d-none');
-    } else {
-        bulkActionsBar.classList.add('d-none');
-    }
+    bulkActionsBar.classList.toggle('d-none', checkedCount === 0);
 }
 
 if (selectAll) {
@@ -362,18 +324,16 @@ function deselectAll() {
 }
 
 function submitBulkAction(action) {
-    const actionText = action === 'delete' ? '¿Eliminar las alertas seleccionadas?' : '¿Marcar como solucionadas las alertas seleccionadas?';
-    const confirmBtnText = action === 'delete' ? 'Sí, eliminar' : 'Sí, solucionar';
-    const confirmBtnColor = action === 'delete' ? '#fa896b' : '#13deb9';
+    const isDelete = (action === 'delete');
 
     Swal.fire({
-        title: actionText,
-        text: action === 'delete' ? "Las alertas se eliminarán de forma definitiva." : "Esta acción se aplicará a todas las alertas marcadas.",
-        icon: action === 'delete' ? 'warning' : 'question',
+        title: isDelete ? '¿Eliminar las alertas seleccionadas?' : '¿Marcar como solucionadas las alertas seleccionadas?',
+        text: isDelete ? "Las alertas se eliminarán de forma definitiva." : "Esta acción se aplicará a todas las alertas marcadas.",
+        icon: isDelete ? 'warning' : 'question',
         showCancelButton: true,
-        confirmButtonColor: confirmBtnColor,
+        confirmButtonColor: isDelete ? '#fa896b' : '#13deb9',
         cancelButtonColor: '#6c757d',
-        confirmButtonText: confirmBtnText,
+        confirmButtonText: isDelete ? 'Sí, eliminar' : 'Sí, solucionar',
         cancelButtonText: 'Cancelar',
         reverseButtons: true
     }).then((result) => {

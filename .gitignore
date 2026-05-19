@@ -131,3 +131,4 @@ _modules/*
 /phpunit*.xml
 Archivo.zip
 .agents/
+app.zip
