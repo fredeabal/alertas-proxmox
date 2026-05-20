@@ -40,15 +40,42 @@ class WebhookController extends BaseController
         $json = $this->request->getJSON();
         
         if (!$json) {
+            // Si no es JSON puro, intentar obtener de los parámetros POST por si acaso
+            $json = (object) $this->request->getPost();
+        }
+
+        if (empty((array) $json)) {
             return $this->fail('No se recibieron datos válidos.');
         }
 
-        // Proxmox suele enviar los datos dentro de 'body' (como en tu ejemplo de n8n)
-        // o directamente en la raíz. Manejamos ambos casos.
-        $body = $json->body ?? $json;
+        // Manejar de forma robusta si es un objeto anidado (body) o el cuerpo directo
+        $body = $json;
+        if (is_object($json) && isset($json->body)) {
+            $body = $json->body;
+        } elseif (is_array($json) && isset($json['body'])) {
+            $body = $json['body'];
+        }
 
-        $title = $body->title ?? 'Alerta Proxmox';
-        $resolvedHostname = !empty($body->hostname) ? $body->hostname : (!empty($body->node) ? $body->node : '');
+        // Extraer valores de forma segura previniendo errores de tipo o nulos
+        $title = 'Alerta Proxmox';
+        $message = '';
+        $severity = 'info';
+        $resolvedHostname = '';
+        $timestamp = '';
+
+        if (is_object($body)) {
+            $title = $body->title ?? 'Alerta Proxmox';
+            $message = $body->message ?? '';
+            $severity = $body->severity ?? 'info';
+            $resolvedHostname = !empty($body->hostname) ? $body->hostname : (!empty($body->node) ? $body->node : '');
+            $timestamp = $body->timestamp ?? '';
+        } elseif (is_array($body)) {
+            $title = $body['title'] ?? 'Alerta Proxmox';
+            $message = $body['message'] ?? '';
+            $severity = $body['severity'] ?? 'info';
+            $resolvedHostname = !empty($body['hostname']) ? $body['hostname'] : (!empty($body['node']) ? $body['node'] : '');
+            $timestamp = $body['timestamp'] ?? '';
+        }
 
         // Si Proxmox no envía hostname ni node explícitos, intentar extraerlo del título (ej: "vzdump status (pve.local)")
         if (empty($resolvedHostname) && preg_match('/\((.*?)\)/', $title, $matches)) {
@@ -72,10 +99,10 @@ class WebhookController extends BaseController
         $alertaData = [
             'empresa_id' => $empresa->id,
             'title'      => $title,
-            'message'    => $body->message ?? '',
-            'severity'   => $body->severity ?? 'info',
+            'message'    => $message,
+            'severity'   => $severity,
             'hostname'   => $resolvedHostname,
-            'timestamp'  => $body->timestamp ?? '',
+            'timestamp'  => $timestamp,
             'raw_data'   => json_encode($json),
             'status'     => 'new'
         ];
