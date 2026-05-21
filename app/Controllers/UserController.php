@@ -81,26 +81,19 @@ class UserController extends BaseController
             'password' => $this->request->getPost('password'),
         ]);
 
-        // Manejar estado (Propiedad directa + Baneo de Shield)
+        // Estado de la cuenta (campo directo en BD, se persiste con save)
         $user->active = $this->request->getPost('active') ? 1 : 0;
 
-        if ($user->active) {
-            $user->unban();
-        } else {
-            $user->ban();
-        }
-
-        $db = $this->userModel->db;
-        $db->transStart();
-
         try {
-            // Guardar todos los cambios (datos básicos + estado)
+            // Guardar usuario (Shield crea auth_identities automáticamente)
             if (! $this->userModel->save($user)) {
-                $db->transRollback();
                 return redirect()->back()->withInput()->with('errors', $this->userModel->errors());
             }
 
-            // Ahora que tiene ID (en caso de store), asignamos grupo
+            // save() no inyecta el ID en la entidad; lo asignamos manualmente
+            $user->id = $this->userModel->getInsertID();
+
+            // Ahora que tiene ID, asignamos grupo
             $user->addGroup($this->request->getPost('group'));
 
             // Asignar permisos granulares
@@ -109,15 +102,8 @@ class UserController extends BaseController
                 $user->addPermission($permission);
             }
 
-            $db->transComplete();
-
-            if ($db->transStatus() === false) {
-                return redirect()->back()->withInput()->with('error', 'Error al procesar la transacción de guardado.');
-            }
-
             return redirect()->to('users')->with('message', 'Usuario creado correctamente.');
         } catch (\Exception $e) {
-            $db->transRollback();
             return redirect()->back()->withInput()->with('error', 'Error al guardar: ' . $e->getMessage());
         }
     }
@@ -201,21 +187,11 @@ class UserController extends BaseController
             $user->password = $this->request->getPost('password');
         }
 
-        // Manejar estado (Propiedad directa + Baneo de Shield)
+        // Estado de la cuenta (campo directo en BD)
         $user->active = $this->request->getPost('active') ? 1 : 0;
-        
-        if ($user->active) {
-            $user->unban();
-        } else {
-            $user->ban();
-        }
-
-        $db = $this->userModel->db;
-        $db->transStart();
 
         try {
             if (! $this->userModel->save($user)) {
-                $db->transRollback();
                 return redirect()->back()->withInput()->with('errors', $this->userModel->errors());
             }
 
@@ -226,15 +202,8 @@ class UserController extends BaseController
             $permissions = $this->request->getPost('permissions') ?? [];
             $user->syncPermissions(...$permissions);
 
-            $db->transComplete();
-
-            if ($db->transStatus() === false) {
-                return redirect()->back()->withInput()->with('error', 'Error al procesar la transacción de actualización.');
-            }
-
             return redirect()->to('users')->with('message', 'Usuario actualizado.');
         } catch (\Exception $e) {
-            $db->transRollback();
             return redirect()->back()->withInput()->with('error', 'Error al actualizar: ' . $e->getMessage());
         }
     }

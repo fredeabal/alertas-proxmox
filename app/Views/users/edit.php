@@ -72,6 +72,7 @@
                         </div>
 
                         <h5 class="mb-4 fw-semibold mt-2">Permisos del Sistema</h5>
+                        <?php $directPermissions = $user->getPermissions(); ?>
                         
                         <div class="row">
                             <!-- Categoría: Usuarios -->
@@ -91,11 +92,17 @@
                                             'users.delete' => 'Borrar'
                                         ];
                                         foreach ($userPerms as $perm => $label): 
-                                            $isChecked = in_array($perm, old('permissions', [])) || $user->can($perm);
+                                            $isGroupPerm = $user->can($perm) && !in_array($perm, $directPermissions);
+                                            $isChecked   = !empty(old('permissions')) ? in_array($perm, old('permissions', [])) : in_array($perm, $directPermissions);
                                         ?>
-                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0">
-                                                <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>" <?= $isChecked ? 'checked' : '' ?>>
-                                                <label class="form-check-label fw-semibold text-dark" for="perm_<?= str_replace('.', '_', $perm) ?>"><?= $label ?></label>
+                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0 <?= $isGroupPerm ? 'opacity-75' : '' ?>">
+                                                <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>" <?= $isChecked ? 'checked' : '' ?> <?= $isGroupPerm ? 'disabled title="Este permiso proviene del rol asignado"' : '' ?>>
+                                                <label class="form-check-label fw-semibold <?= $isGroupPerm ? 'text-muted' : 'text-dark' ?>" for="perm_<?= str_replace('.', '_', $perm) ?>">
+                                                    <?= $label ?>
+                                                    <?php if ($isGroupPerm): ?>
+                                                        <span class="badge bg-light-primary text-primary ms-1 px-2 py-1" style="font-size:10px;">Rol</span>
+                                                    <?php endif; ?>
+                                                </label>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
@@ -119,11 +126,17 @@
                                             'empresas.delete' => 'Borrar'
                                         ];
                                         foreach ($empPerms as $perm => $label): 
-                                            $isChecked = in_array($perm, old('permissions', [])) || $user->can($perm);
+                                            $isGroupPerm = $user->can($perm) && !in_array($perm, $directPermissions);
+                                            $isChecked   = !empty(old('permissions')) ? in_array($perm, old('permissions', [])) : in_array($perm, $directPermissions);
                                         ?>
-                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0">
-                                                <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>" <?= $isChecked ? 'checked' : '' ?>>
-                                                <label class="form-check-label fw-semibold text-dark" for="perm_<?= str_replace('.', '_', $perm) ?>"><?= $label ?></label>
+                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0 <?= $isGroupPerm ? 'opacity-75' : '' ?>">
+                                                <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>" <?= $isChecked ? 'checked' : '' ?> <?= $isGroupPerm ? 'disabled title="Este permiso proviene del rol asignado"' : '' ?>>
+                                                <label class="form-check-label fw-semibold <?= $isGroupPerm ? 'text-muted' : 'text-dark' ?>" for="perm_<?= str_replace('.', '_', $perm) ?>">
+                                                    <?= $label ?>
+                                                    <?php if ($isGroupPerm): ?>
+                                                        <span class="badge bg-light-primary text-primary ms-1 px-2 py-1" style="font-size:10px;">Rol</span>
+                                                    <?php endif; ?>
+                                                </label>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
@@ -144,11 +157,17 @@
                                             'email.manage'  => 'Gestionar Email'
                                         ];
                                         foreach ($sysPerms as $perm => $label): 
-                                            $isChecked = in_array($perm, old('permissions', [])) || $user->can($perm);
+                                            $isGroupPerm = $user->can($perm) && !in_array($perm, $directPermissions);
+                                            $isChecked   = !empty(old('permissions')) ? in_array($perm, old('permissions', [])) : in_array($perm, $directPermissions);
                                         ?>
-                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0">
-                                                <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>" <?= $isChecked ? 'checked' : '' ?>>
-                                                <label class="form-check-label fw-semibold text-dark" for="perm_<?= str_replace('.', '_', $perm) ?>"><?= $label ?></label>
+                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0 <?= $isGroupPerm ? 'opacity-75' : '' ?>">
+                                                <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>" <?= $isChecked ? 'checked' : '' ?> <?= $isGroupPerm ? 'disabled title="Este permiso proviene del rol asignado"' : '' ?>>
+                                                <label class="form-check-label fw-semibold <?= $isGroupPerm ? 'text-muted' : 'text-dark' ?>" for="perm_<?= str_replace('.', '_', $perm) ?>">
+                                                    <?= $label ?>
+                                                    <?php if ($isGroupPerm): ?>
+                                                        <span class="badge bg-light-primary text-primary ms-1 px-2 py-1" style="font-size:10px;">Rol</span>
+                                                    <?php endif; ?>
+                                                </label>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
