@@ -47,7 +47,7 @@
                                         <?php 
                                             $avatarPath = $user->avatar ? base_url('uploads/avatars/' . $user->avatar) : base_url('assets/images/profile/default-avatar.png');
                                         ?>
-                                        <img src="<?= $avatarPath ?>" class="rounded-circle shadow-sm d-none d-sm-block" width="40" height="40" alt="" style="object-fit: cover;" />
+                                         <img src="<?= $avatarPath ?>" class="rounded-circle shadow-sm d-none d-sm-block user-avatar-thumbnail" width="40" height="40" alt="" />
                                         <div class="ms-0 ms-sm-3">
                                             <h6 class="fw-semibold mb-0"><?= esc($user->username) ?></h6>
                                             <span class="fs-2 text-muted d-md-none"><?= esc($user->email) ?></span>
@@ -64,11 +64,11 @@
                                     <p class="mb-0 fs-3 text-muted"><?= $user->last_login ? \CodeIgniter\I18n\Time::parse($user->last_login)->humanize() : 'Nunca' ?></p>
                                 </td>
                                 <td class="d-none d-sm-table-cell text-center">
-                                    <?php if ($user->active): ?>
-                                        <span class="badge bg-light-success text-success fw-semibold fs-2 d-inline-block text-center" style="width: 70px;">Activo</span>
-                                    <?php else: ?>
-                                        <span class="badge bg-light-danger text-danger fw-semibold fs-2 d-inline-block text-center" style="width: 70px;">Inactivo</span>
-                                    <?php endif; ?>
+                                     <?php if ($user->active): ?>
+                                         <span class="badge bg-light-success text-success fw-semibold fs-2 d-inline-block text-center badge-width-fixed">Activo</span>
+                                     <?php else: ?>
+                                         <span class="badge bg-light-danger text-danger fw-semibold fs-2 d-inline-block text-center badge-width-fixed">Inactivo</span>
+                                     <?php endif; ?>
                                 </td>
                                 <?php if (auth()->user()->can('users.edit') || auth()->user()->can('users.delete')): ?>
                                 <td class="text-end pe-4">

@@ -20,7 +20,7 @@
             <div class="row align-items-center">
                 <div class="col-auto">
                     <img src="<?= $empresa->logo ? base_url('uploads/logos/' . $empresa->logo) : base_url('assets/images/logos/default-company.png') ?>" 
-                         class="rounded shadow-sm" width="70" height="70" style="object-fit: cover;">
+                         class="rounded shadow-sm company-logo-view" width="70" height="70">
                 </div>
                 <div class="col">
                     <h4 class="fw-semibold mb-0"><?= esc($empresa->nombre) ?></h4>
@@ -38,61 +38,41 @@
     <!-- Monitoreo de Disponibilidad y Latencia (Ping Uptime) -->
     <?php if (!empty($empresa->proxmox_host)): ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
     <?php $lastLog = end($pingLogs); ?>
     
-    <style>
-        @keyframes telemetry-pulse {
-            0% { transform: scale(0.9); opacity: 0.5; }
-            50% { transform: scale(1.25); opacity: 1; }
-            100% { transform: scale(0.9); opacity: 0.5; }
-        }
-        .telemetry-led {
-            animation: telemetry-pulse 2s infinite ease-in-out;
-            display: inline-block;
-        }
-        .telemetry-card {
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(226, 232, 240, 0.8) !important;
-            transition: all 0.3s ease;
-        }
-        [data-bs-theme="dark"] .telemetry-card {
-            background: rgba(30, 41, 59, 0.35);
-            border: 1px solid rgba(255, 255, 255, 0.06) !important;
-        }
-        .telemetry-spin {
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .telemetry-spin:hover {
-            transform: rotate(180deg);
-        }
-    </style>
+
 
     <div class="card telemetry-card shadow-sm mb-4">
         <div class="card-body p-3">
             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between mb-3 gap-2">
                 <div class="d-flex align-items-center gap-2">
-                    <span class="p-1 bg-light-<?= ($lastLog && $lastLog->status === 'online') ? 'success' : (($lastLog) ? 'danger' : 'secondary') ?> rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">
-                        <span class="telemetry-led bg-<?= ($lastLog && $lastLog->status === 'online') ? 'success' : (($lastLog) ? 'danger' : 'secondary') ?> rounded-circle" style="width: 8px; height: 8px;"></span>
+                    <span class="p-1 bg-light-<?= ($lastLog && $lastLog->status === 'online') ? 'success' : (($lastLog) ? 'danger' : 'secondary') ?> rounded-circle d-flex align-items-center justify-content-center led-wrapper">
+                        <span class="telemetry-led bg-<?= ($lastLog && $lastLog->status === 'online') ? 'success' : (($lastLog) ? 'danger' : 'secondary') ?> rounded-circle"></span>
                     </span>
                     <div>
-                        <span class="text-muted text-uppercase fw-semibold d-block mb-0" style="font-size: 8px; letter-spacing: 0.5px;">Monitoreo de Host</span>
-                        <h6 class="fw-bold mb-0 font-monospace text-body" style="font-size: 0.85rem;"><?= esc($empresa->proxmox_host) ?></h6>
+                        <span class="text-muted text-uppercase fw-semibold d-block mb-0 telemetry-host-title">Monitoreo de Host</span>
+                        <h6 class="fw-bold mb-0 font-monospace text-body telemetry-host-name"><?= esc($empresa->proxmox_host) ?></h6>
                     </div>
                 </div>
-                
                 <div class="d-flex align-items-center gap-2 flex-wrap">
+
                     <!-- Pill Uptime -->
-                    <div class="px-2 py-1 rounded bg-light-primary text-primary fw-semibold fs-2 d-flex align-items-center gap-1">
-                        <i class="fa-solid fa-chart-line"></i>
-                        <span>Uptime: <?= ($uptimePercentage !== null) ? $uptimePercentage . '%' : 'Sin datos' ?></span>
+                    <div class="text-muted fw-semibold fs-2 d-flex align-items-center gap-1">
+                        <i class="fa-solid fa-chart-line text-primary"></i>
+                        <span>Uptime: <strong class="text-body fw-bold font-monospace"><?= ($uptimePercentage !== null) ? $uptimePercentage . '%' : 'Sin datos' ?></strong></span>
                     </div>
                     
+                    <div class="vr opacity-25 d-none d-sm-block mx-1"></div>
+                    
                     <!-- Pill Latency -->
-                    <div class="px-2 py-1 rounded bg-light-info text-info fw-semibold fs-2 d-flex align-items-center gap-1">
-                        <i class="fa-solid fa-gauge-high"></i>
-                        <span>Latencia Avg: <?= ($averageLatency !== null) ? $averageLatency . ' ms' : 'N/A' ?></span>
+                    <div class="text-muted fw-semibold fs-2 d-flex align-items-center gap-1">
+                        <i class="fa-solid fa-gauge-high text-primary"></i>
+                        <span>Latencia Avg: <strong class="text-body fw-bold font-monospace"><?= ($averageLatency !== null) ? $averageLatency . ' ms' : 'N/A' ?></strong></span>
                     </div>
+                    
+                    <div class="vr opacity-25 d-none d-sm-block mx-1"></div>
                     
                     <button class="btn btn-link p-0 text-muted fs-3 border-0 text-decoration-none telemetry-spin ms-1" onclick="window.location.reload();" title="Recargar">
                         <i class="fa-solid fa-rotate-right"></i>
@@ -100,7 +80,7 @@
                 </div>
             </div>
 
-            <div style="position: relative; height: 120px; width: 100%;">
+            <div class="telemetry-chart-container">
                 <canvas id="uptimeChart"></canvas>
             </div>
         </div>
@@ -114,48 +94,77 @@
         if (!ctx) return;
 
         const rawLogs = <?= json_encode($pingLogs) ?>;
-        
+        if (rawLogs.length === 0) return;
+
+        // Mapear datos
         const labels = rawLogs.map(log => {
             const d = new Date(log.created_at);
             return d.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' }) + ' ' + 
                    d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
         });
-        
+
         const latencyData = rawLogs.map(log => {
             return log.status === 'online' ? parseFloat(log.latency || 0) : null;
         });
 
+        const downtimeData = rawLogs.map(log => {
+            return log.status === 'offline' ? 1 : null;
+        });
+
         const statusColors = rawLogs.map(log => {
-            return log.status === 'online' ? 'rgba(19, 222, 185, 0.9)' : 'rgba(250, 137, 107, 1)';
+            return log.status === 'online' ? '#13deb9' : '#ef4444'; // Rojo vibrante para caídas de servicio
         });
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const gridColor = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)';
-        const textColor = isDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)';
+        let gridColor = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
+        let textColor = isDark ? '#adb0bb' : '#495057';
+        let tooltipBg = isDark ? '#1e293b' : '#ffffff';
+        let tooltipBorder = isDark ? '#334155' : '#e2e8f0';
 
-        const gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 120);
-        gradient.addColorStop(0, 'rgba(19, 222, 185, 0.2)');
-        gradient.addColorStop(1, 'rgba(19, 222, 185, 0.0)');
+        const chartCtx = ctx.getContext('2d');
+        const gradient = chartCtx.createLinearGradient(0, 0, 0, 280);
+        gradient.addColorStop(0, 'rgba(19, 222, 185, 0.25)');
+        gradient.addColorStop(1, 'rgba(19, 222, 185, 0.01)');
 
-        new Chart(ctx, {
+        const config = {
             type: 'line',
             data: {
                 labels: labels,
-                datasets: [{
-                    label: 'Latencia (ms)',
-                    data: latencyData,
-                    borderColor: '#13deb9',
-                    borderWidth: 2,
-                    pointBackgroundColor: statusColors,
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 0.5,
-                    pointRadius: rawLogs.length > 50 ? 1 : 3,
-                    pointHoverRadius: 5,
-                    backgroundColor: gradient,
-                    fill: true,
-                    tension: 0.35,
-                    spanGaps: false
-                }]
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: 'Caída de Servicio',
+                        data: downtimeData,
+                        backgroundColor: 'rgba(239, 68, 68, 0.16)', // Rojo suave translúcido para rellenar el hueco
+                        borderColor: 'rgba(239, 68, 68, 0.25)',
+                        borderWidth: { top: 1, right: 0, bottom: 0, left: 0 },
+                        barPercentage: 1.0,
+                        categoryPercentage: 1.0,
+                        yAxisID: 'yDowntime',
+                        order: 2
+                    },
+                    {
+                        label: 'Latencia',
+                        data: latencyData,
+                        borderColor: '#13deb9',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: statusColors,
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 0.75,
+                        pointRadius: rawLogs.map(log => {
+                            return log.status === 'online' ? (rawLogs.length > 100 ? 0 : 3) : 5;
+                        }),
+                        pointHoverRadius: rawLogs.map(log => {
+                            return log.status === 'online' ? 5 : 7;
+                        }),
+                        backgroundColor: gradient,
+                        fill: true,
+                        tension: 0.35,
+                        spanGaps: false,
+                        yAxisID: 'y',
+                        order: 1
+                    }
+                ]
             },
             options: {
                 responsive: true,
@@ -167,39 +176,72 @@
                     tooltip: {
                         mode: 'index',
                         intersect: false,
-                        backgroundColor: '#1e293b',
-                        titleColor: '#f1f5f9',
-                        bodyColor: '#f1f5f9',
-                        borderColor: '#334155',
+                        backgroundColor: tooltipBg,
+                        titleColor: isDark ? '#cbd5e1' : '#64748b',
+                        bodyColor: isDark ? '#f8fafc' : '#0f172a',
+                        borderColor: tooltipBorder,
                         borderWidth: 1,
-                        padding: 8,
-                        cornerRadius: 6,
+                        padding: 10,
+                        cornerRadius: 8,
                         displayColors: false,
+                        filter: function(tooltipItem) {
+                            return tooltipItem.dataset.label === 'Latencia';
+                        },
                         callbacks: {
+                            title: function(context) {
+                                const index = context[0].dataIndex;
+                                const log = rawLogs[index];
+                                const d = new Date(log.created_at);
+                                return d.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' }) + ' ' + 
+                                       d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                            },
                             label: function(context) {
                                 const index = context.dataIndex;
                                 const log = rawLogs[index];
-                                const d = new Date(log.created_at);
-                                const timeStr = d.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' }) + ' ' + 
-                                                     d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
                                 if (log.status === 'online') {
-                                    return `⚡ ${timeStr}: ${context.parsed.y} ms`;
+                                    return `⚡ Latencia: ${parseFloat(log.latency || 0).toFixed(1)} ms`;
                                 } else {
-                                    return `❌ ${timeStr}: Caído (Sin respuesta)`;
+                                    return `❌ Caído (Sin respuesta)`;
                                 }
                             }
+                        }
+                    },
+                    zoom: {
+                        limits: {
+                            x: {
+                                min: 0,
+                                max: rawLogs.length - 1,
+                                minRange: 10
+                            }
+                        },
+                        pan: {
+                            enabled: true,
+                            mode: 'x',
+                            threshold: 10
+                        },
+                        zoom: {
+                            wheel: {
+                                enabled: true
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            mode: 'x'
                         }
                     }
                 },
                 scales: {
                     x: {
+                        min: Math.max(0, rawLogs.length - 100),
+                        max: rawLogs.length - 1,
                         grid: {
                             display: false
                         },
                         ticks: {
                             color: textColor,
                             font: {
-                                size: 8
+                                size: 8,
+                                family: 'inherit'
                             },
                             maxRotation: 0,
                             autoSkip: true,
@@ -213,7 +255,8 @@
                         ticks: {
                             color: textColor,
                             font: {
-                                size: 8
+                                size: 8,
+                                family: 'inherit'
                             },
                             callback: function(value) {
                                 return value + ' ms';
@@ -221,10 +264,46 @@
                             maxTicksLimit: 4
                         },
                         suggestedMin: 0
+                    },
+                    yDowntime: {
+                        display: false,
+                        min: 0,
+                        max: 1,
+                        grid: {
+                            drawOnChartArea: false
+                        }
                     }
                 }
             }
+        };
+
+        const chartInstance = new Chart(ctx, config);
+
+        // MutationObserver para detectar cambio de tema claro/oscuro
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'data-bs-theme') {
+                    const isDarkTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+                    
+                    const newGridColor = isDarkTheme ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
+                    const newTextColor = isDarkTheme ? '#adb0bb' : '#495057';
+                    const newTooltipBg = isDarkTheme ? '#1e293b' : '#ffffff';
+                    const newTooltipBorder = isDarkTheme ? '#334155' : '#e2e8f0';
+
+                    chartInstance.options.scales.x.ticks.color = newTextColor;
+                    chartInstance.options.scales.y.ticks.color = newTextColor;
+                    chartInstance.options.scales.y.grid.color = newGridColor;
+
+                    chartInstance.options.plugins.tooltip.backgroundColor = newTooltipBg;
+                    chartInstance.options.plugins.tooltip.borderColor = newTooltipBorder;
+                    chartInstance.options.plugins.tooltip.titleColor = isDarkTheme ? '#cbd5e1' : '#64748b';
+                    chartInstance.options.plugins.tooltip.bodyColor = isDarkTheme ? '#f8fafc' : '#0f172a';
+
+                    chartInstance.update();
+                }
+            });
         });
+        observer.observe(document.documentElement, { attributes: true });
     });
     </script>
     <?php endif; ?>
@@ -248,24 +327,34 @@
                     <!-- Filtros de Severidad -->
                     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-start gap-2 mb-4">
                         <a href="<?= base_url('companies/view/' . $empresa->id) ?>" 
-                           class="btn <?= empty($current_severity) ? 'btn-primary' : 'btn-outline-primary' ?> btn-sm px-3">
-                            Todos
+                           class="btn <?= empty($current_severity) ? 'btn-primary' : 'btn-outline-primary' ?> btn-sm px-3"
+                           title="Todos los eventos">
+                            <i class="fa-solid fa-border-all"></i>
+                            <span class="d-none d-sm-inline ms-1">Todos</span>
                         </a>
                         <a href="<?= base_url('companies/view/' . $empresa->id . '?severity=error') ?>" 
-                           class="btn <?= $current_severity === 'error' ? 'btn-danger' : 'btn-outline-danger' ?> btn-sm px-3">
-                            Error
+                           class="btn <?= $current_severity === 'error' ? 'btn-danger' : 'btn-outline-danger' ?> btn-sm px-3"
+                           title="Eventos de Error">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span class="d-none d-sm-inline ms-1">Error</span>
                         </a>
                         <a href="<?= base_url('companies/view/' . $empresa->id . '?severity=warning') ?>" 
-                           class="btn <?= $current_severity === 'warning' ? 'btn-warning' : 'btn-outline-warning' ?> btn-sm px-3">
-                            Aviso
+                           class="btn <?= $current_severity === 'warning' ? 'btn-warning' : 'btn-outline-warning' ?> btn-sm px-3"
+                           title="Avisos / Alertas">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span class="d-none d-sm-inline ms-1">Aviso</span>
                         </a>
                         <a href="<?= base_url('companies/view/' . $empresa->id . '?severity=info') ?>" 
-                           class="btn <?= $current_severity === 'info' ? 'btn-info' : 'btn-outline-info' ?> btn-sm px-3">
-                            Info
+                           class="btn <?= $current_severity === 'info' ? 'btn-info' : 'btn-outline-info' ?> btn-sm px-3"
+                           title="Eventos de Información">
+                            <i class="fa-solid fa-circle-info"></i>
+                            <span class="d-none d-sm-inline ms-1">Info</span>
                         </a>
                         <a href="<?= base_url('companies/view/' . $empresa->id . '?severity=resolved') ?>" 
-                           class="btn <?= $current_severity === 'resolved' ? 'btn-success' : 'btn-outline-success' ?> btn-sm px-3">
-                            Resueltos
+                           class="btn <?= $current_severity === 'resolved' ? 'btn-success' : 'btn-outline-success' ?> btn-sm px-3"
+                           title="Eventos Resueltos">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span class="d-none d-sm-inline ms-1">Resueltos</span>
                         </a>
                     </div>
 
@@ -297,7 +386,7 @@
                                 <thead>
                                     <tr class="text-muted fw-semibold">
                                         <?php if ($canEdit): ?>
-                                        <th scope="col" style="width: 40px;">
+                                        <th scope="col" class="col-checkbox">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="select-all">
                                             </div>
@@ -332,12 +421,12 @@
                                                 <p class="mb-0 fs-2 text-muted"><?= date('H:i:s', strtotime($alerta->created_at)) ?></p>
                                             </td>
                                             <td class="text-nowrap">
-                                                <span class="badge <?= $severityUi['class'] ?> fw-semibold fs-2 px-2 py-1 d-inline-block text-center" style="width: 80px;">
+                                                <span class="badge <?= $severityUi['class'] ?> fw-semibold fs-2 px-2 py-1 d-inline-block text-center severity-badge-ui">
                                                     <?= $severityUi['label'] ?>
                                                 </span>
                                             </td>
                                             <td>
-                                                <h6 class="fw-semibold mb-1 text-wrap" style="max-width: 250px;"><?= esc($alerta->title) ?></h6>
+                                                <h6 class="fw-semibold mb-1 text-wrap alert-title-text"><?= esc($alerta->title) ?></h6>
                                             </td>
                                             <td class="text-center text-nowrap d-none d-md-table-cell">
                                                 <span class="text-dark fs-3"><?= esc($alerta->hostname ?: 'N/A') ?></span>
@@ -346,17 +435,16 @@
                                             <!-- Columna Estado -->
                                             <td class="text-center text-nowrap d-none d-sm-table-cell">
                                                 <?php if (!$isActionable): ?>
-                                                    <span class="badge bg-light-info text-info fw-semibold fs-2 px-2 py-1 d-inline-block text-center" style="width: 80px;">OK</span>
+                                                    <span class="badge bg-light-info text-info fw-semibold fs-2 px-2 py-1 d-inline-block text-center alert-status-badge">OK</span>
                                                 <?php elseif ($isResolved): ?>
-                                                    <span class="badge bg-light-success text-success fw-semibold fs-2 px-2 py-1 d-inline-block text-center" style="width: 80px;">Resuelta</span>
+                                                    <span class="badge bg-light-success text-success fw-semibold fs-2 px-2 py-1 d-inline-block text-center alert-status-badge">Resuelta</span>
                                                 <?php elseif ($canEdit): ?>
-                                                    <span class="badge bg-light-danger text-danger fw-semibold fs-2 px-2 py-1 cursor-pointer resolve-alert-btn d-inline-block text-center" 
-                                                          style="width: 80px;"
+                                                    <span class="badge bg-light-danger text-danger fw-semibold fs-2 px-2 py-1 cursor-pointer resolve-alert-btn d-inline-block text-center alert-status-badge" 
                                                           data-url="<?= base_url('alerts/resolve/' . $alerta->id) ?>">
                                                         Pendiente
                                                     </span>
                                                 <?php else: ?>
-                                                    <span class="badge bg-light-danger text-danger fw-semibold fs-2 px-2 py-1 d-inline-block text-center" style="width: 80px;">Pendiente</span>
+                                                    <span class="badge bg-light-danger text-danger fw-semibold fs-2 px-2 py-1 d-inline-block text-center alert-status-badge">Pendiente</span>
                                                 <?php endif; ?>
                                             </td>
 
@@ -435,7 +523,7 @@
                 </div>
                 <div class="modal-body p-4">
                     <div class="d-flex flex-wrap align-items-center mb-4 gap-2">
-                        <span class="badge <?= $severityUi['class'] ?> fw-semibold fs-2 px-2 py-1 d-inline-block text-center me-3" style="width: 80px;"><?= $severityUi['label'] ?></span>
+                        <span class="badge <?= $severityUi['class'] ?> fw-semibold fs-2 px-2 py-1 d-inline-block text-center me-3 severity-badge-ui"><?= $severityUi['label'] ?></span>
                         <span class="text-muted fs-3"><i class="ti ti-calendar me-1"></i> <?= date('d/m/Y - H:i:s', strtotime($alerta->created_at)) ?></span>
                     </div>
                     
@@ -443,13 +531,13 @@
                         <h6 class="fw-semibold mb-2">
                             <i class="ti ti-sparkles text-primary me-1"></i> Análisis IA:
                         </h6>
-                        <div class="p-3 rounded-3 text-dark mb-4 border" style="font-size: 0.9rem; line-height: 1.5;">
+                        <div class="p-3 rounded-3 text-dark mb-4 border ai-summary-container">
                             <?= esc($alerta->ai_summary) ?>
                         </div>
                     <?php endif; ?>
-
+ 
                     <h6 class="fw-semibold mb-2">Mensaje del Sistema:</h6>
-                    <div class="p-3 rounded-3 text-dark font-monospace mb-4 border" style="white-space: pre-wrap; font-size: 0.85rem; overflow-x: auto;"><?= trim(esc($alerta->message)) ?></div>
+                    <div class="p-3 rounded-3 text-dark font-monospace mb-4 border modal-pre-message"><?= trim(esc($alerta->message)) ?></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar Ventana</button>
@@ -540,36 +628,3 @@ function submitBulkAction(action) {
     });
 }
 </script>
-
-<style>
-.card-metric {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.card-metric:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08) !important;
-}
-.card-chart-container {
-    transition: all 0.3s ease;
-}
-/* Pulse animation for LED status blob */
-.blob.bg-success { animation: pulse-success-view 2s infinite; }
-.blob.bg-danger { animation: pulse-danger-view 2s infinite; }
-.blob.bg-secondary { animation: pulse-secondary-view 2s infinite; }
-
-@keyframes pulse-success-view {
-    0% { box-shadow: 0 0 0 0 rgba(19, 222, 185, 0.7); }
-    70% { box-shadow: 0 0 0 8px rgba(19, 222, 185, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(19, 222, 185, 0); }
-}
-@keyframes pulse-danger-view {
-    0% { box-shadow: 0 0 0 0 rgba(250, 137, 107, 0.7); }
-    70% { box-shadow: 0 0 0 8px rgba(250, 137, 107, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(250, 137, 107, 0); }
-}
-@keyframes pulse-secondary-view {
-    0% { box-shadow: 0 0 0 0 rgba(108, 117, 125, 0.7); }
-    70% { box-shadow: 0 0 0 8px rgba(108, 117, 125, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(108, 117, 125, 0); }
-}
-</style>

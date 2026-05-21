@@ -47,7 +47,7 @@
                                         <?php 
                                             $logoPath = $empresa->logo ? base_url('uploads/logos/' . $empresa->logo) : base_url('assets/images/logos/default-company.png');
                                         ?>
-                                        <img src="<?= $logoPath ?>" class="rounded shadow-sm d-none d-sm-block" width="40" height="40" style="object-fit: contain;" alt="" />
+                                        <img src="<?= $logoPath ?>" class="rounded shadow-sm d-none d-sm-block company-logo-thumbnail" width="40" height="40" alt="" />
                                         <div class="ms-0 ms-sm-3">
                                             <h6 class="fw-semibold mb-0"><?= esc($empresa->nombre) ?></h6>
                                             <?php if ($empresa->email): ?>
@@ -75,9 +75,9 @@
                                 </td>
                                     <td class="d-none d-sm-table-cell text-center">
                                         <?php if ($empresa->active): ?>
-                                            <span class="badge bg-light-success text-success fw-semibold fs-2 d-inline-block text-center" style="width: 70px;">Activa</span>
+                                            <span class="badge bg-light-success text-success fw-semibold fs-2 d-inline-block text-center badge-width-fixed">Activa</span>
                                         <?php else: ?>
-                                            <span class="badge bg-light-danger text-danger fw-semibold fs-2 d-inline-block text-center" style="width: 70px;">Inactiva</span>
+                                            <span class="badge bg-light-danger text-danger fw-semibold fs-2 d-inline-block text-center badge-width-fixed">Inactiva</span>
                                         <?php endif; ?>
                                     </td>
                                 <?php if (auth()->user()->can('empresas.edit') || auth()->user()->can('empresas.delete')): ?>

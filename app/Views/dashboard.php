@@ -26,8 +26,8 @@
                             <!-- Logo Centrado -->
                             <?php $logoPath = $empresa->logo ? base_url('uploads/logos/' . $empresa->logo) : base_url('assets/images/logos/default-company.png'); ?>
                             <img src="<?= $logoPath ?>" alt="<?= esc($empresa->nombre) ?>" 
-                                 class="rounded-circle shadow-sm mb-2 border border-2 border-white" 
-                                 width="65" height="65" style="object-fit: cover;">
+                                 class="rounded-circle shadow-sm mb-2 border border-2 border-white dashboard-company-logo" 
+                                 width="65" height="65">
                             
                             <!-- Nombre Centrado -->
                             <h6 class="fw-bold text-dark mb-0 text-truncate px-2 fs-3"><?= esc($empresa->nombre) ?></h6>
@@ -37,8 +37,8 @@
                             <?php 
                                 $pulseColor = $empresa->pulse_color;
                             ?>
-                            <div id="pulse-bg-<?= $empresa->id ?>" class="d-flex align-items-center justify-content-center bg-light-<?= $pulseColor ?> rounded-circle me-2" style="width: 24px; height: 24px;">
-                                <span id="pulse-blob-<?= $empresa->id ?>" class="blob bg-<?= $pulseColor ?> rounded-circle" style="width: 8px; height: 8px;"></span>
+                            <div id="pulse-bg-<?= $empresa->id ?>" class="d-flex align-items-center justify-content-center bg-light-<?= $pulseColor ?> rounded-circle me-2 led-wrapper">
+                                <span id="pulse-blob-<?= $empresa->id ?>" class="blob bg-<?= $pulseColor ?> rounded-circle telemetry-led"></span>
                             </div>
                             
                             <div id="status-text-<?= $empresa->id ?>" class="fw-semibold fs-2">
@@ -97,8 +97,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         card.className = `card hover-img w-100 text-decoration-none border ${empresa.border_class} shadow-sm transition-all overflow-hidden h-100`;
                         
                         // Actualizar indicador LED
-                        pulseBg.className = `d-flex align-items-center justify-content-center bg-light-${empresa.pulse_color} rounded-circle me-2`;
-                        pulseBlob.className = `blob bg-${empresa.pulse_color} rounded-circle`;
+                        pulseBg.className = `d-flex align-items-center justify-content-center bg-light-${empresa.pulse_color} rounded-circle me-2 led-wrapper`;
+                        pulseBlob.className = `blob bg-${empresa.pulse_color} rounded-circle telemetry-led`;
 
                         // Actualizar texto de estado
                         let html = '';
@@ -127,44 +127,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<style>
-.hover-img {
-    transition: all 0.3s ease;
-}
-.hover-img:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
-}
-.hover-img:hover .group-hover-arrow i {
-    transform: translateX(4px);
-}
-.transition-all {
-    transition: all 0.3s ease;
-}
-/* Pulse Animations for Status LED */
-.blob.bg-success { animation: pulse-success 2s infinite; }
-.blob.bg-danger { animation: pulse-danger 2s infinite; }
-.blob.bg-warning { animation: pulse-warning 2s infinite; }
-.blob.bg-info { animation: pulse-info 2s infinite; }
 
-@keyframes pulse-success {
-    0% { box-shadow: 0 0 0 0 rgba(19, 222, 185, 0.7); }
-    70% { box-shadow: 0 0 0 6px rgba(19, 222, 185, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(19, 222, 185, 0); }
-}
-@keyframes pulse-danger {
-    0% { box-shadow: 0 0 0 0 rgba(249, 0, 69, 0.7); }
-    70% { box-shadow: 0 0 0 6px rgba(249, 0, 69, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(249, 0, 69, 0); }
-}
-@keyframes pulse-warning {
-    0% { box-shadow: 0 0 0 0 rgba(255, 174, 31, 0.7); }
-    70% { box-shadow: 0 0 0 6px rgba(255, 174, 31, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 174, 31, 0); }
-}
-@keyframes pulse-info {
-    0% { box-shadow: 0 0 0 0 rgba(83, 155, 255, 0.7); }
-    70% { box-shadow: 0 0 0 6px rgba(83, 155, 255, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(83, 155, 255, 0); }
-}
-</style>

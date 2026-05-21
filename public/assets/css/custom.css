@@ -1,0 +1,234 @@
+/* Custom styles for Proxmox Alert UI */
+
+/* Company details views */
+.company-logo-view {
+    object-fit: cover;
+}
+
+/* Telemetry LED Animations */
+@keyframes telemetry-pulse {
+    0% { transform: scale(0.9); opacity: 0.5; }
+    50% { transform: scale(1.25); opacity: 1; }
+    100% { transform: scale(0.9); opacity: 0.5; }
+}
+
+.telemetry-led {
+    animation: telemetry-pulse 2s infinite ease-in-out;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+}
+
+.led-wrapper {
+    width: 24px;
+    height: 24px;
+}
+
+/* Telemetry Card styles */
+.telemetry-card {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(226, 232, 240, 0.8) !important;
+    transition: all 0.3s ease;
+}
+
+[data-bs-theme="dark"] .telemetry-card {
+    background: rgba(30, 41, 59, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.telemetry-spin {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.telemetry-spin:hover {
+    transform: rotate(180deg);
+}
+
+.telemetry-host-title {
+    font-size: 8px;
+    letter-spacing: 0.5px;
+}
+
+.telemetry-host-name {
+    font-size: 0.85rem;
+}
+
+/* Telemetry Chart Responsive Container */
+.telemetry-chart-container {
+    position: relative;
+    height: 280px;
+    width: 100%;
+}
+
+
+
+/* General Layout helpers & metrics */
+.card-metric {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-metric:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08) !important;
+}
+
+.card-chart-container {
+    transition: all 0.3s ease;
+}
+
+/* Severity & Alert items styling */
+.severity-badge-ui {
+    width: auto !important;
+    min-width: 65px;
+    font-size: 10px !important;
+    padding: 4px 8px !important;
+    white-space: nowrap;
+    display: inline-block;
+    text-align: center;
+}
+
+.alert-title-text {
+    max-width: 250px;
+}
+
+.alert-status-badge {
+    width: auto !important;
+    min-width: 65px;
+    font-size: 10px !important;
+    padding: 4px 8px !important;
+    white-space: nowrap;
+    display: inline-block;
+    text-align: center;
+}
+
+/* Modal formatting styling */
+.ai-summary-container {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.modal-pre-message {
+    white-space: pre-wrap;
+    font-size: 0.85rem;
+    overflow-x: auto;
+}
+
+/* Pulse animation for LED status blob */
+.blob.bg-success { animation: pulse-success-view 2s infinite; }
+.blob.bg-danger { animation: pulse-danger-view 2s infinite; }
+.blob.bg-secondary { animation: pulse-secondary-view 2s infinite; }
+
+@keyframes pulse-success-view {
+    0% { box-shadow: 0 0 0 0 rgba(19, 222, 185, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(19, 222, 185, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(19, 222, 185, 0); }
+}
+
+@keyframes pulse-danger-view {
+    0% { box-shadow: 0 0 0 0 rgba(250, 137, 107, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(250, 137, 107, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(250, 137, 107, 0); }
+}
+
+@keyframes pulse-secondary-view {
+    0% { box-shadow: 0 0 0 0 rgba(108, 117, 125, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(108, 117, 125, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(108, 117, 125, 0); }
+}
+
+/* Erradicación de estilos inline y clases helpers */
+.col-checkbox {
+    width: 40px;
+}
+
+.company-logo-preview {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+}
+
+.user-avatar-preview {
+    object-fit: cover;
+}
+
+.company-logo-thumbnail {
+    object-fit: contain;
+}
+
+.badge-width-fixed {
+    width: 70px;
+}
+
+.user-avatar-thumbnail {
+    object-fit: cover;
+}
+
+.dashboard-company-logo {
+    object-fit: cover;
+}
+
+.pagination-icon {
+    font-size: 0.85rem;
+}
+
+.topbar-avatar {
+    object-fit: cover;
+}
+
+.topbar-icon-wrapper {
+    width: 40px;
+    height: 40px;
+}
+
+/* Dashboard specific premium styles */
+.hover-img {
+    transition: all 0.3s ease;
+}
+
+.hover-img:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+}
+
+.hover-img:hover .group-hover-arrow i {
+    transform: translateX(4px);
+}
+
+.transition-all {
+    transition: all 0.3s ease;
+}
+
+/* Pulse Animations for Status LED on Dashboard */
+.blob.bg-success { animation: pulse-success 2s infinite; }
+.blob.bg-danger { animation: pulse-danger 2s infinite; }
+.blob.bg-warning { animation: pulse-warning 2s infinite; }
+.blob.bg-info { animation: pulse-info 2s infinite; }
+
+@keyframes pulse-success {
+    0% { box-shadow: 0 0 0 0 rgba(19, 222, 185, 0.7); }
+    70% { box-shadow: 0 0 0 6px rgba(19, 222, 185, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(19, 222, 185, 0); }
+}
+
+@keyframes pulse-danger {
+    0% { box-shadow: 0 0 0 0 rgba(249, 0, 69, 0.7); }
+    70% { box-shadow: 0 0 0 6px rgba(249, 0, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(249, 0, 69, 0); }
+}
+
+@keyframes pulse-warning {
+    0% { box-shadow: 0 0 0 0 rgba(255, 174, 31, 0.7); }
+    70% { box-shadow: 0 0 0 6px rgba(255, 174, 31, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 174, 31, 0); }
+}
+
+@keyframes pulse-info {
+    0% { box-shadow: 0 0 0 0 rgba(83, 155, 255, 0.7); }
+    70% { box-shadow: 0 0 0 6px rgba(83, 155, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(83, 155, 255, 0); }
+}
+
+
+
+

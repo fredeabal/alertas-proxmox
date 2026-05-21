@@ -25,7 +25,7 @@
                             $avatarPath = $user->avatar ? base_url('uploads/avatars/' . $user->avatar) : base_url('assets/images/profile/default-avatar.png');
                         ?>
                         <div class="mb-3">
-                            <img id="avatarPreview" src="<?= $avatarPath ?>" alt="Avatar" class="img-fluid rounded-circle shadow-sm border border-2 p-1" width="120" height="120" style="object-fit: cover;">
+                            <img id="avatarPreview" src="<?= $avatarPath ?>" alt="Avatar" class="img-fluid rounded-circle shadow-sm border border-2 p-1 user-avatar-preview" width="120" height="120">
                         </div>
                         
                         <h4 class="fw-semibold mb-3"><?= esc($user->username) ?></h4>

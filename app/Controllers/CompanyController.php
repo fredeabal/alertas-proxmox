@@ -160,11 +160,11 @@ class CompanyController extends BaseController
             }
         }
 
-        // Obtener historial de pings para disponibilidad y latencia (últimos 100 registros)
+        // Obtener historial de pings para disponibilidad y latencia (últimos 720 registros - 12h a 1 min)
         $pingLogModel = new \App\Models\PingLogModel();
         $pingLogs = $pingLogModel->where('empresa_id', $id)
                                  ->orderBy('created_at', 'DESC')
-                                 ->limit(100)
+                                 ->limit(720)
                                  ->findAll();
         
         // Invertir para mostrar en orden cronológico (ASC) en el gráfico

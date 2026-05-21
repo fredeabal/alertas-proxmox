@@ -31,14 +31,14 @@
                   $avatarPath = $user->avatar ? base_url('uploads/avatars/' . $user->avatar) : base_url('assets/images/profile/default-avatar.png');
                 ?>
                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="<?= $avatarPath ?>" alt="" width="35" height="35" class="rounded-circle" style="object-fit: cover;">
+                  <img src="<?= $avatarPath ?>" alt="" width="35" height="35" class="rounded-circle topbar-avatar">
                 </a>
                 <div class="dropdown-menu content-dd dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                   <div class="profile-dropdown position-relative" data-simplebar>
                     <div class="message-body mt-2">
                       <!-- Perfil Personalizado -->
                       <a href="<?= base_url('users/perfil') ?>" class="py-2 px-7 d-flex align-items-center dropdown-item gap-3">
-                        <span class="d-flex align-items-center justify-content-center bg-light-primary rounded-1 p-2 text-primary" style="width: 40px; height: 40px;">
+                        <span class="d-flex align-items-center justify-content-center bg-light-primary rounded-1 p-2 text-primary topbar-icon-wrapper">
                           <i class="ti ti-user-circle fs-6"></i>
                         </span>
                         <div class="w-75">
@@ -49,7 +49,7 @@
 
                       <!-- Acerca de -->
                       <a href="javascript:void(0)" class="py-2 px-7 d-flex align-items-center dropdown-item gap-3" data-bs-toggle="modal" data-bs-target="#aboutModal">
-                        <span class="d-flex align-items-center justify-content-center bg-light-info rounded-1 p-2 text-info" style="width: 40px; height: 40px;">
+                        <span class="d-flex align-items-center justify-content-center bg-light-info rounded-1 p-2 text-info topbar-icon-wrapper">
                           <i class="ti ti-info-circle fs-6"></i>
                         </span>
                         <div class="w-75">
@@ -62,7 +62,7 @@
 
                       <!-- Cerrar Sesión -->
                       <a href="<?= base_url('logout') ?>" class="py-2 px-7 d-flex align-items-center dropdown-item gap-3">
-                        <span class="d-flex align-items-center justify-content-center bg-light-danger rounded-1 p-2 text-danger" style="width: 40px; height: 40px;">
+                        <span class="d-flex align-items-center justify-content-center bg-light-danger rounded-1 p-2 text-danger topbar-icon-wrapper">
                           <i class="ti ti-logout fs-6"></i>
                         </span>
                         <div class="w-75">

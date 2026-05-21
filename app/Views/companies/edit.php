@@ -26,7 +26,7 @@
                             $logoPath = $empresa->logo ? base_url('uploads/logos/' . $empresa->logo) : base_url('assets/images/logos/default-company.png');
                         ?>
                         <div class="mb-3">
-                            <img id="logoPreview" src="<?= $logoPath ?>" alt="Preview" class="rounded shadow-sm" style="width: 120px; height: 120px; object-fit: cover;">
+                            <img id="logoPreview" src="<?= $logoPath ?>" alt="Preview" class="rounded shadow-sm company-logo-preview">
                         </div>
                         
                         <h4 class="fw-semibold mb-3"><?= esc($empresa->nombre) ?></h4>
@@ -95,7 +95,7 @@
                             <div class="col-sm-4">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="send_email" name="send_email" value="1" <?= $empresa->send_email ? 'checked' : '' ?>>
-                                    <label class="form-check-label fw-bold text-dark" for="send_email">Enviar alertas por email</label>
+                                    <label class="form-check-label fw-bold text-dark" for="send_email">Alertas por email</label>
                                 </div>
                             </div>
                             <div class="col-sm-4">

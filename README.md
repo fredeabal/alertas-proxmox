@@ -16,8 +16,9 @@ Manual operativo y técnico para desplegar, configurar y usar **Proxmox Alert**.
 - [9. Resumen de Alertas con IA](#9-resumen-de-alertas-con-ia)
 - [10. Usuarios, grupos y permisos](#10-usuarios-grupos-y-permisos)
 - [11. Operación recomendada](#11-operación-recomendada)
-- [12. Resolución de problemas](#12-resolución-de-problemas)
-- [13. Rutas principales](#13-rutas-principales)
+- [12. Monitoreo de ping por cron (token interno)](#12-monitoreo-de-ping-por-cron-token-interno)
+- [13. Resolución de problemas](#13-resolución-de-problemas)
+- [14. Rutas principales](#14-rutas-principales)
 
 ## 1. Descripción
 **Proxmox Alert** centraliza alertas de múltiples entornos Proxmox VE en una única interfaz web.
@@ -114,6 +115,7 @@ Ejemplo local:
 Por empresa se puede:
 - Descargar script de configuración (`/companies/download-script/{id}`).
 - Ver script en texto plano (`/companies/get-script/{id}`).
+- Realizar un diagnóstico rápido abriendo la URL del Webhook en el navegador (petición `GET`) para verificar conectividad y estado de la empresa.
 
 Formato JSON aceptado:
 - Payload en raíz.
@@ -184,7 +186,7 @@ Recomendación:
 4. Verificar SMTP de forma periódica.
 5. Revisar usuarios activos y permisos.
 
-## 11. Monitoreo de ping por cron (token interno)
+## 12. Monitoreo de ping por cron (token interno)
 El sistema incluye un endpoint interno para ejecutar un chequeo masivo de ping y monitorear la disponibilidad en tiempo real de todas las empresas activas con `proxmox_host` configurado.
 
 Configuración en `.env`:
@@ -221,7 +223,7 @@ Seguridad:
 - Rotar el token si se comparte o filtra.
 - No publicar el enlace en lugares públicos.
 
-## 12. Resolución de problemas
+## 13. Resolución de problemas
 **No llegan alertas**
 - Verificar empresa activa.
 - Confirmar token de webhook.
@@ -242,7 +244,7 @@ Seguridad:
 - Revisar que la empresa esté activa y tenga `proxmox_host` configurado.
 - Confirmar que el hosting permite ejecutar `ping` desde el servidor web.
 
-## 13. Rutas principales
+## 14. Rutas principales
 - `GET /login`
 - `GET /companies`
 - `GET /companies/create`

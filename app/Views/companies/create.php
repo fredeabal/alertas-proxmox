@@ -23,7 +23,7 @@
                 <div class="card w-100 position-relative overflow-hidden">
                     <div class="card-body p-4 text-center d-flex flex-column justify-content-center">
                         <div class="mb-3">
-                            <img id="logoPreview" src="<?= base_url('assets/images/logos/default-company.png') ?>" alt="Preview" class="rounded shadow-sm" style="width: 120px; height: 120px; object-fit: cover;">
+                            <img id="logoPreview" src="<?= base_url('assets/images/logos/default-company.png') ?>" alt="Preview" class="rounded shadow-sm company-logo-preview">
                         </div>
                         
                         <h4 class="fw-semibold mb-3">Nueva Empresa</h4>
@@ -90,12 +90,12 @@
                             <div class="col-sm-4">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="send_email" name="send_email" value="1" checked>
-                                    <label class="form-check-label fw-bold text-dark" for="send_email">Enviar alertas por email</label>
+                                    <label class="form-check-label fw-bold text-dark" for="send_email">Alertas por email</label>
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="ai_enabled" name="ai_enabled" value="1">
+                                    <input class="form-check-input" type="checkbox" id="ai_enabled" name="ai_enabled" value="1" checked>
                                     <label class="form-check-label fw-bold text-dark" for="ai_enabled">
                                         Resumen IA
                                     </label>

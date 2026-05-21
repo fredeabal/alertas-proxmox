@@ -5,14 +5,14 @@
         <!-- Primero -->
         <li class="page-item <?= $pager->hasPrevious() ? '' : 'disabled' ?>">
             <a class="page-link link" href="<?= $pager->hasPrevious() ? $pager->getFirst() : 'javascript:void(0)' ?>" aria-label="First">
-                <i class="fas fa-angles-left" style="font-size: 0.85rem;"></i>
+                <i class="fas fa-angles-left pagination-icon"></i>
             </a>
         </li>
         
         <!-- Anterior -->
         <li class="page-item <?= $pager->hasPrevious() ? '' : 'disabled' ?>">
             <a class="page-link link" href="<?= $pager->hasPrevious() ? $pager->getPrevious() : 'javascript:void(0)' ?>" aria-label="Previous">
-                <i class="fas fa-angle-left" style="font-size: 0.85rem;"></i>
+                <i class="fas fa-angle-left pagination-icon"></i>
             </a>
         </li>
 
@@ -28,14 +28,14 @@
         <!-- Siguiente -->
         <li class="page-item <?= $pager->hasNext() ? '' : 'disabled' ?>">
             <a class="page-link link" href="<?= $pager->hasNext() ? $pager->getNext() : 'javascript:void(0)' ?>" aria-label="Next">
-                <i class="fas fa-angle-right" style="font-size: 0.85rem;"></i>
+                <i class="fas fa-angle-right pagination-icon"></i>
             </a>
         </li>
 
         <!-- Último -->
         <li class="page-item <?= $pager->hasNext() ? '' : 'disabled' ?>">
             <a class="page-link link" href="<?= $pager->hasNext() ? $pager->getLast() : 'javascript:void(0)' ?>" aria-label="Last">
-                <i class="fas fa-angles-right" style="font-size: 0.85rem;"></i>
+                <i class="fas fa-angles-right pagination-icon"></i>
             </a>
         </li>
     </ul>
