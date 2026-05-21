@@ -99,7 +99,8 @@ Datos relevantes al crear/editar:
 - `email` (recomendado si se activan notificaciones)
 - `proxmox_host` (IP/hostname del host Proxmox a monitorear por ping)
 - `active` (empresa habilitada)
-- `send_email` (activa envío automático de correo)
+- `send_email` ("Alertas por email", activa el envío automático de correo)
+- `ai_enabled` ("Resumen IA", activa el análisis de incidentes por IA, encendido por defecto al crear)
 
 Comportamiento:
 - El sistema genera automáticamente un `webhook_token` único por empresa.
@@ -208,8 +209,8 @@ Qué hace:
   - Posee deduplicación de eventos en cola para evitar saturar el historial mientras la caída permanezca activa.
 - **Métricas & Gráficos Premium (UI)**: 
   * En la vista de detalle de cada empresa (`/companies/view/{id}`), se incorpora un panel de telemetría de ancho completo muy compacto y premium.
-  * **Header integrado**: Muestra el host con un LED parpadeante dinámico de estado (online/offline), una micro-cápsula con el **Uptime %** calculado sobre las últimas 100 pruebas y una micro-cápsula con la **Latencia Media**.
-  * **Gráfico Neon (Chart.js)**: Un gráfico de líneas detallado de 120px de alto que representa la variación de latencia de las últimas 100 pruebas, adaptándose dinámicamente con luces y sombras neón al tema claro u oscuro del usuario.
+  * **Header integrado**: Muestra el host con un LED parpadeante dinámico de estado (online/offline), métricas de **Uptime %** (calculado sobre las últimas 100 pruebas) y **Latencia Media** representadas en texto limpio y minimalista integrado en el color del título general.
+  * **Gráfico Neon y Relleno de Caídas (Chart.js)**: Un gráfico detallado que representa la variación de latencia de las últimas 100 pruebas con sombreado neon, y rellena hermosamente en rojo translúcido los intervalos en donde no hubo conectividad (caídas de ping), adaptándose dinámicamente al tema claro u oscuro del usuario.
 
 Respuesta del Endpoint:
 - Devuelve un JSON resumido: `total`, `ok`, `failed`, `alerts_created`, `alerts_skipped`, `alerts_resolved`.
