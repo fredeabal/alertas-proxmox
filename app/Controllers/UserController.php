@@ -90,9 +90,13 @@ class UserController extends BaseController
             $user->ban();
         }
 
+        $db = $this->userModel->db;
+        $db->transStart();
+
         try {
             // Guardar todos los cambios (datos básicos + estado)
             if (! $this->userModel->save($user)) {
+                $db->transRollback();
                 return redirect()->back()->withInput()->with('errors', $this->userModel->errors());
             }
 
@@ -105,8 +109,15 @@ class UserController extends BaseController
                 $user->addPermission($permission);
             }
 
+            $db->transComplete();
+
+            if ($db->transStatus() === false) {
+                return redirect()->back()->withInput()->with('error', 'Error al procesar la transacción de guardado.');
+            }
+
             return redirect()->to('users')->with('message', 'Usuario creado correctamente.');
         } catch (\Exception $e) {
+            $db->transRollback();
             return redirect()->back()->withInput()->with('error', 'Error al guardar: ' . $e->getMessage());
         }
     }
@@ -199,8 +210,12 @@ class UserController extends BaseController
             $user->ban();
         }
 
+        $db = $this->userModel->db;
+        $db->transStart();
+
         try {
             if (! $this->userModel->save($user)) {
+                $db->transRollback();
                 return redirect()->back()->withInput()->with('errors', $this->userModel->errors());
             }
 
@@ -211,8 +226,15 @@ class UserController extends BaseController
             $permissions = $this->request->getPost('permissions') ?? [];
             $user->syncPermissions(...$permissions);
 
+            $db->transComplete();
+
+            if ($db->transStatus() === false) {
+                return redirect()->back()->withInput()->with('error', 'Error al procesar la transacción de actualización.');
+            }
+
             return redirect()->to('users')->with('message', 'Usuario actualizado.');
         } catch (\Exception $e) {
+            $db->transRollback();
             return redirect()->back()->withInput()->with('error', 'Error al actualizar: ' . $e->getMessage());
         }
     }

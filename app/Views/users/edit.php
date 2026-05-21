@@ -22,7 +22,7 @@
                 <div class="card-body">
                     <h5 class="mb-4 fw-semibold border-bottom pb-3">Información del Usuario</h5>
                     
-                    <form action="<?= base_url('users/update/' . $user->id) ?>" method="post">
+                    <form action="<?= base_url('users/update/' . $user->id) ?>" method="post" onsubmit="this.querySelector('button[type=submit]').disabled=true; return true;">
                         <?= csrf_field() ?>
                         
                         <div class="row">
