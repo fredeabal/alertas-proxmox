@@ -92,7 +92,9 @@ class UserController extends BaseController
 
         try {
             // Guardar todos los cambios (datos básicos + estado)
-            $this->userModel->save($user);
+            if (! $this->userModel->save($user)) {
+                return redirect()->back()->withInput()->with('errors', $this->userModel->errors());
+            }
 
             // Ahora que tiene ID (en caso de store), asignamos grupo
             $user->addGroup($this->request->getPost('group'));
@@ -161,9 +163,15 @@ class UserController extends BaseController
             'group'    => 'required',
         ];
 
+        // Solo validar password si se intenta cambiar en la edición
+        if ($this->request->getPost('password')) {
+            $rules['password'] = 'required|min_length[8]';
+        }
+
         $messages = [
             'username' => ['required' => 'El Nombre de Usuario es obligatorio.', 'is_unique' => 'Este nombre de usuario ya existe.'],
             'email'    => ['required' => 'El Correo Electrónico es obligatorio.', 'valid_email' => 'Introduce un email válido.', 'is_unique' => 'Este email ya existe.'],
+            'password' => ['required' => 'La contraseña es obligatoria.', 'min_length' => 'La contraseña debe tener al menos 8 caracteres.'],
             'group'    => ['required' => 'El rol es obligatorio.']
         ];
 
@@ -192,7 +200,9 @@ class UserController extends BaseController
         }
 
         try {
-            $this->userModel->save($user);
+            if (! $this->userModel->save($user)) {
+                return redirect()->back()->withInput()->with('errors', $this->userModel->errors());
+            }
 
             // Sincronizar grupo
             $user->syncGroups($this->request->getPost('group'));
@@ -276,7 +286,9 @@ class UserController extends BaseController
         }
 
         try {
-            $this->userModel->save($user);
+            if (! $this->userModel->save($user)) {
+                return redirect()->back()->withInput()->with('errors', $this->userModel->errors());
+            }
             return redirect()->back()->with('message', 'Perfil actualizado correctamente.');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', 'Error al actualizar el perfil: ' . $e->getMessage());
