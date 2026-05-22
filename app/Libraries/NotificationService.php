@@ -224,8 +224,9 @@ class NotificationService
                     'fallback' => "⚠️ Alerta de Proxmox - {$empresa->nombre}: {$title}",
                     'color'    => $color,
                     'pretext'  => "⚠️ *Alerta de Proxmox - {$empresa->nombre}*",
-                    'title'    => $title,
+                    'title'    => "Incidencia: " . $title,
                     'title_link' => $loginUrl,
+                    'text'     => "🔗 <{$loginUrl}|Ver Detalles>",
                     'fields'   => [
                         [
                             'title' => 'Nodo / Host',
