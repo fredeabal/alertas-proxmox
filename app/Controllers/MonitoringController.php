@@ -90,10 +90,9 @@ class MonitoringController extends BaseController
                 if ($alertModel->insert($alertaData)) {
                     $summary['alerts_created']++;
 
-                    // Enviar email si está activado para la empresa
-                    if ((int) ($empresa->send_email ?? 0) === 1 && ! empty($empresa->email)) {
-                        $this->sendAlertEmail($empresa, $alertaData);
-                    }
+                    // Canalizar alertas a través del servicio de notificaciones global
+                    $notificationService = new \App\Libraries\NotificationService();
+                    $notificationService->sendAll($empresa, $alertaData);
                 }
             } else {
                 $summary['alerts_skipped']++;
@@ -170,79 +169,7 @@ class MonitoringController extends BaseController
         return true;
     }
 
-    // ---------------------------------------------------------------------
-    // Enviar email de alerta usando la configuración SMTP de /email
-    // ---------------------------------------------------------------------
-    private function sendAlertEmail($empresa, array $alerta): void
-    {
-        $settingsModel = new \App\Models\SettingsModel();
-        $emailSettings = $settingsModel->getClassSettings('Email');
 
-        // Verificar que hay configuración SMTP guardada
-        if (empty($emailSettings['SMTPHost']) || empty($emailSettings['fromEmail'])) {
-            log_message('error', 'No se puede enviar email de alerta (cron ping): configuración SMTP no establecida en /email');
-            return;
-        }
-
-        $email = \Config\Services::email();
-        $config = [
-            'protocol'    => $emailSettings['protocol'] ?? 'smtp',
-            'SMTPHost'    => $emailSettings['SMTPHost'] ?? '',
-            'SMTPUser'    => $emailSettings['SMTPUser'] ?? '',
-            'SMTPPass'    => $emailSettings['SMTPPass'] ?? '',
-            'SMTPPort'    => (int) ($emailSettings['SMTPPort'] ?? 587),
-            'SMTPCrypto'  => $emailSettings['SMTPCrypto'] ?? 'tls',
-            'SMTPTimeout' => 30,
-            'mailType'    => $emailSettings['mailType'] ?? 'html',
-            'charset'     => 'utf-8',
-            'newline'     => "\r\n",
-            'CRLF'        => "\r\n",
-        ];
-        $email->initialize($config);
-
-        $fromEmail = $emailSettings['fromEmail'];
-        $fromName  = $emailSettings['fromName'] ?? 'Proxmox Alert';
-
-        $email->setFrom($fromEmail, $fromName);
-        $email->setTo($empresa->email);
-        $email->setSubject('⚠️ Alerta de Proxmox - ' . $alerta['title']);
-
-        $message = "
-            <div style='font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 10px; overflow: hidden;'>
-                <div style='background: #5d87ff; padding: 20px; text-align: center; color: white;'>
-                    <h2 style='margin: 0;'>Nueva Alerta Crítica</h2>
-                </div>
-                <div style='padding: 20px;'>
-                    <p>Hola <b>{$empresa->nombre}</b>,</p>
-                    <p>Se ha detectado un evento importante en tu infraestructura Proxmox:</p>
-                    <hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;'>
-                    <table style='width: 100%; border-collapse: collapse;'>
-                        <tr><td style='padding: 5px 0; color: #666;'>Título:</td><td style='font-weight: bold;'>{$alerta['title']}</td></tr>
-                        <tr><td style='padding: 5px 0; color: #666;'>Nodo/Host:</td><td style='font-weight: bold;'>{$alerta['hostname']}</td></tr>
-                        <tr><td style='padding: 5px 0; color: #666;'>Severidad:</td><td style='color: #5d87ff; font-weight: bold;'>{$alerta['severity']}</td></tr>
-                        <tr><td style='padding: 5px 0; color: #666;'>Fecha:</td><td>" . date('d/m/Y H:i:s') . "</td></tr>
-                    </table>
-                    <div style='background: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 20px;'>
-                        <p style='margin: 0; color: #333;'><b>Mensaje del sistema:</b></p>
-                        <p style='margin: 10px 0 0 0; font-family: monospace; font-size: 13px;'>{$alerta['message']}</p>
-                    </div>
-                </div>
-                <div style='background: #f8f9fa; padding: 15px; text-align: center; color: #999; font-size: 12px;'>
-                    Este es un mensaje automático del sistema de alertas de Proxmox.
-                </div>
-            </div>
-        ";
-
-        $email->setMessage($message);
-        $email->setAltMessage(strip_tags($message));
-
-        if (! $email->send()) {
-            log_message('error', 'Error enviando email de alerta (cron ping) a ' . $empresa->email . ': ' . $email->printDebugger(['headers']));
-            return;
-        }
-
-        log_message('info', 'Email de alerta (cron ping) enviado correctamente a ' . $empresa->email);
-    }
 
     // ---------------------------------------------------------------------
     // Extraer latencia media del comando ping (soporta Darwin y Linux)

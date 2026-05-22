@@ -42,7 +42,7 @@ class NotificationService
 
         // 1. Canal de Correo Electrónico
         $emailEnabled = $this->emailSettings['email_enabled'] ?? '1'; // Activo por defecto
-        if ($emailEnabled === '1' && $empresa->send_email && !empty($this->emailSettings['recipientEmail'])) {
+        if ($emailEnabled === '1' && !empty($this->emailSettings['recipientEmail'])) {
             $this->sendEmail($empresa, $alerta);
         }
 

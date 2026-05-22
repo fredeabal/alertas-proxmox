@@ -22,7 +22,6 @@ class CompanyModel extends Model
         'proxmox_host',
         'active',
         'webhook_token',
-        'send_email',
         'ai_enabled'
     ];
 
