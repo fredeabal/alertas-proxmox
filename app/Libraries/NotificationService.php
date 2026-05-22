@@ -104,16 +104,15 @@ class NotificationService
                     <div style='margin: 25px 0; padding: 20px; border-radius: 8px; border: 1px solid #e5eaef; background: #fcfcfc;'>
                         <table style='width: 100%; border-collapse: collapse;'>
                             <tr><td style='padding: 6px 0; color: #888; font-size: 13px; width: 80px;'>Empresa:</td><td style='font-weight: bold; color: #222;'>{$empresa->nombre}</td></tr>
-                            <tr><td style='padding: 6px 0; color: #888; font-size: 13px;'>Título:</td><td style='font-weight: bold; color: #222;'>{$alerta['title']}</td></tr>
+                            <tr><td style='padding: 6px 0; color: #888; font-size: 13px;'>Incidencia:</td><td style='font-weight: bold; color: #222;'>{$alerta['title']}</td></tr>
                             <tr><td style='padding: 6px 0; color: #888; font-size: 13px;'>Nodo:</td><td style='font-weight: bold; color: #222;'>{$alerta['hostname']}</td></tr>
                             <tr><td style='padding: 6px 0; color: #888; font-size: 13px;'>Severidad:</td><td><span style='background: #fa896b; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; text-transform: uppercase;'>{$alerta['severity']}</span></td></tr>
-                            " . (!empty($alerta['message']) ? "<tr><td style='padding: 6px 0; color: #888; font-size: 13px;'>Detalle:</td><td style='color: #444; font-size: 13px;'>{$alerta['message']}</td></tr>" : "") . "
                         </table>
                     </div>
 
                     <div style='text-align: center; margin: 30px 0;'>
                         <a href='{$loginUrl}' style='background: #5d87ff; color: white; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block; box-shadow: 0 4px 12px rgba(93, 135, 255, 0.2);'>
-                            Ver Detalles y Análisis IA
+                            Ver Detalles
                         </a>
                     </div>
                 </div>
@@ -159,16 +158,8 @@ class NotificationService
                          . "*Incidencia:* {$title}\n"
                          . "*Nodo:* {$node}\n"
                          . "*Severidad:* {$severity}\n";
-        
-        if (!empty($message)) {
-            // Truncar detalle si es muy largo
-            if (strlen($message) > 300) {
-                $message = substr($message, 0, 300) . '...';
-            }
-            $telegramMessage .= "*Detalle:* _" . esc($message) . "_\n";
-        }
 
-        $telegramMessage .= "\n🔗 [Ver Detalles y Análisis IA]({$loginUrl})";
+        $telegramMessage .= "\n🔗 [Ver Detalles]({$loginUrl})";
 
         $url = "https://api.telegram.org/bot{$botToken}/sendMessage";
         
@@ -252,17 +243,6 @@ class NotificationService
                 ]
             ]
         ];
-
-        if (!empty($message)) {
-            if (strlen($message) > 300) {
-                $message = substr($message, 0, 300) . '...';
-            }
-            $payload['attachments'][0]['fields'][] = [
-                'title' => 'Detalle',
-                'value' => $message,
-                'short' => false
-            ];
-        }
 
         $client = \Config\Services::curlrequest();
         try {
