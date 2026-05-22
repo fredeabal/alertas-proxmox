@@ -129,7 +129,7 @@ class AlertSettingsController extends BaseController
         if ($email->send()) {
             return redirect()->to('alerts-config')->with('message', 'Correo de prueba enviado correctamente a ' . auth()->user()->email);
         } else {
-            return redirect()->to('alerts-config')->withInput()->with('error', 'Error al enviar el correo: ' . $email->printDebugger());
+            return redirect()->back()->withInput()->with('error', 'Error al enviar el correo: ' . $email->printDebugger());
         }
     }
 
@@ -167,10 +167,10 @@ class AlertSettingsController extends BaseController
             if ($response->getStatusCode() === 200 && isset($resBody->ok) && $resBody->ok) {
                 return redirect()->to('alerts-config')->with('message', 'Mensaje de prueba de Telegram enviado correctamente.');
             } else {
-                return redirect()->to('alerts-config')->withInput()->with('error', 'Error de Telegram: ' . ($resBody->description ?? 'Error desconocido'));
+                return redirect()->back()->withInput()->with('error', 'Error de Telegram: ' . ($resBody->description ?? 'Error desconocido'));
             }
         } catch (\Exception $e) {
-            return redirect()->to('alerts-config')->withInput()->with('error', 'Error al conectar con la API de Telegram: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Error al conectar con la API de Telegram: ' . $e->getMessage());
         }
     }
 
@@ -201,10 +201,10 @@ class AlertSettingsController extends BaseController
             if ($response->getStatusCode() === 200 || trim($response->getBody()) === 'ok') {
                 return redirect()->to('alerts-config')->with('message', 'Mensaje de prueba de Slack enviado correctamente.');
             } else {
-                return redirect()->to('alerts-config')->withInput()->with('error', 'Error de Slack: ' . $response->getBody());
+                return redirect()->back()->withInput()->with('error', 'Error de Slack: ' . $response->getBody());
             }
         } catch (\Exception $e) {
-            return redirect()->to('alerts-config')->withInput()->with('error', 'Error al conectar con el Webhook de Slack: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Error al conectar con el Webhook de Slack: ' . $e->getMessage());
         }
     }
 }
