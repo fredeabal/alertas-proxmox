@@ -42,7 +42,7 @@ class NotificationService
 
         // 1. Canal de Correo Electrónico
         $emailEnabled = $this->emailSettings['email_enabled'] ?? '1'; // Activo por defecto
-        if ($emailEnabled === '1' && $empresa->send_email && !empty($empresa->email)) {
+        if ($emailEnabled === '1' && $empresa->send_email && !empty($this->emailSettings['recipientEmail'])) {
             $this->sendEmail($empresa, $alerta);
         }
 
@@ -64,8 +64,8 @@ class NotificationService
      */
     public function sendEmail($empresa, $alerta)
     {
-        if (empty($this->emailSettings['SMTPHost']) || empty($this->emailSettings['fromEmail'])) {
-            log_message('error', '[NotificationService] Configuración SMTP no establecida.');
+        if (empty($this->emailSettings['SMTPHost']) || empty($this->emailSettings['fromEmail']) || empty($this->emailSettings['recipientEmail'])) {
+            log_message('error', '[NotificationService] Configuración SMTP incompleta o falta el destinatario.');
             return false;
         }
 
@@ -87,7 +87,7 @@ class NotificationService
 
         $email->initialize($config);
         $email->setFrom($this->emailSettings['fromEmail'], $this->emailSettings['fromName'] ?? 'Proxmox Alert');
-        $email->setTo($empresa->email);
+        $email->setTo($this->emailSettings['recipientEmail']);
         $email->setSubject('⚠️ Alerta de Proxmox - ' . ($alerta['title'] ?? 'Alerta'));
         
         $loginUrl = base_url('companies/view/' . $empresa->id);
@@ -127,11 +127,11 @@ class NotificationService
         $email->setAltMessage(strip_tags($message));
 
         if (!$email->send()) {
-            log_message('error', '[NotificationService] Error enviando email a ' . $empresa->email . ': ' . $email->printDebugger(['headers']));
+            log_message('error', '[NotificationService] Error enviando email a ' . $this->emailSettings['recipientEmail'] . ': ' . $email->printDebugger(['headers']));
             return false;
         }
 
-        log_message('info', '[NotificationService] Email de alerta enviado a ' . $empresa->email);
+        log_message('info', '[NotificationService] Email de alerta enviado a ' . $this->emailSettings['recipientEmail']);
         return true;
     }
 

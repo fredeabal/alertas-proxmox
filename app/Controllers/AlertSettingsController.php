@@ -43,6 +43,7 @@ class AlertSettingsController extends BaseController
         $rules = [
             // Email (solo si se envían datos SMTP)
             'fromEmail' => 'permit_empty|valid_email',
+            'recipientEmail' => 'permit_empty|valid_email',
             // Slack
             'slack_webhook_url' => 'permit_empty|valid_url',
         ];
@@ -54,7 +55,7 @@ class AlertSettingsController extends BaseController
         // 1. Guardar configuración de Email (SMTP)
         $emailFields = [
             'protocol', 'SMTPHost', 'SMTPUser', 'SMTPPass', 
-            'SMTPPort', 'SMTPCrypto', 'mailType', 'fromEmail', 'fromName'
+            'SMTPPort', 'SMTPCrypto', 'mailType', 'fromEmail', 'fromName', 'recipientEmail'
         ];
         foreach ($emailFields as $field) {
             if ($this->request->getPost($field) !== null) {
@@ -115,6 +116,7 @@ class AlertSettingsController extends BaseController
 
         $fromEmail = $this->request->getPost('fromEmail') ?? ($emailSettings['fromEmail'] ?? '');
         $fromName  = $this->request->getPost('fromName') ?? ($emailSettings['fromName'] ?? 'Proxmox Alert');
+        $recipientEmail = $this->request->getPost('recipientEmail') ?? ($emailSettings['recipientEmail'] ?? auth()->user()->email);
 
         if (empty($config['SMTPHost']) || empty($fromEmail)) {
             return redirect()->back()->withInput()->with('active_tab', 'email')->with('error', 'Debe rellenar los datos del servidor para realizar una prueba de correo.');
@@ -122,12 +124,12 @@ class AlertSettingsController extends BaseController
 
         $email->initialize($config);
         $email->setFrom($fromEmail, $fromName);
-        $email->setTo(auth()->user()->email);
+        $email->setTo($recipientEmail);
         $email->setSubject('Prueba de Configuración - Proxmox Alert');
         $email->setMessage('<h1>¡Prueba Exitosa!</h1><p>Si has recibido este correo, tu configuración SMTP en Proxmox Alert funciona correctamente.</p><p>Servidor: ' . $config['SMTPHost'] . '</p>');
 
         if ($email->send()) {
-            return redirect()->to('alerts-config')->with('message', 'Correo de prueba enviado correctamente a ' . auth()->user()->email);
+            return redirect()->to('alerts-config')->with('message', 'Correo de prueba enviado correctamente a ' . $recipientEmail);
         } else {
             return redirect()->back()->withInput()->with('active_tab', 'email')->with('error', 'Error al enviar el correo: ' . $email->printDebugger());
         }

@@ -76,6 +76,17 @@
                                     </div>
                                 </div>
 
+                                <!-- Destinatario -->
+                                <p class="fw-semibold text-muted mb-3 fs-2 text-uppercase letter-spacing-1">Destinatario</p>
+                                <div class="row mb-4">
+                                    <div class="col-md-12 mb-3">
+                                        <div class="form-floating">
+                                            <input type="email" class="form-control" id="recipientEmail" name="recipientEmail" placeholder="admin@tudominio.com" value="<?= esc(old('recipientEmail', $emailSettings['recipientEmail'] ?? '')) ?>" required>
+                                            <label for="recipientEmail">Correo Electrónico de Destino (Donde llegarán las alertas)</label>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <hr class="my-4">
 
                                 <!-- Servidor -->
