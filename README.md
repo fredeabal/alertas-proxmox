@@ -69,25 +69,24 @@ Login:
 Recomendado:
 - Cambiar la contraseña en el primer inicio.
 
-## 5. Configuración SMTP
+## 5. Configuración de Canales de Alerta (Email, Telegram, Slack)
 Ruta:
-- `https://tudominio.com/email`
+- `https://tudominio.com/alerts-config`
 
-Campos obligatorios:
-- `fromEmail`
-- `fromName`
-- `SMTPHost`
-- `SMTPPort`
-- `SMTPUser`
-- `SMTPPass`
+El sistema soporta la emisión simultánea de alertas críticas a través de 3 canales globales:
+
+1. **Email (SMTP)**: Envía un correo con diseño premium a las empresas.
+2. **Telegram**: Notifica instantáneamente mediante un Bot a un Grupo o Chat específico de la plataforma.
+3. **Slack**: Envía alertas con diseño estructurado a un canal vía Incoming Webhooks.
 
 Flujo recomendado:
-1. Completar la configuración SMTP.
-2. Ejecutar envío de prueba.
-3. Guardar configuración definitiva.
+1. Completar la configuración de los canales deseados (incluye instrucciones guiadas paso a paso en la propia interfaz).
+2. Utilizar los botones de "Probar..." presentes en cada pestaña para verificar la conectividad y formato de los mensajes.
+3. Guardar la configuración definitiva usando el botón principal "Guardar Configuración".
 
 Notas:
-- El correo de prueba se envía al usuario autenticado.
+- El sistema filtrará automáticamente el "ruido" y solo enviará notificaciones por estos canales cuando detecte incidencias de severidad importante (warning, error, critical, etc.).
+- Las alertas puramente informativas (`info`, `notice`, `debug`) se guardan en el sistema pero no generan notificaciones push o email.
 - Esta sección está restringida a grupos `admin` y `superadmin`.
 
 ## 6. Gestión de empresas
@@ -140,10 +139,11 @@ Reglas de borrado:
 - Se permite eliminar alertas en estado `resolved`.
 - Se permite eliminar alertas informativas (`info`, `notice`, `debug`).
 
-Reglas de correo automático:
-- Se envía email solo si `send_email` está activo y la empresa tiene email.
-- Se consideran críticas severidades que contengan: `error`, `crit`, `emerg` o `alert`.
-- No se enviará email si no se cumple la condición de severidad aunque el switch esté activo.
+Reglas de Notificaciones Automáticas (Email, Telegram, Slack):
+- Se envían alertas push (Telegram/Slack) de forma global solo si están explícitamente habilitados en su configuración.
+- Se envía alerta por Email a la empresa si el canal SMTP está configurado correctamente.
+- Solo se notificarán incidencias que contengan severidades importantes: `error`, `critical`, `warning`, `unknown`, `emergency`, `alert`, `crit`, `emerg`.
+- Las notificaciones son limpias: omiten logs largos (Detalle técnico) y proveen un enlace directo de "Ver Detalles" para visualizar el error y el Análisis IA dentro del portal web.
 
 ## 9. Resumen de Alertas con IA
 Ruta de configuración:

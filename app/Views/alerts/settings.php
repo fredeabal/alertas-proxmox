@@ -209,7 +209,7 @@
                                                 Para recibir alertas en Telegram necesitas crear un bot y obtener su Token y el ID del chat:
                                                 <ol class="mt-3 mb-0 ps-3">
                                                     <li class="mb-2">Abre Telegram y busca al bot oficial <a href="https://t.me/BotFather" target="_blank" class="fw-semibold text-primary text-decoration-none">@BotFather</a>.</li>
-                                                    <li class="mb-2">Envíale el comando <code>/newbot</code>, sigue los pasos y copia el <strong>Token del Bot</strong>.</li>
+                                                    <li class="mb-2">Envíale el comando <strong>/newbot</strong>, sigue los pasos y copia el <strong>Token del Bot</strong>.</li>
                                                     <li class="mb-2">Crea un grupo (o usa uno existente) y añade a tu nuevo bot como <strong>Administrador</strong>.</li>
                                                     <li class="mb-0">Añade al bot <a href="https://t.me/RawDataBot" target="_blank" class="fw-semibold text-primary text-decoration-none">@RawDataBot</a> a ese mismo grupo para obtener el <strong>Chat ID</strong> (suele ser un número largo que empieza por un guion).</li>
                                                 </ol>
