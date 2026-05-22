@@ -55,11 +55,11 @@
 
         <?php if (auth()->user()->can('email.manage')): ?>
         <li class="sidebar-item">
-          <a class="sidebar-link" href="<?= base_url('email') ?>" aria-expanded="false">
+          <a class="sidebar-link" href="<?= base_url('alerts-config') ?>" aria-expanded="false">
             <span>
-              <i class="ti ti-mail"></i>
+              <i class="ti ti-bell"></i>
             </span>
-            <span class="hide-menu">Email</span>
+            <span class="hide-menu">Config. Alertas</span>
           </a>
         </li>
         <?php endif; ?>

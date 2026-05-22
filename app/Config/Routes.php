@@ -45,11 +45,13 @@ $routes->group('alerts', ['namespace' => 'App\Controllers', 'filter' => 'session
     $routes->get('get-summary/(:num)', 'AlertController::getSummary/$1', ['filter' => 'permission:empresas.view']);
 });
 
-// Configuración de Email
-$routes->group('email', ['namespace' => 'App\Controllers', 'filter' => 'session'], function($routes) {
-    $routes->get('/', 'EmailController::index', ['filter' => 'group:admin,superadmin']);
-    $routes->post('store', 'EmailController::store', ['filter' => 'group:admin,superadmin']);
-    $routes->match(['GET', 'POST'], 'test', 'EmailController::test', ['filter' => 'group:admin,superadmin']);
+// Configuración de Alertas (SMTP, Telegram, Slack)
+$routes->group('alerts-config', ['namespace' => 'App\Controllers', 'filter' => 'session'], function($routes) {
+    $routes->get('/', 'AlertSettingsController::index', ['filter' => 'group:admin,superadmin']);
+    $routes->post('store', 'AlertSettingsController::store', ['filter' => 'group:admin,superadmin']);
+    $routes->post('test-email', 'AlertSettingsController::testEmail', ['filter' => 'group:admin,superadmin']);
+    $routes->post('test-telegram', 'AlertSettingsController::testTelegram', ['filter' => 'group:admin,superadmin']);
+    $routes->post('test-slack', 'AlertSettingsController::testSlack', ['filter' => 'group:admin,superadmin']);
 });
 
 // Configuración de IA
