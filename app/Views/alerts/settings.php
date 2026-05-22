@@ -197,11 +197,25 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex align-items-start gap-2 p-3 bg-light-primary rounded mb-4">
-                                    <i class="ti ti-info-circle text-primary fs-5 mt-1 flex-shrink-0"></i>
-                                    <p class="mb-0 fs-2 text-muted">
-                                        Crea un bot con <a href="https://t.me/BotFather" target="_blank" class="fw-semibold text-primary text-decoration-none">@BotFather</a>, agrégalo a tu grupo/canal como administrador, y obtén el Chat ID con <a href="https://t.me/RawDataBot" target="_blank" class="fw-semibold text-primary text-decoration-none">@RawDataBot</a>.
-                                    </p>
+                                <div class="accordion mb-4" id="accordionTelegramHelp">
+                                    <div class="accordion-item border-0 shadow-sm rounded-3 overflow-hidden">
+                                        <h2 class="accordion-header" id="headingTelegramHelp">
+                                            <button class="accordion-button collapsed bg-light-primary text-primary fw-semibold p-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTelegramHelp" aria-expanded="false" aria-controls="collapseTelegramHelp">
+                                                <i class="ti ti-help-circle fs-5 me-2"></i> ¿Cómo configurar el Bot de Telegram?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTelegramHelp" class="accordion-collapse collapse" aria-labelledby="headingTelegramHelp" data-bs-parent="#accordionTelegramHelp">
+                                            <div class="accordion-body bg-white text-muted fs-3 p-4">
+                                                Para recibir alertas en Telegram necesitas crear un bot y obtener su Token y el ID del chat:
+                                                <ol class="mt-3 mb-0 ps-3">
+                                                    <li class="mb-2">Abre Telegram y busca al bot oficial <a href="https://t.me/BotFather" target="_blank" class="fw-semibold text-primary text-decoration-none">@BotFather</a>.</li>
+                                                    <li class="mb-2">Envíale el comando <code>/newbot</code>, sigue los pasos y copia el <strong>Token del Bot</strong>.</li>
+                                                    <li class="mb-2">Crea un grupo (o usa uno existente) y añade a tu nuevo bot como <strong>Administrador</strong>.</li>
+                                                    <li class="mb-0">Añade al bot <a href="https://t.me/RawDataBot" target="_blank" class="fw-semibold text-primary text-decoration-none">@RawDataBot</a> a ese mismo grupo para obtener el <strong>Chat ID</strong> (suele ser un número largo que empieza por un guion).</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="d-flex justify-content-end">
@@ -234,11 +248,24 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex align-items-start gap-2 p-3 bg-light-primary rounded mb-4">
-                                    <i class="ti ti-info-circle text-primary fs-5 mt-1 flex-shrink-0"></i>
-                                    <p class="mb-0 fs-2 text-muted">
-                                        En la consola de tu App de Slack, activa <strong>Incoming Webhooks</strong>, crea uno nuevo apuntando al canal deseado y pega la URL aquí.
-                                    </p>
+                                <div class="accordion mb-4" id="accordionSlackHelp">
+                                    <div class="accordion-item border-0 shadow-sm rounded-3 overflow-hidden">
+                                        <h2 class="accordion-header" id="headingSlackHelp">
+                                            <button class="accordion-button collapsed bg-light-primary text-primary fw-semibold p-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSlackHelp" aria-expanded="false" aria-controls="collapseSlackHelp">
+                                                <i class="ti ti-help-circle fs-5 me-2"></i> ¿Cómo configurar el Webhook de Slack?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseSlackHelp" class="accordion-collapse collapse" aria-labelledby="headingSlackHelp" data-bs-parent="#accordionSlackHelp">
+                                            <div class="accordion-body bg-white text-muted fs-3 p-4">
+                                                Para conectar con Slack, necesitas generar una URL de Webhook:
+                                                <ol class="mt-3 mb-0 ps-3">
+                                                    <li class="mb-2">Ve a la consola de tu Workspace de Slack y crea una nueva <strong>App</strong>.</li>
+                                                    <li class="mb-2">En el menú lateral izquierdo, haz clic en <strong>Incoming Webhooks</strong> y activa el interruptor.</li>
+                                                    <li class="mb-0">Haz clic en <strong>Add New Webhook to Workspace</strong>, selecciona el canal donde quieras recibir las alertas y pega la URL generada en el campo de arriba.</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="d-flex justify-content-end">
