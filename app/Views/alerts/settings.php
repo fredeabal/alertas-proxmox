@@ -58,7 +58,7 @@
                                 <!-- Scoped Header with Switch Toggle -->
                                 <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom border-secondary-subtle">
                                     <div class="d-flex align-items-center">
-                                        <div class="accent-icon-box accent-email">
+                                        <div class="accent-icon-box accent-primary">
                                             <i class="ti ti-mail fs-5"></i>
                                         </div>
                                         <div>
@@ -180,7 +180,7 @@
                                 <!-- Scoped Header with Switch Toggle -->
                                 <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom border-secondary-subtle">
                                     <div class="d-flex align-items-center">
-                                        <div class="accent-icon-box accent-telegram">
+                                        <div class="accent-icon-box accent-primary">
                                             <i class="ti ti-brand-telegram fs-5"></i>
                                         </div>
                                         <div>
@@ -197,7 +197,7 @@
                                 <!-- Card Segment: Telegram Credentials -->
                                 <div class="premium-section-card">
                                     <h6 class="fw-bold mb-3 text-white d-flex align-items-center">
-                                        <i class="ti ti-settings-cog text-info me-2 fs-5"></i>
+                                        <i class="ti ti-settings-cog text-primary me-2 fs-5"></i>
                                         Credenciales de Conexión
                                     </h6>
                                     <div class="row">
@@ -229,21 +229,21 @@
                                 </div>
 
                                 <!-- Elegant premium instructions layout -->
-                                <div class="alert premium-info-alert border-0 d-flex align-items-start gap-3 p-4 mb-4" role="alert">
-                                    <i class="ti ti-info-circle fs-6 text-info mt-1"></i>
+                                <div class="alert premium-primary-alert border-0 d-flex align-items-start gap-3 p-4 mb-4" role="alert">
+                                    <i class="ti ti-info-circle fs-6 text-primary mt-1"></i>
                                     <div>
-                                        <h6 class="alert-heading fw-bold mb-1 fs-3 text-info">¿Cómo configurar tu Bot de Telegram?</h6>
+                                        <h6 class="alert-heading fw-bold mb-1 fs-3 text-primary">¿Cómo configurar tu Bot de Telegram?</h6>
                                         <p class="mb-0 fs-2 text-light-emphasis">
-                                            1. Inicia una conversación con <a href="https://t.me/BotFather" target="_blank" class="fw-bold text-info text-decoration-none border-bottom border-info border-opacity-25 pb-0.5">@BotFather</a> en Telegram para crear un bot y obtener tu <strong>HTTP API Token</strong>.<br>
+                                            1. Inicia una conversación con <a href="https://t.me/BotFather" target="_blank" class="fw-bold text-primary text-decoration-none border-bottom border-primary border-opacity-25 pb-0.5">@BotFather</a> en Telegram para crear un bot y obtener tu <strong>HTTP API Token</strong>.<br>
                                             2. Agrega tu bot como administrador al grupo o canal de soporte donde quieras recibir las alertas.<br>
-                                            3. Para obtener el <strong>Chat ID</strong> de tu grupo/canal, puedes reenviar cualquier mensaje del grupo al bot <a href="https://t.me/RawDataBot" target="_blank" class="fw-bold text-info text-decoration-none border-bottom border-info border-opacity-25 pb-0.5">@RawDataBot</a>, o invocar el endpoint <code>getUpdates</code> del bot.
+                                            3. Para obtener el <strong>Chat ID</strong> de tu grupo/canal, puedes reenviar cualquier mensaje del grupo al bot <a href="https://t.me/RawDataBot" target="_blank" class="fw-bold text-primary text-decoration-none border-bottom border-primary border-opacity-25 pb-0.5">@RawDataBot</a>, o invocar el endpoint <code>getUpdates</code> del bot.
                                         </p>
                                     </div>
                                 </div>
 
                                 <!-- Test Action Button -->
                                 <div class="d-flex justify-content-end mb-2">
-                                    <button type="submit" formaction="<?= base_url('alerts-config/test-telegram') ?>" class="btn btn-outline-info font-medium px-4 py-2.5 rounded-3 transition-all hover-scale d-inline-flex align-items-center">
+                                    <button type="submit" formaction="<?= base_url('alerts-config/test-telegram') ?>" class="btn btn-outline-primary font-medium px-4 py-2.5 rounded-3 transition-all hover-scale d-inline-flex align-items-center">
                                         <i class="ti ti-brand-telegram me-2 fs-4 animate-send"></i>
                                         Probar Conectividad de Telegram
                                     </button>
@@ -256,7 +256,7 @@
                                 <!-- Scoped Header with Switch Toggle -->
                                 <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom border-secondary-subtle">
                                     <div class="d-flex align-items-center">
-                                        <div class="accent-icon-box accent-slack">
+                                        <div class="accent-icon-box accent-primary">
                                             <i class="ti ti-brand-slack fs-5"></i>
                                         </div>
                                         <div>
@@ -273,7 +273,7 @@
                                 <!-- Card Segment: Endpoint Connection -->
                                 <div class="premium-section-card">
                                     <h6 class="fw-bold mb-3 text-white d-flex align-items-center">
-                                        <i class="ti ti-link text-warning me-2 fs-5"></i>
+                                        <i class="ti ti-link text-primary me-2 fs-5"></i>
                                         Endpoint de Comunicación
                                     </h6>
                                     <div class="row">
@@ -287,10 +287,10 @@
                                 </div>
 
                                 <!-- Elegant premium instructions layout -->
-                                <div class="alert premium-warning-alert border-0 d-flex align-items-start gap-3 p-4 mb-4" role="alert">
-                                    <i class="ti ti-help fs-6 text-warning mt-1"></i>
+                                <div class="alert premium-primary-alert border-0 d-flex align-items-start gap-3 p-4 mb-4" role="alert">
+                                    <i class="ti ti-help fs-6 text-primary mt-1"></i>
                                     <div>
-                                        <h6 class="alert-heading fw-bold mb-1 fs-3 text-warning">¿Cómo configurar tu Webhook de Slack?</h6>
+                                        <h6 class="alert-heading fw-bold mb-1 fs-3 text-primary">¿Cómo configurar tu Webhook de Slack?</h6>
                                         <p class="mb-0 fs-2 text-light-emphasis">
                                             1. Dirígete a la consola de tus aplicaciones de Slack e ingresa o crea una App para tu espacio de trabajo.<br>
                                             2. Activa la característica de <strong>Incoming Webhooks</strong> en el menú lateral.<br>
@@ -302,7 +302,7 @@
 
                                 <!-- Test Action Button -->
                                 <div class="d-flex justify-content-end mb-2">
-                                    <button type="submit" formaction="<?= base_url('alerts-config/test-slack') ?>" class="btn btn-outline-warning font-medium px-4 py-2.5 rounded-3 transition-all hover-scale d-inline-flex align-items-center">
+                                    <button type="submit" formaction="<?= base_url('alerts-config/test-slack') ?>" class="btn btn-outline-primary font-medium px-4 py-2.5 rounded-3 transition-all hover-scale d-inline-flex align-items-center">
                                         <i class="ti ti-brand-slack me-2 fs-4 animate-send"></i>
                                         Probar Webhook de Slack
                                     </button>
@@ -401,7 +401,7 @@
 }
 
 /* Dynamic active gradients for each brand tab */
-#email-tab.active {
+#email-tab.active, #telegram-tab.active, #slack-tab.active {
     background: linear-gradient(135deg, rgba(93, 135, 255, 0.12) 0%, rgba(93, 135, 255, 0.04) 100%) !important;
     border: 1px solid rgba(93, 135, 255, 0.25) !important;
     color: #5d87ff !important;
@@ -409,53 +409,21 @@
     font-weight: 600;
 }
 
-#telegram-tab.active {
-    background: linear-gradient(135deg, rgba(57, 182, 255, 0.12) 0%, rgba(57, 182, 255, 0.04) 100%) !important;
-    border: 1px solid rgba(57, 182, 255, 0.25) !important;
-    color: #39b6ff !important;
-    box-shadow: 0 4px 20px rgba(57, 182, 255, 0.12) !important;
-    font-weight: 600;
-}
-
-#slack-tab.active {
-    background: linear-gradient(135deg, rgba(255, 174, 31, 0.12) 0%, rgba(255, 174, 31, 0.04) 100%) !important;
-    border: 1px solid rgba(255, 174, 31, 0.25) !important;
-    color: #ffae1f !important;
-    box-shadow: 0 4px 20px rgba(255, 174, 31, 0.12) !important;
-    font-weight: 600;
-}
-
 /* Scoped focus state colors per brand tab */
-#email-pane .form-control:focus, #email-pane .form-select:focus {
+#email-pane .form-control:focus, #email-pane .form-select:focus,
+#telegram-pane .form-control:focus, #telegram-pane .form-select:focus,
+#slack-pane .form-control:focus, #slack-pane .form-select:focus {
     border-color: #5d87ff !important;
     box-shadow: 0 0 0 0.25rem rgba(93, 135, 255, 0.15) !important;
 }
 
-#telegram-pane .form-control:focus {
-    border-color: #39b6ff !important;
-    box-shadow: 0 0 0 0.25rem rgba(57, 182, 255, 0.15) !important;
-}
-
-#slack-pane .form-control:focus {
-    border-color: #ffae1f !important;
-    box-shadow: 0 0 0 0.25rem rgba(255, 174, 31, 0.15) !important;
-}
-
 /* Scoped switch colors */
-#email_enabled:checked {
+#email_enabled:checked,
+#telegram_enabled:checked,
+#slack_enabled:checked {
     background-color: #5d87ff !important;
     border-color: #5d87ff !important;
     box-shadow: 0 0 8px rgba(93, 135, 255, 0.4) !important;
-}
-#telegram_enabled:checked {
-    background-color: #39b6ff !important;
-    border-color: #39b6ff !important;
-    box-shadow: 0 0 8px rgba(57, 182, 255, 0.4) !important;
-}
-#slack_enabled:checked {
-    background-color: #ffae1f !important;
-    border-color: #ffae1f !important;
-    box-shadow: 0 0 8px rgba(255, 174, 31, 0.4) !important;
 }
 
 /* Card Modern Design */
@@ -513,17 +481,10 @@
 }
 
 /* Modern branded help info cards */
-.premium-info-alert {
-    background: rgba(57, 182, 255, 0.05) !important;
-    border: 1px solid rgba(57, 182, 255, 0.12) !important;
-    border-left: 4px solid #39b6ff !important;
-    border-radius: 16px !important;
-}
-
-.premium-warning-alert {
-    background: rgba(255, 174, 31, 0.05) !important;
-    border: 1px solid rgba(255, 174, 31, 0.12) !important;
-    border-left: 4px solid #ffae1f !important;
+.premium-primary-alert {
+    background: rgba(93, 135, 255, 0.05) !important;
+    border: 1px solid rgba(93, 135, 255, 0.12) !important;
+    border-left: 4px solid #5d87ff !important;
     border-radius: 16px !important;
 }
 
@@ -537,19 +498,9 @@
     border-radius: 12px;
 }
 
-.accent-email {
+.accent-primary {
     background: rgba(93, 135, 255, 0.1) !important;
     color: #5d87ff !important;
-}
-
-.accent-telegram {
-    background: rgba(57, 182, 255, 0.1) !important;
-    color: #39b6ff !important;
-}
-
-.accent-slack {
-    background: rgba(255, 174, 31, 0.1) !important;
-    color: #ffae1f !important;
 }
 
 /* Blur-backdrop premium footer bar */
