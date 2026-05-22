@@ -81,7 +81,7 @@
                                 <div class="row mb-4">
                                     <div class="col-md-12 mb-3">
                                         <div class="form-floating">
-                                            <input type="email" class="form-control" id="recipientEmail" name="recipientEmail" placeholder="admin@tudominio.com" value="<?= esc(old('recipientEmail', $emailSettings['recipientEmail'] ?? '')) ?>" required>
+                                            <input type="email" class="form-control" id="recipientEmail" name="recipientEmail" placeholder="admin@tudominio.com" value="<?= esc(old('recipientEmail', $emailSettings['recipientEmail'] ?? '')) ?>">
                                             <label for="recipientEmail">Correo Electrónico de Destino (Donde llegarán las alertas)</label>
                                         </div>
                                     </div>

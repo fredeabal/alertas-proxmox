@@ -129,7 +129,7 @@ class AlertSettingsController extends BaseController
         $email->setMessage('<h1>¡Prueba Exitosa!</h1><p>Si has recibido este correo, tu configuración SMTP en Proxmox Alert funciona correctamente.</p><p>Servidor: ' . $config['SMTPHost'] . '</p>');
 
         if ($email->send()) {
-            return redirect()->to('alerts-config')->with('message', 'Correo de prueba enviado correctamente a ' . $recipientEmail);
+            return redirect()->to('alerts-config')->withInput()->with('message', 'Correo de prueba enviado correctamente a ' . $recipientEmail);
         } else {
             return redirect()->back()->withInput()->with('active_tab', 'email')->with('error', 'Error al enviar el correo: ' . $email->printDebugger());
         }
@@ -167,7 +167,7 @@ class AlertSettingsController extends BaseController
             $resBody = json_decode($response->getBody());
             
             if ($response->getStatusCode() === 200 && isset($resBody->ok) && $resBody->ok) {
-                return redirect()->to('alerts-config')->with('message', 'Mensaje de prueba de Telegram enviado correctamente.');
+                return redirect()->to('alerts-config')->withInput()->with('active_tab', 'telegram')->with('message', 'Mensaje de prueba de Telegram enviado correctamente.');
             } else {
                 return redirect()->back()->withInput()->with('active_tab', 'telegram')->with('error', 'Error de Telegram: ' . ($resBody->description ?? 'Error desconocido'));
             }
@@ -201,7 +201,7 @@ class AlertSettingsController extends BaseController
             ]);
             
             if ($response->getStatusCode() === 200 || trim($response->getBody()) === 'ok') {
-                return redirect()->to('alerts-config')->with('message', 'Mensaje de prueba de Slack enviado correctamente.');
+                return redirect()->to('alerts-config')->withInput()->with('active_tab', 'slack')->with('message', 'Mensaje de prueba de Slack enviado correctamente.');
             } else {
                 return redirect()->back()->withInput()->with('active_tab', 'slack')->with('error', 'Error de Slack: ' . $response->getBody());
             }
