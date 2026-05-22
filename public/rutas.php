@@ -79,9 +79,7 @@ $dbPath       = $writablePath ? ($writablePath . '/database.db') : (dirname(__DI
         const copyText = document.getElementById(id);
         copyText.select();
         copyText.setSelectionRange(0, 99999);
-        navigator.clipboard.writeText(copyText.value).then(() => {
-            alert('¡Ruta copiada!');
-        });
+        navigator.clipboard.writeText(copyText.value);
     }
     </script>
 </body>
