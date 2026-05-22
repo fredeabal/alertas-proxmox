@@ -260,4 +260,15 @@ function togglePassword(id) {
         input.type = input.type === 'password' ? 'text' : 'password';
     }
 }
+
+// Activar la pestaña correcta si el controlador indicó cuál estaba activa
+<?php $activeTab = session('active_tab'); ?>
+<?php if ($activeTab): ?>
+document.addEventListener('DOMContentLoaded', function () {
+    const tabEl = document.getElementById('<?= esc($activeTab) ?>-tab');
+    if (tabEl) {
+        bootstrap.Tab.getOrCreateInstance(tabEl).show();
+    }
+});
+<?php endif; ?>
 </script>

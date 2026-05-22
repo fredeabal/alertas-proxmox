@@ -117,7 +117,7 @@ class AlertSettingsController extends BaseController
         $fromName  = $this->request->getPost('fromName') ?? ($emailSettings['fromName'] ?? 'Proxmox Alert');
 
         if (empty($config['SMTPHost']) || empty($fromEmail)) {
-            return redirect()->back()->withInput()->with('error', 'Debe rellenar los datos del servidor para realizar una prueba de correo.');
+            return redirect()->back()->withInput()->with('active_tab', 'email')->with('error', 'Debe rellenar los datos del servidor para realizar una prueba de correo.');
         }
 
         $email->initialize($config);
@@ -129,7 +129,7 @@ class AlertSettingsController extends BaseController
         if ($email->send()) {
             return redirect()->to('alerts-config')->with('message', 'Correo de prueba enviado correctamente a ' . auth()->user()->email);
         } else {
-            return redirect()->back()->withInput()->with('error', 'Error al enviar el correo: ' . $email->printDebugger());
+            return redirect()->back()->withInput()->with('active_tab', 'email')->with('error', 'Error al enviar el correo: ' . $email->printDebugger());
         }
     }
 
@@ -142,7 +142,7 @@ class AlertSettingsController extends BaseController
         $chatId   = $this->request->getPost('telegram_test_chat_id');
 
         if (empty($botToken) || empty($chatId)) {
-            return redirect()->back()->withInput()->with('error', 'Debe rellenar el Token del Bot y el Chat ID de pruebas para realizar un test de Telegram.');
+            return redirect()->back()->withInput()->with('active_tab', 'telegram')->with('error', 'Debe rellenar el Token del Bot y el Chat ID de pruebas para realizar un test de Telegram.');
         }
 
         $message = "🔔 *Proxmox Alert - Prueba de Configuración*\n\n¡Felicidades! La integración de Telegram con Proxmox Alert se ha configurado correctamente.";
@@ -167,10 +167,10 @@ class AlertSettingsController extends BaseController
             if ($response->getStatusCode() === 200 && isset($resBody->ok) && $resBody->ok) {
                 return redirect()->to('alerts-config')->with('message', 'Mensaje de prueba de Telegram enviado correctamente.');
             } else {
-                return redirect()->back()->withInput()->with('error', 'Error de Telegram: ' . ($resBody->description ?? 'Error desconocido'));
+                return redirect()->back()->withInput()->with('active_tab', 'telegram')->with('error', 'Error de Telegram: ' . ($resBody->description ?? 'Error desconocido'));
             }
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Error al conectar con la API de Telegram: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('active_tab', 'telegram')->with('error', 'Error al conectar con la API de Telegram: ' . $e->getMessage());
         }
     }
 
@@ -182,7 +182,7 @@ class AlertSettingsController extends BaseController
         $webhookUrl = $this->request->getPost('slack_webhook_url');
 
         if (empty($webhookUrl)) {
-            return redirect()->back()->withInput()->with('error', 'Debe rellenar la URL del Webhook de Slack para realizar un test de Slack.');
+            return redirect()->back()->withInput()->with('active_tab', 'slack')->with('error', 'Debe rellenar la URL del Webhook de Slack para realizar un test de Slack.');
         }
 
         $payload = [
@@ -201,10 +201,10 @@ class AlertSettingsController extends BaseController
             if ($response->getStatusCode() === 200 || trim($response->getBody()) === 'ok') {
                 return redirect()->to('alerts-config')->with('message', 'Mensaje de prueba de Slack enviado correctamente.');
             } else {
-                return redirect()->back()->withInput()->with('error', 'Error de Slack: ' . $response->getBody());
+                return redirect()->back()->withInput()->with('active_tab', 'slack')->with('error', 'Error de Slack: ' . $response->getBody());
             }
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Error al conectar con el Webhook de Slack: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('active_tab', 'slack')->with('error', 'Error al conectar con el Webhook de Slack: ' . $e->getMessage());
         }
     }
 }
