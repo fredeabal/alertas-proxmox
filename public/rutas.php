@@ -80,16 +80,7 @@ $dbPath       = $writablePath ? ($writablePath . '/database.db') : (dirname(__DI
         copyText.select();
         copyText.setSelectionRange(0, 99999);
         navigator.clipboard.writeText(copyText.value).then(() => {
-            const btn = document.getElementById('copyBtn');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check"></i> ¡Copiado!';
-            btn.classList.remove('btn-primary');
-            btn.classList.add('btn-success');
-            setTimeout(() => {
-                btn.innerHTML = originalHTML;
-                btn.classList.remove('btn-success');
-                btn.classList.add('btn-primary');
-            }, 1500);
+            alert('¡Ruta copiada!');
         });
     }
     </script>
