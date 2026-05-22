@@ -61,6 +61,8 @@ class AlertSettingsController extends BaseController
                 $this->settingsModel->setSetting('Email', $field, $this->request->getPost($field));
             }
         }
+        $emailEnabled = $this->request->getPost('email_enabled') ? '1' : '0';
+        $this->settingsModel->setSetting('Email', 'email_enabled', $emailEnabled);
 
         // 2. Guardar configuración de Telegram
         $telegramFields = [

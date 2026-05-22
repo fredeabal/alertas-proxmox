@@ -49,7 +49,18 @@
                             
                             <!-- 1. Pestaña de Email (SMTP) -->
                             <div class="tab-pane fade show active" id="email-pane" role="tabpanel" aria-labelledby="email-tab" tabindex="0">
-                                <h5 class="card-title fw-semibold mb-4 d-flex align-items-center">
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <h5 class="card-title fw-semibold mb-0 d-flex align-items-center">
+                                        <i class="ti ti-mail text-primary me-2 fs-5"></i>
+                                        Configuración de Correo Electrónico
+                                    </h5>
+                                    <div class="form-check form-switch fs-4">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="email_enabled" name="email_enabled" value="1" <?= ($emailSettings['email_enabled'] ?? '1') === '1' ? 'checked' : '' ?>>
+                                        <label class="form-check-label fs-3 fw-semibold text-muted" for="email_enabled">Habilitar Correo</label>
+                                    </div>
+                                </div>
+
+                                <h5 class="card-title fw-semibold mb-4 mt-3 d-flex align-items-center">
                                     <i class="ti ti-mail-forward text-primary me-2 fs-5"></i>
                                     Remitente de Notificación
                                 </h5>

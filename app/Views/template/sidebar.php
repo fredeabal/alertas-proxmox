@@ -59,7 +59,7 @@
             <span>
               <i class="ti ti-bell"></i>
             </span>
-            <span class="hide-menu">Config. Alertas</span>
+            <span class="hide-menu">Alertas</span>
           </a>
         </li>
         <?php endif; ?>
