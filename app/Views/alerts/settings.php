@@ -223,29 +223,15 @@
                                                 Copia este token y pégalo arriba en el campo <strong>Token del Bot</strong>.</p>
 
                                                 <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-message-circle-2 fs-4 me-1"></i> 3. Obtener el Chat ID (Chat Privado)</h5>
-                                                <div class="row mb-4">
-                                                    <div class="col-md-6 mb-3 mb-md-0">
-                                                        <p class="fw-semibold mb-1 text-dark">Opción A (La más fácil):</p>
-                                                        <ol class="ps-3 mb-0">
-                                                            <li>Busca a <a href="https://t.me/userinfobot" target="_blank" class="text-decoration-none fw-semibold">@userinfobot</a> o <a href="https://t.me/getmyid_bot" target="_blank" class="text-decoration-none fw-semibold">@getmyid_bot</a>.</li>
-                                                            <li>Envíales cualquier mensaje y te responderán con tu Chat ID.</li>
-                                                        </ol>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <p class="fw-semibold mb-1 text-dark">Opción B (Manual):</p>
-                                                        <ol class="ps-3 mb-0">
-                                                            <li>Envía un mensaje a tu nuevo bot.</li>
-                                                            <li>Abre esta URL en tu navegador web (reemplaza TU_TOKEN):<br><code>https://api.telegram.org/botTU_TOKEN/getUpdates</code></li>
-                                                            <li>Busca <code>"chat":{"id": XXXXXX}</code>. Ese número es el Chat ID.</li>
-                                                        </ol>
-                                                    </div>
-                                                </div>
+                                                <ol class="mb-4 ps-3">
+                                                    <li class="mb-1">Busca a <a href="https://t.me/userinfobot" target="_blank" class="text-decoration-none fw-semibold">@userinfobot</a> o <a href="https://t.me/getmyid_bot" target="_blank" class="text-decoration-none fw-semibold">@getmyid_bot</a> en Telegram.</li>
+                                                    <li class="mb-1">Envíales cualquier mensaje y te responderán con tu Chat ID.</li>
+                                                </ol>
 
                                                 <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-users fs-4 me-1"></i> 4. Para Grupos o Canales</h5>
                                                 <ol class="mb-4 ps-3">
                                                     <li class="mb-1">Añade tu bot al grupo o canal como <strong>administrador</strong>.</li>
-                                                    <li class="mb-1">Envía un mensaje en el grupo (ej. "hola").</li>
-                                                    <li class="mb-1">Usa la Opción B (URL en el navegador) para encontrar el Chat ID del grupo.</li>
+                                                    <li class="mb-1">Añade al bot <a href="https://t.me/RawDataBot" target="_blank" class="text-decoration-none fw-semibold">@RawDataBot</a> a ese mismo grupo para obtener el Chat ID del grupo.</li>
                                                     <li class="mb-1">Los IDs de grupos son números negativos (ej. <code>-1001234567890</code>).</li>
                                                 </ol>
 
