@@ -68,7 +68,7 @@
         <li class="sidebar-item">
           <a class="sidebar-link" href="<?= base_url('ai') ?>" aria-expanded="false">
             <span>
-              <i class="fa-solid fa-microchip-ai fs-5"></i>
+              <i class="ti ti-robot"></i>
             </span>
             <span class="hide-menu">IA</span>
           </a>
