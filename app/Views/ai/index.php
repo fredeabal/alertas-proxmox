@@ -93,7 +93,7 @@
                             <div class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center justify-content-end gap-2">
                                 <button type="submit" formaction="<?= base_url('ai/test') ?>" class="btn btn-outline-primary font-medium px-4" id="test-btn">
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <i class="ti ti-sparkles me-2 fs-4"></i>
+                                        <i class="ti ti-wand me-2 fs-4"></i>
                                         Probar Generación
                                     </div>
                                 </button>

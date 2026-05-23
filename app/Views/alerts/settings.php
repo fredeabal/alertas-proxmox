@@ -152,9 +152,12 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex justify-content-end">
+                                <div class="d-flex justify-content-end gap-2">
                                     <button type="submit" formaction="<?= base_url('alerts-config/test-email') ?>" class="btn btn-outline-primary px-4">
                                         <i class="ti ti-send me-1"></i> Enviar correo de prueba
+                                    </button>
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        <i class="ti ti-device-floppy me-1"></i> Guardar Cambios
                                     </button>
                                 </div>
                             </div>
@@ -218,9 +221,12 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex justify-content-end">
+                                <div class="d-flex justify-content-end gap-2">
                                     <button type="submit" formaction="<?= base_url('alerts-config/test-telegram') ?>" class="btn btn-outline-primary px-4">
                                         <i class="ti ti-brand-telegram me-1"></i> Probar Telegram
+                                    </button>
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        <i class="ti ti-device-floppy me-1"></i> Guardar Cambios
                                     </button>
                                 </div>
                             </div>
@@ -268,21 +274,19 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex justify-content-end">
+                                <div class="d-flex justify-content-end gap-2">
                                     <button type="submit" formaction="<?= base_url('alerts-config/test-slack') ?>" class="btn btn-outline-primary px-4">
                                         <i class="ti ti-brand-slack me-1"></i> Probar Slack
+                                    </button>
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        <i class="ti ti-device-floppy me-1"></i> Guardar Cambios
                                     </button>
                                 </div>
                             </div>
 
                         </div><!-- /tab-content -->
 
-                        <!-- Footer -->
-                        <div class="mt-4 pt-4 border-top d-flex">
-                            <button type="submit" class="btn btn-primary font-medium px-5">
-                                <i class="ti ti-device-floppy me-2 fs-4"></i> Guardar Cambios
-                            </button>
-                        </div>
+
 
                     </form>
                 </div>
