@@ -10,6 +10,7 @@ class NotificationService
     protected $emailSettings;
     protected $telegramSettings;
     protected $slackSettings;
+    protected $discordSettings;
 
     public function __construct()
     {
@@ -17,6 +18,7 @@ class NotificationService
         $this->emailSettings    = $this->settingsModel->getClassSettings('Email');
         $this->telegramSettings = $this->settingsModel->getClassSettings('Telegram');
         $this->slackSettings    = $this->settingsModel->getClassSettings('Slack');
+        $this->discordSettings  = $this->settingsModel->getClassSettings('Discord');
     }
 
     /**
@@ -56,6 +58,12 @@ class NotificationService
         $slackEnabled = $this->slackSettings['slack_enabled'] ?? '0';
         if ($slackEnabled === '1') {
             $this->sendSlack($empresa, $alerta);
+        }
+
+        // 4. Canal de Discord (Global)
+        $discordEnabled = $this->discordSettings['discord_enabled'] ?? '0';
+        if ($discordEnabled === '1') {
+            $this->sendDiscord($empresa, $alerta);
         }
     }
 
@@ -263,6 +271,81 @@ class NotificationService
             return false;
         } catch (\Exception $e) {
             log_message('error', '[NotificationService] Error cURL Slack: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Enviar alerta por Discord
+     */
+    public function sendDiscord($empresa, $alerta)
+    {
+        $webhookUrl = $this->discordSettings['discord_webhook_url'] ?? '';
+
+        if (empty($webhookUrl)) {
+            log_message('error', '[NotificationService] Webhook URL de Discord no configurado.');
+            return false;
+        }
+
+        $loginUrl = base_url('companies/view/' . $empresa->id);
+        
+        $title    = $alerta['title'] ?? 'Alerta Proxmox';
+        $node     = $alerta['hostname'] ?? 'N/A';
+        $severity = strtoupper($alerta['severity'] ?? 'INFO');
+
+        // Estilo de color (Discord usa decimales)
+        $color = 3581519; // green (#36a64f -> 3581519)
+        $sevLower = strtolower($severity);
+        if (strpos($sevLower, 'warn') !== false) {
+            $color = 16763904; // yellow (#ffcc00 -> 16763904)
+        } elseif (strpos($sevLower, 'err') !== false || strpos($sevLower, 'crit') !== false || strpos($sevLower, 'emerg') !== false) {
+            $color = 16711731; // red (#ff0033 -> 16711731)
+        }
+
+        $payload = [
+            'embeds' => [
+                [
+                    'title'       => "⚠️ Alerta de Proxmox - {$empresa->nombre}",
+                    'description' => "**Incidencia:** {$title}\n\n[Ver Detalles]({$loginUrl})",
+                    'color'       => $color,
+                    'fields'      => [
+                        [
+                            'name'   => 'Nodo / Host',
+                            'value'  => $node,
+                            'inline' => true
+                        ],
+                        [
+                            'name'   => 'Severidad',
+                            'value'  => $severity,
+                            'inline' => true
+                        ]
+                    ],
+                    'footer' => [
+                        'text' => 'Proxmox Alert System'
+                    ],
+                    'timestamp' => date('c')
+                ]
+            ]
+        ];
+
+        $client = \Config\Services::curlrequest();
+        try {
+            $response = $client->post($webhookUrl, [
+                'json' => $payload,
+                'headers' => [
+                    'Content-Type' => 'application/json'
+                ]
+            ]);
+
+            if ($response->getStatusCode() === 204 || $response->getStatusCode() === 200) {
+                log_message('info', '[NotificationService] Alerta enviada correctamente a Discord.');
+                return true;
+            }
+
+            log_message('error', '[NotificationService] Error al enviar a Discord: HTTP ' . $response->getStatusCode() . ' ' . $response->getBody());
+            return false;
+        } catch (\Exception $e) {
+            log_message('error', '[NotificationService] Error cURL Discord: ' . $e->getMessage());
             return false;
         }
     }

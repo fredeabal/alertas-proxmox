@@ -52,6 +52,7 @@ $routes->group('alerts-config', ['namespace' => 'App\Controllers', 'filter' => '
     $routes->post('test-email', 'AlertSettingsController::testEmail', ['filter' => 'group:admin,superadmin']);
     $routes->post('test-telegram', 'AlertSettingsController::testTelegram', ['filter' => 'group:admin,superadmin']);
     $routes->post('test-slack', 'AlertSettingsController::testSlack', ['filter' => 'group:admin,superadmin']);
+    $routes->post('test-discord', 'AlertSettingsController::testDiscord', ['filter' => 'group:admin,superadmin']);
 });
 
 // Configuración de IA

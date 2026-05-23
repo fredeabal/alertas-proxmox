@@ -21,12 +21,14 @@ class AlertSettingsController extends BaseController
         $emailSettings    = $this->settingsModel->getClassSettings('Email');
         $telegramSettings = $this->settingsModel->getClassSettings('Telegram');
         $slackSettings    = $this->settingsModel->getClassSettings('Slack');
+        $discordSettings  = $this->settingsModel->getClassSettings('Discord');
 
         $data = [
             'title'            => 'Configuración de Alertas',
             'emailSettings'    => $emailSettings,
             'telegramSettings' => $telegramSettings,
             'slackSettings'    => $slackSettings,
+            'discordSettings'  => $discordSettings,
         ];
 
         return view('template/header', $data)
@@ -46,6 +48,8 @@ class AlertSettingsController extends BaseController
             'recipientEmail' => 'permit_empty|valid_email',
             // Slack
             'slack_webhook_url' => 'permit_empty|valid_url',
+            // Discord
+            'discord_webhook_url' => 'permit_empty|valid_url',
         ];
 
         if (!$this->validate($rules)) {
@@ -88,6 +92,18 @@ class AlertSettingsController extends BaseController
         }
         $slackEnabled = $this->request->getPost('slack_enabled') ? '1' : '0';
         $this->settingsModel->setSetting('Slack', 'slack_enabled', $slackEnabled);
+
+        // 4. Guardar configuración de Discord
+        $discordFields = [
+            'discord_webhook_url'
+        ];
+        foreach ($discordFields as $field) {
+            if ($this->request->getPost($field) !== null) {
+                $this->settingsModel->setSetting('Discord', $field, $this->request->getPost($field));
+            }
+        }
+        $discordEnabled = $this->request->getPost('discord_enabled') ? '1' : '0';
+        $this->settingsModel->setSetting('Discord', 'discord_enabled', $discordEnabled);
 
         return redirect()->to('alerts-config')->with('message', 'Configuración de alertas actualizada correctamente.');
     }
@@ -207,6 +223,41 @@ class AlertSettingsController extends BaseController
             }
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('active_tab', 'slack')->with('error', 'Error al conectar con el Webhook de Slack: ' . $e->getMessage());
+        }
+    }
+
+    // ---------------------------------------------------------------------
+    // Enviar mensaje de prueba a Discord
+    // ---------------------------------------------------------------------
+    public function testDiscord()
+    {
+        $webhookUrl = $this->request->getPost('discord_webhook_url');
+
+        if (empty($webhookUrl)) {
+            return redirect()->back()->withInput()->with('active_tab', 'discord')->with('error', 'Debe rellenar la URL del Webhook de Discord para realizar un test.');
+        }
+
+        $payload = [
+            'content' => "🔔 **Proxmox Alert - Prueba de Configuración**\n\n¡Felicidades! La integración de Discord con Proxmox Alert se ha configurado correctamente."
+        ];
+        
+        $client = \Config\Services::curlrequest();
+        try {
+            $response = $client->post($webhookUrl, [
+                'json' => $payload,
+                'headers' => [
+                    'Content-Type' => 'application/json'
+                ]
+            ]);
+            
+            // Discord devuelve 204 No Content en exito
+            if ($response->getStatusCode() === 204 || $response->getStatusCode() === 200) {
+                return redirect()->to('alerts-config')->withInput()->with('active_tab', 'discord')->with('message', 'Mensaje de prueba de Discord enviado correctamente.');
+            } else {
+                return redirect()->back()->withInput()->with('active_tab', 'discord')->with('error', 'Error de Discord: HTTP ' . $response->getStatusCode() . ' ' . $response->getBody());
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('active_tab', 'discord')->with('error', 'Error al conectar con el Webhook de Discord: ' . $e->getMessage());
         }
     }
 }

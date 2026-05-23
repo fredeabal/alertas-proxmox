@@ -39,6 +39,11 @@
                                 <i class="ti ti-brand-slack me-1"></i> Slack
                             </button>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="discord-tab" data-bs-toggle="tab" data-bs-target="#discord-pane" type="button" role="tab" aria-selected="false">
+                                <i class="ti ti-brand-discord me-1"></i> Discord
+                            </button>
+                        </li>
                     </ul>
 
                     <form action="<?= base_url('alerts-config/store') ?>" method="post">
@@ -232,7 +237,7 @@
                                                 <ol class="mb-4 ps-3">
                                                     <li class="mb-1">Añade tu bot al grupo o canal como <strong>administrador</strong>.</li>
                                                     <li class="mb-1">Añade al bot <a href="https://t.me/RawDataBot" target="_blank" class="text-decoration-none fw-semibold">@RawDataBot</a> a ese mismo grupo para obtener el Chat ID del grupo.</li>
-                                                    <li class="mb-1">Los IDs de grupos son números negativos (ej. <code>-1001234567890</code>).</li>
+                                                    <li class="mb-1">Los IDs de grupos son números negativos (ej. <code class="fs-2 text-danger bg-light-danger px-2 py-1 rounded d-inline-block mt-2 mb-2">-1001234567890</code>).</li>
                                                 </ol>
 
                                                 <div class="bg-light-primary p-3 rounded-3 mt-4 border border-primary-subtle">
@@ -289,12 +294,23 @@
                                         </h2>
                                         <div id="collapseSlackHelp" class="accordion-collapse collapse" aria-labelledby="headingSlackHelp" data-bs-parent="#accordionSlackHelp">
                                             <div class="accordion-body bg-white text-muted fs-3 p-4">
-                                                Para conectar con Slack, necesitas generar una URL de Webhook:
-                                                <ol class="mt-3 mb-0 ps-3">
-                                                    <li class="mb-2">Ve a la consola de tu Workspace de Slack y crea una nueva <strong>App</strong>.</li>
-                                                    <li class="mb-2">En el menú lateral izquierdo, haz clic en <strong>Incoming Webhooks</strong> y activa el interruptor.</li>
-                                                    <li class="mb-0">Haz clic en <strong>Add New Webhook to Workspace</strong>, selecciona el canal donde quieras recibir las alertas y pega la URL generada en el campo de arriba.</li>
+                                                <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-plug fs-4 me-1"></i> 1. Crear una App en Slack</h5>
+                                                <ol class="mb-4 ps-3">
+                                                    <li class="mb-1">Ve a la consola web de Slack: <a href="https://api.slack.com/apps" target="_blank" class="fw-semibold text-primary text-decoration-none">Slack API Apps</a>.</li>
+                                                    <li class="mb-1">Haz clic en el botón verde <strong>Create New App</strong> y selecciona <strong>From scratch</strong>.</li>
+                                                    <li class="mb-1">Elige un nombre para la App (ej. "Proxmox Alerts") y selecciona tu Workspace.</li>
                                                 </ol>
+
+                                                <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-toggle-right fs-4 me-1"></i> 2. Activar Webhooks</h5>
+                                                <ol class="mb-4 ps-3">
+                                                    <li class="mb-1">En el menú lateral izquierdo de tu nueva App, haz clic en <strong>Incoming Webhooks</strong>.</li>
+                                                    <li class="mb-1">Activa el interruptor principal cambiándolo a <strong>On</strong>.</li>
+                                                </ol>
+
+                                                <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-link fs-4 me-1"></i> 3. Generar y Copiar la URL</h5>
+                                                <p class="mb-2">Al final de esa misma página, pulsa el botón:</p>
+                                                <p class="mb-3"><code class="fs-2 text-dark bg-light px-2 py-1 rounded d-inline-block border">Add New Webhook to Workspace</code></p>
+                                                <p class="mb-0">Selecciona el canal donde recibirás las alertas (ej. <code class="fs-2 text-danger bg-light-danger px-2 py-1 rounded d-inline-block mt-2 mb-2">#alertas-servidores</code>), autoriza, y copia la URL que empieza por <code class="bg-light px-2 py-1 rounded d-inline-block mt-2 mb-2">https://hooks.slack.com/...</code> para pegarla en el campo superior.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -311,6 +327,69 @@
                             </div>
 
                         </div><!-- /tab-content -->
+
+                        <!-- ================================================ -->
+                        <!-- Pestaña: Discord -->
+                        <!-- ================================================ -->
+                        <div class="tab-pane fade" id="discord-pane" role="tabpanel" aria-labelledby="discord-tab" tabindex="0">
+
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <p class="text-muted mb-0 fs-2">Envía alertas a un canal de Discord mediante Webhooks.</p>
+                                <div class="form-check form-switch mb-0">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="discord_enabled" name="discord_enabled" value="1" <?= (old('discord_enabled', $discordSettings['discord_enabled'] ?? '0')) === '1' ? 'checked' : '' ?>>
+                                    <label class="form-check-label fw-semibold" for="discord_enabled">Habilitado</label>
+                                </div>
+                            </div>
+
+                            <p class="fw-semibold text-muted mb-3 fs-2 text-uppercase letter-spacing-1">Webhook</p>
+                            <div class="row mb-4">
+                                <div class="col-12 mb-3">
+                                    <div class="form-floating">
+                                        <input type="url" class="form-control" id="discord_webhook_url" name="discord_webhook_url" placeholder="https://discord.com/api/webhooks/..." value="<?= esc(old('discord_webhook_url', $discordSettings['discord_webhook_url'] ?? '')) ?>">
+                                        <label for="discord_webhook_url">Discord Webhook URL</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion mb-4" id="accordionDiscordHelp">
+                                <div class="accordion-item border-0 shadow-sm rounded-3 overflow-hidden">
+                                    <h2 class="accordion-header" id="headingDiscordHelp">
+                                        <button class="accordion-button collapsed bg-light-primary text-primary fw-semibold p-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiscordHelp" aria-expanded="false" aria-controls="collapseDiscordHelp">
+                                            <i class="ti ti-help-circle fs-5 me-2"></i> ¿Cómo configurar el Webhook de Discord?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseDiscordHelp" class="accordion-collapse collapse" aria-labelledby="headingDiscordHelp" data-bs-parent="#accordionDiscordHelp">
+                                        <div class="accordion-body bg-white text-muted fs-3 p-4">
+                                            <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-server fs-4 me-1"></i> 1. Ir a los Ajustes del Servidor</h5>
+                                            <ol class="mb-4 ps-3">
+                                                <li class="mb-1">Abre Discord y selecciona tu servidor.</li>
+                                                <li class="mb-1">Haz clic derecho en el nombre del servidor y elige <strong>Ajustes del servidor</strong> (Server Settings), luego ve a <strong>Integraciones</strong>.</li>
+                                            </ol>
+
+                                            <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-plug fs-4 me-1"></i> 2. Crear un Webhook</h5>
+                                            <ol class="mb-4 ps-3">
+                                                <li class="mb-1">Haz clic en <strong>Ver Webhooks</strong> y luego en <strong>Nuevo Webhook</strong>.</li>
+                                                <li class="mb-1">Ponle un nombre (ej. "Proxmox Alert") y elige el canal en el menú desplegable donde quieres recibir las notificaciones.</li>
+                                            </ol>
+
+                                            <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-link fs-4 me-1"></i> 3. Copiar la URL</h5>
+                                            <p class="mb-2">Pulsa el botón:</p>
+                                            <p class="mb-3"><code class="fs-2 text-dark bg-light px-2 py-1 rounded d-inline-block border">Copiar URL del Webhook</code></p>
+                                            <p class="mb-0">Pega la URL que empieza por <code>https://discord.com/api/webhooks/...</code> en el campo superior y dale a guardar.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="submit" formaction="<?= base_url('alerts-config/test-discord') ?>" class="btn btn-outline-primary px-4">
+                                    <i class="ti ti-brand-discord me-1"></i> Probar Discord
+                                </button>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="ti ti-device-floppy me-1"></i> Guardar Cambios
+                                </button>
+                            </div>
+                        </div>
 
 
 
