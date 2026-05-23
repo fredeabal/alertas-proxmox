@@ -209,13 +209,53 @@
                                         </h2>
                                         <div id="collapseTelegramHelp" class="accordion-collapse collapse" aria-labelledby="headingTelegramHelp" data-bs-parent="#accordionTelegramHelp">
                                             <div class="accordion-body bg-white text-muted fs-3 p-4">
-                                                Para recibir alertas en Telegram necesitas crear un bot y obtener su Token y el ID del chat:
-                                                <ol class="mt-3 mb-0 ps-3">
-                                                    <li class="mb-2">Abre Telegram y busca al bot oficial <a href="https://t.me/BotFather" target="_blank" class="fw-semibold text-primary text-decoration-none">@BotFather</a>.</li>
-                                                    <li class="mb-2">Envíale el comando <strong>/newbot</strong>, sigue los pasos y copia el <strong>Token del Bot</strong>.</li>
-                                                    <li class="mb-2">Crea un grupo (o usa uno existente) y añade a tu nuevo bot como <strong>Administrador</strong>.</li>
-                                                    <li class="mb-0">Añade al bot <a href="https://t.me/RawDataBot" target="_blank" class="fw-semibold text-primary text-decoration-none">@RawDataBot</a> a ese mismo grupo para obtener el <strong>Chat ID</strong> (suele ser un número largo que empieza por un guion).</li>
+                                                <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-robot fs-4 me-1"></i> 1. Crear un Bot</h5>
+                                                <ol class="mb-4 ps-3">
+                                                    <li class="mb-1">Abre Telegram y busca a <a href="https://t.me/BotFather" target="_blank" class="fw-semibold text-primary text-decoration-none">@BotFather</a>.</li>
+                                                    <li class="mb-1">Envíale el comando <strong>/newbot</strong>.</li>
+                                                    <li class="mb-1">Elige un nombre para tu bot (ej. "Notificaciones Proxmox").</li>
+                                                    <li class="mb-1">Elige un nombre de usuario que termine en "bot" (ej. "proxmox_alerts_bot").</li>
                                                 </ol>
+
+                                                <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-key fs-4 me-1"></i> 2. Obtener el Token del Bot</h5>
+                                                <p class="mb-4">Después de crearlo, BotFather te dará un token con este formato:<br> 
+                                                <code class="fs-2 text-danger bg-light-danger px-2 py-1 rounded d-inline-block mt-2 mb-2">xxxxxxxxx:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code><br> 
+                                                Copia este token y pégalo arriba en el campo <strong>Token del Bot</strong>.</p>
+
+                                                <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-message-circle-2 fs-4 me-1"></i> 3. Obtener el Chat ID (Chat Privado)</h5>
+                                                <div class="row mb-4">
+                                                    <div class="col-md-6 mb-3 mb-md-0">
+                                                        <p class="fw-semibold mb-1 text-dark">Opción A (La más fácil):</p>
+                                                        <ol class="ps-3 mb-0">
+                                                            <li>Busca a <a href="https://t.me/userinfobot" target="_blank" class="text-decoration-none fw-semibold">@userinfobot</a> o <a href="https://t.me/getmyid_bot" target="_blank" class="text-decoration-none fw-semibold">@getmyid_bot</a>.</li>
+                                                            <li>Envíales cualquier mensaje y te responderán con tu Chat ID.</li>
+                                                        </ol>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p class="fw-semibold mb-1 text-dark">Opción B (Manual):</p>
+                                                        <ol class="ps-3 mb-0">
+                                                            <li>Envía un mensaje a tu nuevo bot.</li>
+                                                            <li>Abre esta URL en tu navegador web (reemplaza TU_TOKEN):<br><code>https://api.telegram.org/botTU_TOKEN/getUpdates</code></li>
+                                                            <li>Busca <code>"chat":{"id": XXXXXX}</code>. Ese número es el Chat ID.</li>
+                                                        </ol>
+                                                    </div>
+                                                </div>
+
+                                                <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-users fs-4 me-1"></i> 4. Para Grupos o Canales</h5>
+                                                <ol class="mb-4 ps-3">
+                                                    <li class="mb-1">Añade tu bot al grupo o canal como <strong>administrador</strong>.</li>
+                                                    <li class="mb-1">Envía un mensaje en el grupo (ej. "hola").</li>
+                                                    <li class="mb-1">Usa la Opción B (URL en el navegador) para encontrar el Chat ID del grupo.</li>
+                                                    <li class="mb-1">Los IDs de grupos son números negativos (ej. <code>-1001234567890</code>).</li>
+                                                </ol>
+
+                                                <div class="bg-light-primary p-3 rounded-3 mt-4 border border-primary-subtle">
+                                                    <p class="mb-2 fw-semibold text-primary fs-4"><i class="ti ti-bulb me-1"></i> Resumen Rápido</p>
+                                                    <ul class="mb-0 ps-3 text-dark">
+                                                        <li class="mb-1"><strong>Token del Bot:</strong> Identifica a tu bot (te lo da BotFather).</li>
+                                                        <li><strong>Chat ID:</strong> A dónde enviar los mensajes (tu ID personal o el del grupo).</li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
