@@ -94,7 +94,7 @@
           <img src="<?= base_url('assets/images/logos/logo.png') ?>" width="150" alt="Logo" class="mb-3">
           <p class="text-muted mb-3">Sistema de Notificaciones</p>
           <div class="bg-light-primary text-primary rounded-pill py-1 px-3 d-inline-block fw-bold fs-2 mb-3">
-            Versión 1.1.0
+            Versión 1.2.0
           </div>
           <p class="fs-2 text-muted mb-0">© <?= date('Y') ?> • Freddy De Abreu Alfonso</p>
           <p class="fs-2 text-muted mb-0">Licencia MIT</p>
