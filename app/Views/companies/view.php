@@ -44,7 +44,7 @@
 
     <div class="card telemetry-card shadow-sm mb-4">
         <div class="card-body p-3">
-            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between mb-3 gap-2">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between mb-3 gap-2" id="telemetry-header-stats">
                 <div class="d-flex align-items-center gap-2">
                     <span class="p-1 bg-light-<?= ($lastLog && $lastLog->status === 'online') ? 'success' : (($lastLog) ? 'danger' : 'secondary') ?> rounded-circle d-flex align-items-center justify-content-center led-wrapper">
                         <span class="telemetry-led bg-<?= ($lastLog && $lastLog->status === 'online') ? 'success' : (($lastLog) ? 'danger' : 'secondary') ?> rounded-circle"></span>
@@ -72,7 +72,7 @@
                     
                     <div class="vr opacity-25 d-none d-sm-block mx-1"></div>
                     
-                    <button class="btn btn-link p-0 text-muted fs-3 border-0 text-decoration-none telemetry-spin ms-1" onclick="window.location.reload();" title="Recargar">
+                    <button class="btn btn-link p-0 text-muted fs-3 border-0 text-decoration-none telemetry-spin ms-1" onclick="refreshData(true); return false;" title="Recargar">
                         <i class="fa-solid fa-rotate-right"></i>
                     </button>
                 </div>
@@ -83,15 +83,19 @@
             </div>
         </div>
     </div>
+    
+    <script id="ping-logs-data" type="application/json"><?= json_encode($pingLogs) ?></script>
 
     <!-- Script de configuración de Chart.js -->
     <?php if (!empty($pingLogs)): ?>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    function initUptimeChart() {
         const ctx = document.getElementById('uptimeChart');
         if (!ctx) return;
 
-        const rawLogs = <?= json_encode($pingLogs) ?>;
+        const dataEl = document.getElementById('ping-logs-data');
+        if (!dataEl) return;
+        const rawLogs = JSON.parse(dataEl.textContent);
         if (rawLogs.length === 0) return;
 
         // Mapear datos
@@ -251,12 +255,19 @@
             }
         };
 
-        const chartInstance = new Chart(ctx, config);
+        if (window.uptimeChartInstance) {
+            window.uptimeChartInstance.destroy();
+        }
+        window.uptimeChartInstance = new Chart(ctx, config);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initUptimeChart();
 
         // MutationObserver para detectar cambio de tema claro/oscuro
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
-                if (mutation.attributeName === 'data-bs-theme') {
+                if (mutation.attributeName === 'data-bs-theme' && window.uptimeChartInstance) {
                     const isDarkTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark';
                     
                     const newGridColor = isDarkTheme ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
@@ -264,16 +275,16 @@
                     const newTooltipBg = isDarkTheme ? '#1e293b' : '#ffffff';
                     const newTooltipBorder = isDarkTheme ? '#334155' : '#e2e8f0';
 
-                    chartInstance.options.scales.x.ticks.color = newTextColor;
-                    chartInstance.options.scales.y.ticks.color = newTextColor;
-                    chartInstance.options.scales.y.grid.color = newGridColor;
+                    window.uptimeChartInstance.options.scales.x.ticks.color = newTextColor;
+                    window.uptimeChartInstance.options.scales.y.ticks.color = newTextColor;
+                    window.uptimeChartInstance.options.scales.y.grid.color = newGridColor;
 
-                    chartInstance.options.plugins.tooltip.backgroundColor = newTooltipBg;
-                    chartInstance.options.plugins.tooltip.borderColor = newTooltipBorder;
-                    chartInstance.options.plugins.tooltip.titleColor = isDarkTheme ? '#cbd5e1' : '#64748b';
-                    chartInstance.options.plugins.tooltip.bodyColor = isDarkTheme ? '#f8fafc' : '#0f172a';
+                    window.uptimeChartInstance.options.plugins.tooltip.backgroundColor = newTooltipBg;
+                    window.uptimeChartInstance.options.plugins.tooltip.borderColor = newTooltipBorder;
+                    window.uptimeChartInstance.options.plugins.tooltip.titleColor = isDarkTheme ? '#cbd5e1' : '#64748b';
+                    window.uptimeChartInstance.options.plugins.tooltip.bodyColor = isDarkTheme ? '#f8fafc' : '#0f172a';
 
-                    chartInstance.update();
+                    window.uptimeChartInstance.update();
                 }
             });
         });
@@ -284,7 +295,7 @@
     <?php endif; ?>
 
 
-    <div class="row">
+    <div class="row" id="alerts-dynamic-container">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body p-3 p-md-4">
@@ -482,6 +493,7 @@
 </div>
 
 <!-- Modales de Detalles (Fuera de la tabla para evitar problemas en móvil) -->
+<div id="modals-container">
 <?php foreach ($alertas as $alerta): 
     $sev = strtolower(trim($alerta->severity));
     $severityUi = $severityMap[$sev] ?? $defaultSeverity;
@@ -520,69 +532,37 @@
         </div>
     </div>
 <?php endforeach; ?>
+</div>
 
-<!-- Script para SweetAlert en el Borrado -->
+<!-- Script para SweetAlert en el Borrado y Auto-refresco en Tiempo Real -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Botones de Eliminar
-    document.querySelectorAll('.delete-alert-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            confirmDelete(this.getAttribute('data-url'));
-        });
-    });
-
-    // Botones de Resolver Alerta
-    document.querySelectorAll('.resolve-alert-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            confirmAction(
-                this.getAttribute('data-url'), 
-                '¿Marcar como solucionada?', 
-                'La alerta pasará al estado OK y se considerará resuelta.', 
-                'question', 
-                '<i class="ti ti-check me-1"></i> Sí, solucionar', 
-                '#13deb9'
-            );
-        });
-    });
-});
-
-// Lógica para Selección Masiva
-const selectAll = document.getElementById('select-all');
-const alertCheckboxes = document.querySelectorAll('.alert-checkbox');
-const bulkActionsBar = document.getElementById('bulk-actions-bar');
-const selectedCountText = document.getElementById('selected-count');
-const bulkActionInput = document.getElementById('bulk-action-input');
-const bulkForm = document.getElementById('bulk-action-form');
-
+// Lógica para Selección Masiva de alertas en la tabla
 function updateBulkBar() {
+    const bulkActionsBar = document.getElementById('bulk-actions-bar');
+    const selectedCountText = document.getElementById('selected-count');
     if (!bulkActionsBar || !selectedCountText) return;
     
+    // Contamos cuántas alertas tienen el checkbox marcado
     const checkedCount = document.querySelectorAll('.alert-checkbox:checked').length;
     selectedCountText.innerText = `${checkedCount} alertas seleccionadas`;
+    
+    // Si hay al menos una seleccionada, mostramos la barra de acciones masivas, si no, la ocultamos
     bulkActionsBar.classList.toggle('d-none', checkedCount === 0);
 }
 
-if (selectAll) {
-    selectAll.addEventListener('change', function() {
-        alertCheckboxes.forEach(cb => cb.checked = this.checked);
-        updateBulkBar();
-    });
-}
-
-alertCheckboxes.forEach(cb => {
-    cb.addEventListener('change', updateBulkBar);
-});
-
+// Deseleccionar todas las casillas de la tabla y ocultar la barra de acciones masivas
 function deselectAll() {
-    selectAll.checked = false;
-    alertCheckboxes.forEach(cb => cb.checked = false);
+    const selectAll = document.getElementById('select-all');
+    if (selectAll) selectAll.checked = false;
+    document.querySelectorAll('.alert-checkbox').forEach(cb => cb.checked = false);
     updateBulkBar();
 }
 
+// Enviar acción masiva (Borrar o Solucionar) con confirmación previa vía SweetAlert2
 function submitBulkAction(action) {
     const isDelete = (action === 'delete');
+    const bulkActionInput = document.getElementById('bulk-action-input');
+    const bulkForm = document.getElementById('bulk-action-form');
 
     Swal.fire({
         title: isDelete ? '¿Eliminar las alertas seleccionadas?' : '¿Marcar como solucionadas las alertas seleccionadas?',
@@ -596,9 +576,175 @@ function submitBulkAction(action) {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
+            // Asignamos la acción elegida al input oculto y enviamos el formulario
             bulkActionInput.value = action;
             bulkForm.submit();
         }
     });
 }
+
+// Vincula todos los escuchadores de eventos (event listeners) JS de la tabla de alertas
+// Esta función es CLAVE porque cada vez que AJAX actualiza el HTML, los eventos previos se pierden.
+function initAlertsEvents() {
+    // 1. Vincular los botones de eliminación individual
+    document.querySelectorAll('.delete-alert-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            confirmDelete(this.getAttribute('data-url'));
+        });
+    });
+
+    // 2. Vincular los botones para marcar alertas individuales como solucionadas
+    document.querySelectorAll('.resolve-alert-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            confirmAction(
+                this.getAttribute('data-url'), 
+                '¿Marcar como solucionada?', 
+                'La alerta pasará al estado OK y se considerará resuelta.', 
+                'question', 
+                '<i class="ti ti-check me-1"></i> Sí, solucionar', 
+                '#13deb9'
+            );
+        });
+    });
+
+    // 3. Vincular el checkbox principal "Seleccionar todo" en la cabecera
+    const selectAll = document.getElementById('select-all');
+    
+    if (selectAll) {
+        selectAll.addEventListener('change', function() {
+            // Marcamos o desmarcamos todas las filas en base al checkbox maestro
+            document.querySelectorAll('.alert-checkbox').forEach(cb => cb.checked = this.checked);
+            updateBulkBar();
+        });
+    }
+
+    // 4. Vincular los checkboxes de cada fila individual de alerta
+    document.querySelectorAll('.alert-checkbox').forEach(cb => {
+        cb.addEventListener('change', updateBulkBar);
+    });
+}
+
+// Inicialización de eventos al cargar por primera vez el DOM
+document.addEventListener('DOMContentLoaded', function() {
+    initAlertsEvents();
+});
+
+// =====================================================================
+// SISTEMA DE REFRESCO EN TIEMPO REAL VÍA AJAX (SIN RECARGAR PÁGINA)
+// =====================================================================
+let isRefreshing = false; // Bandera para evitar peticiones AJAX duplicadas o colisiones
+
+function refreshData(manual = false) {
+    // Si ya hay una recarga en curso, ignoramos esta petición
+    if (isRefreshing) return;
+    
+    // Si no es una recarga manual por clic y hay un modal abierto (Bootstrap/Swal),
+    // posponemos la recarga automática para no cerrar la vista del usuario ni perder su foco.
+    if (!manual && document.querySelector('.modal.show')) {
+        return;
+    }
+    
+    isRefreshing = true;
+    
+    // Feedback visual premium: Hacemos rotar el icono de actualizar
+    const spinIcon = document.querySelector('.telemetry-spin i');
+    if (spinIcon) {
+        spinIcon.classList.add('fa-spin');
+    }
+    
+    // Obtenemos la URL actual completa. Esto es genial porque preserva automáticamente:
+    // - Paginación activa (ej. página 2, 3, etc.)
+    // - Filtros de severidad activos (ej. ?severity=error)
+    const currentUrl = window.location.href;
+    
+    // Hacemos una petición GET en segundo plano a la misma URL de la vista actual
+    fetch(currentUrl)
+        .then(response => {
+            if (!response.ok) throw new Error('Error al obtener los datos actualizados.');
+            return response.text();
+        })
+        .then(html => {
+            // Usamos DOMParser para parsear el HTML retornado en un documento virtual en memoria
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            // -------------------------------------------------------------
+            // 1. ACTUALIZAR SECCIÓN TELEMETRÍA (LEDs, latencia y uptime en texto)
+            // -------------------------------------------------------------
+            const oldHeaderStats = document.getElementById('telemetry-header-stats');
+            const newHeaderStats = doc.getElementById('telemetry-header-stats');
+            if (oldHeaderStats && newHeaderStats) {
+                oldHeaderStats.innerHTML = newHeaderStats.innerHTML;
+            }
+            
+            // -------------------------------------------------------------
+            // 2. ACTUALIZAR GRÁFICO (Chart.js)
+            // -------------------------------------------------------------
+            const oldLogsData = document.getElementById('ping-logs-data');
+            const newLogsData = doc.getElementById('ping-logs-data');
+            if (oldLogsData && newLogsData) {
+                // Reemplazamos la etiqueta de script JSON que contiene el histórico de logs
+                oldLogsData.textContent = newLogsData.textContent;
+                
+                // Si la función de inicialización del gráfico existe, la volvemos a invocar.
+                // Esta función destruye la instancia anterior y re-dibuja el gráfico con el nuevo JSON sin parpadeos.
+                if (typeof initUptimeChart === 'function') {
+                    initUptimeChart();
+                }
+            }
+            
+            // -------------------------------------------------------------
+            // 3. ACTUALIZAR HISTORIAL DE ALERTAS (Filtros, tabla y paginador)
+            // -------------------------------------------------------------
+            const oldAlertsContainer = document.getElementById('alerts-dynamic-container');
+            const newAlertsContainer = doc.getElementById('alerts-dynamic-container');
+            if (oldAlertsContainer && newAlertsContainer) {
+                oldAlertsContainer.innerHTML = newAlertsContainer.innerHTML;
+            }
+            
+            // -------------------------------------------------------------
+            // 4. ACTUALIZAR MODALES DE ALERTA (Para que los nuevos registros tengan su modal)
+            // -------------------------------------------------------------
+            const oldModalsContainer = document.getElementById('modals-container');
+            const newModalsContainer = doc.getElementById('modals-container');
+            if (oldModalsContainer && newModalsContainer) {
+                oldModalsContainer.innerHTML = newModalsContainer.innerHTML;
+            }
+            
+            // -------------------------------------------------------------
+            // 5. RE-VINCULAR LOS EVENTOS JAVASCRIPT A LOS NUEVOS ELEMENTOS DEL DOM
+            // -------------------------------------------------------------
+            initAlertsEvents();
+            
+            // Si fue una recarga manual, avisamos discretamente al usuario usando el Toast global
+            if (manual && typeof Toast !== 'undefined') {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Vista actualizada correctamente'
+                });
+            }
+        })
+        .catch(err => {
+            console.error('Error al actualizar datos en tiempo real:', err);
+            if (manual && typeof Swal !== 'undefined') {
+                Swal.fire('Error', 'No se pudieron actualizar los datos de la vista.', 'error');
+            }
+        })
+        .finally(() => {
+            isRefreshing = false;
+            // Detenemos el giro del icono de recarga tras un pequeño retardo para mejor fluidez visual
+            if (spinIcon) {
+                setTimeout(() => {
+                    spinIcon.classList.remove('fa-spin');
+                }, 500);
+            }
+        });
+}
+
+// Configurar intervalo de refresco automático cada 60 segundos (1 minuto)
+setInterval(() => {
+    refreshData(false);
+}, 60000);
 </script>
