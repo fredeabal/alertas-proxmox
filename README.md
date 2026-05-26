@@ -53,7 +53,7 @@ php spark serve --host 0.0.0.0 --port 8081
 ```
 
 > [!IMPORTANT]
-> Debes editar el archivo `.env` y configurar `app.baseURL` con tu dominio o IP real (ej: `https://tudominio.com/` o `http://192.168.1.100:8080/`) para que los webhooks y las redirecciones funcionen correctamente.
+> Debes editar el archivo `.env` y configurar `app.baseURL` con tu dominio o IP real (ej: `https://tudominio.com/` o `http://192.168.1.100:8080/`) para que los webhooks y las redirecciones funcionen correctamente. Adicionalmente, para un entorno real asegúrate de establecer `CI_ENVIRONMENT = production` en ese mismo archivo.
 Aplicación disponible por defecto en:
 - `https://tudominio.com`
 
@@ -186,6 +186,7 @@ Recomendación:
 3. Limpiar alertas informativas antiguas.
 4. Verificar SMTP de forma periódica.
 5. Revisar usuarios activos y permisos.
+6. **Backups:** El motor de base de datos es SQLite. Toda la información reside localmente en `writable/database.db`. Para realizar un backup completo, simplemente haz una copia de seguridad de dicho archivo junto con la carpeta de imágenes en `public/uploads/`.
 
 ## 12. Monitoreo de ping por cron (token interno)
 El sistema incluye un endpoint interno para ejecutar un chequeo masivo de ping y monitorear la disponibilidad en tiempo real de todas las empresas activas con `proxmox_host` configurado.

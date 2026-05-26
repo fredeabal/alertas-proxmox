@@ -144,13 +144,6 @@
 function copyToClipboard(elementId) {
     var text = document.getElementById(elementId).innerText;
     navigator.clipboard.writeText(text).then(function() {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true
-        });
         Toast.fire({
             icon: 'success',
             title: 'Enlace copiado al portapapeles'
@@ -167,13 +160,6 @@ function copyScriptToClipboard(id) {
         .then(response => response.text())
         .then(text => {
             navigator.clipboard.writeText(text).then(function() {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 2000,
-                    timerProgressBar: true
-                });
                 Toast.fire({
                     icon: 'success',
                     title: 'Script de Proxmox copiado'
