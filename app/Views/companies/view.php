@@ -69,12 +69,6 @@
                         <i class="fa-solid fa-gauge-high text-primary"></i>
                         <span>Latencia Avg: <strong class="text-body fw-bold font-monospace"><?= ($averageLatency !== null) ? $averageLatency . ' ms' : 'N/A' ?></strong></span>
                     </div>
-                    
-                    <div class="vr opacity-25 d-none d-sm-block mx-1"></div>
-                    
-                    <button class="btn btn-link p-0 text-muted fs-3 border-0 text-decoration-none telemetry-spin ms-1" onclick="refreshData(true); return false;" title="Recargar">
-                        <i class="fa-solid fa-rotate-right"></i>
-                    </button>
                 </div>
             </div>
 
@@ -636,23 +630,17 @@ document.addEventListener('DOMContentLoaded', function() {
 // =====================================================================
 let isRefreshing = false; // Bandera para evitar peticiones AJAX duplicadas o colisiones
 
-function refreshData(manual = false) {
+function refreshData() {
     // Si ya hay una recarga en curso, ignoramos esta petición
     if (isRefreshing) return;
     
-    // Si no es una recarga manual por clic y hay un modal abierto (Bootstrap/Swal),
-    // posponemos la recarga automática para no cerrar la vista del usuario ni perder su foco.
-    if (!manual && document.querySelector('.modal.show')) {
+    // Si hay un modal abierto (Bootstrap/Swal), posponemos la recarga automática
+    // para no cerrar la vista del usuario ni perder su foco.
+    if (document.querySelector('.modal.show')) {
         return;
     }
     
     isRefreshing = true;
-    
-    // Feedback visual premium: Hacemos rotar el icono de actualizar
-    const spinIcon = document.querySelector('.telemetry-spin i');
-    if (spinIcon) {
-        spinIcon.classList.add('fa-spin');
-    }
     
     // Obtenemos la URL actual completa. Esto es genial porque preserva automáticamente:
     // - Paginación activa (ej. página 2, 3, etc.)
@@ -717,34 +705,15 @@ function refreshData(manual = false) {
             // 5. RE-VINCULAR LOS EVENTOS JAVASCRIPT A LOS NUEVOS ELEMENTOS DEL DOM
             // -------------------------------------------------------------
             initAlertsEvents();
-            
-            // Si fue una recarga manual, avisamos discretamente al usuario usando el Toast global
-            if (manual && typeof Toast !== 'undefined') {
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Vista actualizada correctamente'
-                });
-            }
         })
         .catch(err => {
             console.error('Error al actualizar datos en tiempo real:', err);
-            if (manual && typeof Swal !== 'undefined') {
-                Swal.fire('Error', 'No se pudieron actualizar los datos de la vista.', 'error');
-            }
         })
         .finally(() => {
             isRefreshing = false;
-            // Detenemos el giro del icono de recarga tras un pequeño retardo para mejor fluidez visual
-            if (spinIcon) {
-                setTimeout(() => {
-                    spinIcon.classList.remove('fa-spin');
-                }, 500);
-            }
         });
 }
 
 // Configurar intervalo de refresco automático cada 60 segundos (1 minuto)
-setInterval(() => {
-    refreshData(false);
-}, 60000);
+setInterval(refreshData, 60000);
 </script>
