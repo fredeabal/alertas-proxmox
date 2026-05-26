@@ -38,8 +38,6 @@
     <!-- Monitoreo de Disponibilidad y Latencia (Ping Uptime) -->
     <?php if (!empty($empresa->proxmox_host)): ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
     <?php $lastLog = end($pingLogs); ?>
     
 
@@ -205,34 +203,10 @@
                                 }
                             }
                         }
-                    },
-                    zoom: {
-                        limits: {
-                            x: {
-                                min: 0,
-                                max: rawLogs.length - 1,
-                                minRange: 10
-                            }
-                        },
-                        pan: {
-                            enabled: true,
-                            mode: 'x',
-                            threshold: 10
-                        },
-                        zoom: {
-                            wheel: {
-                                enabled: true
-                            },
-                            pinch: {
-                                enabled: true
-                            },
-                            mode: 'x'
-                        }
                     }
                 },
                 scales: {
                     x: {
-                        min: Math.max(0, rawLogs.length - 100),
                         max: rawLogs.length - 1,
                         grid: {
                             display: false

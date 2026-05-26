@@ -224,7 +224,7 @@
 
                                                 <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-key fs-4 me-1"></i> 2. Obtener el Token del Bot</h5>
                                                 <p class="mb-4">Después de crearlo, BotFather te dará un token con este formato:<br> 
-                                                <code class="fs-2 text-danger bg-light-danger px-2 py-1 rounded d-inline-block mt-2 mb-2">xxxxxxxxx:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code><br> 
+                                                <code class="fs-2 text-primary">xxxxxxxxx:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code><br> 
                                                 Copia este token y pégalo arriba en el campo <strong>Token del Bot</strong>.</p>
 
                                                 <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-message-circle-2 fs-4 me-1"></i> 3. Obtener el Chat ID (Chat Privado)</h5>
@@ -237,7 +237,7 @@
                                                 <ol class="mb-4 ps-3">
                                                     <li class="mb-1">Añade tu bot al grupo o canal como <strong>administrador</strong>.</li>
                                                     <li class="mb-1">Añade al bot <a href="https://t.me/RawDataBot" target="_blank" class="text-decoration-none fw-semibold">@RawDataBot</a> a ese mismo grupo para obtener el Chat ID del grupo.</li>
-                                                    <li class="mb-1">Los IDs de grupos son números negativos (ej. <code class="fs-2 text-danger bg-light-danger px-2 py-1 rounded d-inline-block mt-2 mb-2">-1001234567890</code>).</li>
+                                                    <li class="mb-1">Los IDs de grupos son números negativos (ej. <code class="fs-2 text-primary px-2 py-1 rounded d-inline-block mt-2 mb-2">-1001234567890</code>).</li>
                                                 </ol>
 
                                                 <div class="bg-light-primary p-3 rounded-3 mt-4 border border-primary-subtle">
@@ -309,8 +309,8 @@
 
                                                 <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-link fs-4 me-1"></i> 3. Generar y Copiar la URL</h5>
                                                 <p class="mb-2">Al final de esa misma página, pulsa el botón:</p>
-                                                <p class="mb-3"><code class="fs-2 text-dark bg-light px-2 py-1 rounded d-inline-block border">Add New Webhook to Workspace</code></p>
-                                                <p class="mb-0">Selecciona el canal donde recibirás las alertas (ej. <code class="fs-2 text-danger bg-light-danger px-2 py-1 rounded d-inline-block mt-2 mb-2">#alertas-servidores</code>), autoriza, y copia la URL que empieza por <code class="bg-light px-2 py-1 rounded d-inline-block mt-2 mb-2">https://hooks.slack.com/...</code> para pegarla en el campo superior.</p>
+                                                <p class="mb-3"><code class="fs-2 text-dark bg-light py-1 rounded d-inline-block border">Add New Webhook to Workspace</code></p>
+                                                <p class="mb-0">Selecciona el canal donde recibirás las alertas (ej. <code class="fs-2 text-primary">#alertas-servidores</code>), autoriza, y copia la URL que empieza por <code class="fs-2 text-primary">https://hooks.slack.com/...</code> para pegarla en el campo superior.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -375,7 +375,7 @@
                                             <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-link fs-4 me-1"></i> 3. Copiar la URL</h5>
                                             <p class="mb-2">Pulsa el botón:</p>
                                             <p class="mb-3"><code class="fs-2 text-dark bg-light px-2 py-1 rounded d-inline-block border">Copiar URL del Webhook</code></p>
-                                            <p class="mb-0">Pega la URL que empieza por <code>https://discord.com/api/webhooks/...</code> en el campo superior y dale a guardar.</p>
+                                            <p class="mb-0">Pega la URL que empieza por <code class="fs-2 text-primary">https://discord.com/api/webhooks/...</code> en el campo superior y dale a guardar.</p>
                                         </div>
                                     </div>
                                 </div>

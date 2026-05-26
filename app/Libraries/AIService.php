@@ -71,7 +71,7 @@ class AIService
         }
 
         $prompt = "IMPORTANTE: RESPONDE ÚNICAMENTE CON EL RESUMEN. NO INCLUAS TU PENSAMIENTO, NI RAZONAMIENTO, NI EXPLICACIONES INTERNAS.\n\n";
-        $prompt .= "Eres un asistente de sistemas experto en Proxmox VE. Analiza esta alerta técnica y genera un resumen muy breve y claro en español (máximo 2 frases) que explique qué ha ocurrido y si es crítico. No uses formato markdown, solo texto plano.\n\n";
+        $prompt .= "Eres un asistente de sistemas experto en Proxmox VE. Analiza esta alerta técnica y genera un resumen muy breve y claro en español (máximo 2 frases) que explique qué ha ocurrido. No uses formato markdown, solo texto plano.\n\n";
         $prompt .= "Título: {$title}\n";
         $prompt .= "Severidad: {$severity}\n";
         $prompt .= "Mensaje Técnico:\n{$message}";

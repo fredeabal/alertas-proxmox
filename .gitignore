@@ -67,8 +67,11 @@ Vagrantfile
 php_errors.log
 /writable/*.db-journal
 /writable/*.db-wal
+/writable/*.db
+/writable/*.sqlite
 /writable/*.sqlite-journal
 /writable/*.sqlite-wal
+/test.php
 
 #-------------------------
 # User Guide Temp Files
