@@ -321,7 +321,7 @@
                            class="btn <?= $current_severity === 'warning' ? 'btn-warning' : 'btn-outline-warning' ?> btn-sm px-3"
                            title="Avisos / Alertas">
                             <i class="fa-solid fa-triangle-exclamation"></i>
-                            <span class="d-none d-sm-inline ms-1">Aviso</span>
+                            <span class="d-none d-sm-inline ms-1">Alerta</span>
                         </a>
                         <a href="<?= base_url('companies/view/' . $empresa->id . '?severity=info') ?>" 
                            class="btn <?= $current_severity === 'info' ? 'btn-info' : 'btn-outline-info' ?> btn-sm px-3"
