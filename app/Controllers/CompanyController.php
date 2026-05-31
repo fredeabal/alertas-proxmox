@@ -141,8 +141,9 @@ class CompanyController extends BaseController
 
         $alertModel = new AlertModel();
         
-        // Obtener filtro de severidad si existe
+        // Obtener filtro de severidad y búsqueda
         $severityFilter = $this->request->getGet('severity');
+        $searchFilter = $this->request->getGet('q');
         
         $query = $alertModel->where('empresa_id', $id);
         
@@ -157,6 +158,14 @@ class CompanyController extends BaseController
             } elseif ($severityFilter === 'resolved') {
                 $query->where('status', 'resolved');
             }
+        }
+
+        if (!empty($searchFilter)) {
+            $query->groupStart()
+                  ->like('title', $searchFilter)
+                  ->orLike('message', $searchFilter)
+                  ->orLike('hostname', $searchFilter)
+                  ->groupEnd();
         }
 
         // Obtener historial de pings para disponibilidad y latencia (últimos 360 registros - 6h a 1 min)
@@ -184,6 +193,7 @@ class CompanyController extends BaseController
             'alertas'          => $query->orderBy('created_at', 'DESC')->paginate(50),
             'pager'            => $alertModel->pager,
             'current_severity' => $severityFilter,
+            'current_search'   => $searchFilter,
             'pingLogs'         => $pingLogs,
             'uptimePercentage' => $uptimePercentage,
             'averageLatency'   => $averageLatency

@@ -96,7 +96,7 @@
           <div class="bg-light-primary text-primary rounded-pill py-1 px-3 d-inline-block fw-bold fs-2 mb-3">
             Versión 1.2.0
           </div>
-          <p class="fs-2 text-muted mb-0">© <?= date('Y') ?> • Freddy De Abreu Alfonso</p>
+          <p class="fs-2 text-muted mb-0">© <?= date('Y') ?> • <a href="https://github.com/fredeabal/alertas-proxmox" target="_blank" rel="noopener noreferrer">Freddy De Abreu Alfonso</a></p>
           <p class="fs-2 text-muted mb-0">Licencia MIT</p>
         </div>
       </div>

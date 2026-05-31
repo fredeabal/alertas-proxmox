@@ -1,8 +1,20 @@
-# ProxmoxAlert - Manual de Uso
+# ProxmoxAlert - Manual de Uso (v1.2)
 
 ![ProxmoxAlert Dashboard](public/assets/images/screenshots/screenshot.png)
 
 Manual operativo y técnico para desplegar, configurar y usar **Proxmox Alert**.
+
+## Novedades de la Versión 1.2
+- **Buscadores Premium en Tiempo Real**: 
+  - **Buscador de Alertas Híbrido (AJAX):** Buscador reactivo en el historial de alertas de cada empresa que filtra visualmente de forma instantánea y hace peticiones de base de datos asíncronas (`fetch`) con debounce de 700ms e historia en URL sin perder foco.
+  - **Buscadores Locales de Empresas y Usuarios:** Filtrado inmediato 100% en cliente al escribir (nombre, CIF, email, rol, etc.) sin recargas ni carga al servidor.
+- **Robustez Absoluta en Webhooks (Apprise)**: 
+  - Soporte de "pings" de comprobación (JSON vacío) respondiendo `200 OK` inmediatamente.
+  - Compatibilidad total con strings planos en el `body` de Apprise, mapeando correctamente `failure` a `error`.
+  - Procesamiento en segundo plano (`fastcgi_finish_request`) optimizado para evitar *timeouts* en Proxmox/Apprise durante el envío de notificaciones y generación de IA.
+- **Seguridad Robusta (Cabeceras y Sesión)**:
+  - Cabeceras globales de seguridad HTTP activadas (`X-Frame-Options: SAMEORIGIN` y `X-Content-Type-Options: nosniff`) protegiendo el panel contra Clickjacking y MIME-Sniffing.
+  - Cookies de sesión con atributo `Secure = true` dinámico, activándose automáticamente cuando la plataforma corre en entornos de producción bajo HTTPS.
 
 ## Tabla de contenidos
 - [1. Descripción](#1-descripción)

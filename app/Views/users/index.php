@@ -25,6 +25,14 @@
 
     <div class="card">
         <div class="card-body">
+            <!-- Buscador de Usuarios Premium -->
+            <div class="d-flex align-items-center mb-4">
+                <div class="position-relative w-100" style="max-width: 300px;">
+                    <input type="text" id="user-search" class="form-control ps-5" placeholder="Buscar usuario..." style="border-radius: 8px; font-size: 0.85rem; height: 38px;">
+                    <i class="ti ti-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted fs-5"></i>
+                </div>
+            </div>
+
             <div class="table-responsive">
                 <table class="table align-middle mb-0">
                     <thead>
@@ -100,3 +108,32 @@
         </div>
     </div>
 </div>
+
+<script>
+// Búsqueda premium instantánea en cliente para usuarios
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('user-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const filter = this.value.toLowerCase().trim();
+            const rows = document.querySelectorAll('table tbody tr');
+            
+            rows.forEach(row => {
+                if (row.querySelector('td[colspan]')) return;
+                
+                const username = row.querySelector('h6.fw-semibold')?.textContent.toLowerCase() || '';
+                const email = row.querySelector('td:nth-child(2)')?.textContent.toLowerCase() || '';
+                const role = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase() || '';
+                
+                if (username.includes(filter) || email.includes(filter) || role.includes(filter)) {
+                    row.style.display = '';
+                    row.style.opacity = '1';
+                } else {
+                    row.style.display = 'none';
+                    row.style.opacity = '0';
+                }
+            });
+        });
+    }
+});
+</script>

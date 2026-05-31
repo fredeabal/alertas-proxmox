@@ -25,6 +25,14 @@
 
     <div class="card">
         <div class="card-body">
+            <!-- Buscador de Empresas Premium -->
+            <div class="d-flex align-items-center mb-4">
+                <div class="position-relative w-100" style="max-width: 300px;">
+                    <input type="text" id="company-search" class="form-control ps-5" placeholder="Buscar empresa..." style="border-radius: 8px; font-size: 0.85rem; height: 38px;">
+                    <i class="ti ti-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted fs-5"></i>
+                </div>
+            </div>
+
             <div class="table-responsive">
                 <table class="table align-middle mb-0">
                     <thead>
@@ -95,7 +103,16 @@
                                             <!-- Copiar Webhook (Elemento oculto para JS) -->
                                             <span id="webhook-<?= $empresa->id ?>" class="d-none"><?= base_url('webhook/proxmox/' . $empresa->webhook_token) ?></span>
                                             <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)" onclick="copyToClipboard('webhook-<?= $empresa->id ?>')">
-                                                <i class="fs-4 ti ti-copy"></i>Copiar Webhook
+                                                <i class="fs-4 ti ti-copy"></i>Copiar Webhook Proxmox
+                                            </a>
+
+                                            <!-- Copiar Webhook Apprise (Elemento oculto para JS) -->
+                                            <?php 
+                                                $appriseWebhook = str_replace(['https://', 'http://'], ['jsons://', 'json://'], base_url('webhook/proxmox/' . $empresa->webhook_token));
+                                            ?>
+                                            <span id="apprise-webhook-<?= $empresa->id ?>" class="d-none"><?= $appriseWebhook ?></span>
+                                            <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)" onclick="copyToClipboard('apprise-webhook-<?= $empresa->id ?>')">
+                                                <i class="fs-4 ti ti-brand-appstore"></i>Copiar URI de Apprise
                                             </a>
 
                                             <?php if ($cronPingToken !== ''): ?>
@@ -172,5 +189,30 @@ function copyScriptToClipboard(id) {
         });
 }
 
-
+// Búsqueda premium instantánea en cliente
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('company-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const filter = this.value.toLowerCase().trim();
+            const rows = document.querySelectorAll('table tbody tr');
+            
+            rows.forEach(row => {
+                if (row.querySelector('td[colspan]')) return;
+                
+                const companyName = row.querySelector('h6.fw-semibold')?.textContent.toLowerCase() || '';
+                const cif = row.querySelector('td:nth-child(2)')?.textContent.toLowerCase() || '';
+                const email = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase() || '';
+                
+                if (companyName.includes(filter) || cif.includes(filter) || email.includes(filter)) {
+                    row.style.display = '';
+                    row.style.opacity = '1';
+                } else {
+                    row.style.display = 'none';
+                    row.style.opacity = '0';
+                }
+            });
+        });
+    }
+});
 </script>

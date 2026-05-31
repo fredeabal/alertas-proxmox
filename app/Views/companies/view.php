@@ -298,8 +298,23 @@
                             <h5 class="card-title fw-semibold mb-1">Historial de Notificaciones</h5>
                             <p class="card-subtitle mb-0 d-none d-sm-block">Gestión de eventos detectados por Proxmox</p>
                         </div>
-                        <div class="badge bg-white text-dark border fw-semibold fs-2 p-2 px-3 h-100">
-                            Total: <?= $pager->getTotal() ?> eventos
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <!-- Buscador Premium -->
+                            <div class="position-relative buscador-alertas-wrapper">
+                                <input type="text" id="alerts-search-input" class="form-control form-control-sm ps-5 pe-4" 
+                                       placeholder="Buscar alertas..." style="border-radius: 8px; width: 220px; font-size: 0.85rem; height: 35px;" 
+                                       value="<?= esc($current_search ?? '') ?>">
+                                <i class="ti ti-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted fs-5"></i>
+                                <?php if (!empty($current_search)): ?>
+                                    <a href="<?= base_url('companies/view/' . $empresa->id . (empty($current_severity) ? '' : '?severity=' . $current_severity)) ?>" 
+                                       class="position-absolute top-50 end-0 translate-middle-y me-2 text-muted text-decoration-none">
+                                        <i class="ti ti-x fs-4"></i>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                            <div class="badge bg-white text-dark border fw-semibold fs-2 p-2 px-3 h-100 d-flex align-items-center justify-content-center" style="height: 35px !important; border-radius: 8px;">
+                                Total: <?= $pager->getTotal() ?> eventos
+                            </div>
                         </div>
                     </div>
 
@@ -618,6 +633,102 @@ function initAlertsEvents() {
     document.querySelectorAll('.alert-checkbox').forEach(cb => {
         cb.addEventListener('change', updateBulkBar);
     });
+
+    // 5. Vincular buscador premium en tiempo real (Filtro instantáneo + Búsqueda AJAX debounced)
+    const searchInput = document.getElementById('alerts-search-input');
+    if (searchInput) {
+        let typingTimer;
+        const doneTypingInterval = 700; // 700ms de retraso al escribir para no saturar
+
+        searchInput.addEventListener('input', function() {
+            clearTimeout(typingTimer);
+            
+            // Filtro visual rápido en el cliente
+            const filter = this.value.toLowerCase().trim();
+            const rows = document.querySelectorAll('#alertas-table tbody tr');
+            
+            rows.forEach(row => {
+                if (row.querySelector('td[colspan]')) return; 
+                
+                const title = row.querySelector('.alert-title-text')?.textContent.toLowerCase() || '';
+                const hostname = row.querySelector('td:nth-child(5)')?.textContent.toLowerCase() || '';
+                
+                if (title.includes(filter) || hostname.includes(filter)) {
+                    row.style.display = '';
+                    row.style.opacity = '1';
+                } else {
+                    row.style.display = 'none';
+                    row.style.opacity = '0';
+                }
+            });
+
+            typingTimer = setTimeout(performServerSearch, doneTypingInterval);
+        });
+
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                clearTimeout(typingTimer);
+                performServerSearch();
+            }
+        });
+    }
+}
+
+// Búsqueda en servidor vía AJAX sin perder foco ni recargar
+function performServerSearch() {
+    const searchInput = document.getElementById('alerts-search-input');
+    if (!searchInput) return;
+    
+    const query = searchInput.value.trim();
+    const url = new URL(window.location.href);
+    if (query) {
+        url.searchParams.set('q', query);
+    } else {
+        url.searchParams.delete('q');
+    }
+    url.searchParams.delete('page'); // Reiniciar a página 1 al buscar
+    
+    // Actualiza la barra del navegador sin recarga completa
+    window.history.pushState({}, '', url.toString());
+    
+    isRefreshing = true;
+    fetch(url.toString())
+        .then(response => {
+            if (!response.ok) throw new Error('Error al buscar.');
+            return response.text();
+        })
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            const oldAlertsContainer = document.getElementById('alerts-dynamic-container');
+            const newAlertsContainer = doc.getElementById('alerts-dynamic-container');
+            if (oldAlertsContainer && newAlertsContainer) {
+                oldAlertsContainer.innerHTML = newAlertsContainer.innerHTML;
+            }
+            
+            const oldModalsContainer = document.getElementById('modals-container');
+            const newModalsContainer = doc.getElementById('modals-container');
+            if (oldModalsContainer && newModalsContainer) {
+                oldModalsContainer.innerHTML = newModalsContainer.innerHTML;
+            }
+            
+            initAlertsEvents();
+            
+            // Mantener e hidratar foco y posición del cursor
+            const newSearchInput = document.getElementById('alerts-search-input');
+            if (newSearchInput) {
+                newSearchInput.focus();
+                const val = newSearchInput.value;
+                newSearchInput.value = '';
+                newSearchInput.value = val;
+            }
+        })
+        .catch(err => console.error('Error en búsqueda remota:', err))
+        .finally(() => {
+            isRefreshing = false;
+        });
 }
 
 // Inicialización de eventos al cargar por primera vez el DOM
@@ -634,9 +745,9 @@ function refreshData() {
     // Si ya hay una recarga en curso, ignoramos esta petición
     if (isRefreshing) return;
     
-    // Si hay un modal abierto (Bootstrap/Swal), posponemos la recarga automática
-    // para no cerrar la vista del usuario ni perder su foco.
-    if (document.querySelector('.modal.show')) {
+    // Si hay un modal abierto o el buscador está siendo enfocado por el usuario,
+    // posponemos la recarga automática para no interrumpir su interacción.
+    if (document.querySelector('.modal.show') || document.activeElement === document.getElementById('alerts-search-input')) {
         return;
     }
     
