@@ -102,8 +102,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error actualizando el dashboard:', error));
     }
 
-    // Ejecutar cada 60 segundos
-    setInterval(refreshDashboard, 60000);
+    // Ejecutar cada 5 segundos (5s)
+    setInterval(refreshDashboard, 5000);
 });
 </script>
 
