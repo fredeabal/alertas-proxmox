@@ -83,7 +83,7 @@
     <!-- Script de configuración de Chart.js -->
     <?php if (!empty($pingLogs)): ?>
     <script>
-    function initUptimeChart() {
+    function initUptimeChart(animate = true) {
         const ctx = document.getElementById('uptimeChart');
         if (!ctx) return;
 
@@ -163,6 +163,7 @@
                 ]
             },
             options: {
+                animation: animate ? {} : false,
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
@@ -312,13 +313,6 @@
                                     </a>
                                 <?php endif; ?>
                             </div>
-                            <!-- Botón de Refrescar Manual -->
-                            <button type="button" id="manual-refresh-btn" class="btn btn-outline-primary btn-sm d-flex align-items-center justify-content-center" 
-                                    style="height: 35px !important; border-radius: 8px;" 
-                                    onclick="refreshData(true)" 
-                                    title="Refrescar datos">
-                                <i class="ti ti-refresh fs-5 me-1"></i> <span class="d-none d-sm-inline">Refrescar</span>
-                            </button>
                             <div class="badge bg-white text-dark border fw-semibold fs-2 p-2 px-3 h-100 d-flex align-items-center justify-content-center" style="height: 35px !important; border-radius: 8px;">
                                 Total: <?= $pager->getTotal() ?> eventos
                             </div>
@@ -747,29 +741,20 @@ document.addEventListener('DOMContentLoaded', function() {
 // =====================================================================
 let isRefreshing = false; // Bandera para evitar peticiones AJAX duplicadas o colisiones
 
-function refreshData(force = false) {
+function refreshData() {
     // Si ya hay una recarga en curso, ignoramos esta petición
     if (isRefreshing) return;
     
-    // Si no es un refresco forzado manual, comprobamos la inactividad del usuario
-    if (!force) {
-        if (
-            document.querySelector('.modal.show') || 
-            document.querySelector('.dropdown-menu.show') || 
-            document.activeElement === document.getElementById('alerts-search-input') ||
-            document.querySelectorAll('.alert-checkbox:checked').length > 0
-        ) {
-            return;
-        }
-    }
-    
-    // Iniciar animación del botón de refresco si existe
-    const refreshBtn = document.getElementById('manual-refresh-btn');
-    const refreshIcon = refreshBtn ? refreshBtn.querySelector('.ti-refresh') : null;
-    if (refreshIcon) {
-        refreshIcon.style.transition = 'transform 0.8s ease';
-        refreshIcon.style.transform = 'rotate(360deg)';
-        refreshBtn.disabled = true;
+    // Si hay un modal abierto, un menú desplegable (dropdown) abierto, el buscador enfocado,
+    // o si el usuario tiene casillas seleccionadas (acción masiva activa),
+    // posponemos el refresco automático para no interrumpir la interacción del usuario.
+    if (
+        document.querySelector('.modal.show') || 
+        document.querySelector('.dropdown-menu.show') || 
+        document.activeElement === document.getElementById('alerts-search-input') ||
+        document.querySelectorAll('.alert-checkbox:checked').length > 0
+    ) {
+        return;
     }
     
     isRefreshing = true;
@@ -811,7 +796,7 @@ function refreshData(force = false) {
                 // Si la función de inicialización del gráfico existe, la volvemos a invocar.
                 // Esta función destruye la instancia anterior y re-dibuja el gráfico con el nuevo JSON sin parpadeos.
                 if (typeof initUptimeChart === 'function') {
-                    initUptimeChart();
+                    initUptimeChart(false);
                 }
             }
             
@@ -843,14 +828,9 @@ function refreshData(force = false) {
         })
         .finally(() => {
             isRefreshing = false;
-            // Detener y resetear animación del botón
-            if (refreshIcon) {
-                setTimeout(() => {
-                    refreshIcon.style.transition = 'none';
-                    refreshIcon.style.transform = 'rotate(0deg)';
-                    refreshBtn.disabled = false;
-                }, 800);
-            }
         });
 }
+
+// Configurar intervalo de refresco automático cada 5 segundos (5s)
+setInterval(refreshData, 5000);
 </script>
