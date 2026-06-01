@@ -132,7 +132,7 @@ function updateProviderInfo() {
     const currentModel = modelSelect.value || savedModel;
     
     // Opciones estáticas básicas
-    const geminiModels = ['gemini-2.0-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-flash', 'gemini-1.5-pro'];
+    const geminiModels = ['gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-flash', 'gemini-1.5-pro'];
     const chatGptModels = ['gpt-4o-mini', 'gpt-4o', 'gpt-3.5-turbo'];
     
     modelHelp.innerHTML = '<i class="ti ti-info-circle me-1"></i> Los modelos se sincronizan automáticamente al configurar el proveedor.';

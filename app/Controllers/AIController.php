@@ -168,7 +168,33 @@ class AIController extends BaseController
                 if ($provider === 'ollama') {
                     if (!empty($data['models'])) foreach ($data['models'] as $m) $models[] = $m['name'];
                 } else {
-                    if (!empty($data['data'])) foreach ($data['data'] as $m) $models[] = $m['id'];
+                    if (!empty($data['data'])) {
+                        foreach ($data['data'] as $m) {
+                            $modelId = $m['id'];
+                            
+                            if ($provider === 'gemini') {
+                                // Quitar prefijo 'models/'
+                                if (strpos($modelId, 'models/') === 0) {
+                                    $modelId = substr($modelId, 7);
+                                }
+                                
+                                // Filtrar solo modelos Gemini aptos para generación de texto
+                                if (
+                                    strpos($modelId, 'gemini') === false ||
+                                    strpos($modelId, 'embedding') !== false ||
+                                    strpos($modelId, 'image') !== false ||
+                                    strpos($modelId, 'audio') !== false ||
+                                    strpos($modelId, 'tts') !== false ||
+                                    strpos($modelId, 'robotics') !== false ||
+                                    strpos($modelId, 'computer-use') !== false ||
+                                    strpos($modelId, 'deep-research') !== false
+                                ) {
+                                    continue;
+                                }
+                            }
+                            $models[] = $modelId;
+                        }
+                    }
                 }
                 
                 sort($models);

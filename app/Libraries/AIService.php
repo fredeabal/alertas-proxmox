@@ -70,14 +70,6 @@ class AIService
             return null;
         }
 
-        // Truncar mensajes excesivamente largos (ej. logs de backups de Proxmox)
-        // Guardamos el principio (contexto) y el final (resultado/errores)
-        $maxLength = 4000;
-        if (mb_strlen($message) > $maxLength) {
-            $half = intval($maxLength / 2);
-            $message = mb_substr($message, 0, $half) . "\n\n... [LOG TRUNCADO POR EXCESO DE LONGITUD] ...\n\n" . mb_substr($message, -$half);
-        }
-
         $prompt = "IMPORTANTE: RESPONDE ÚNICAMENTE CON EL RESUMEN. NO INCLUAS TU PENSAMIENTO, NI RAZONAMIENTO, NI EXPLICACIONES INTERNAS.\n\n";
         $prompt .= "Eres un asistente de sistemas experto en Proxmox VE. Analiza esta alerta técnica y genera un resumen muy breve y claro en español (máximo 2 frases) que explique qué ha ocurrido. No uses formato markdown, solo texto plano.\n\n";
         $prompt .= "Título: {$title}\n";
@@ -106,7 +98,7 @@ class AIService
         }
 
         $body = [
-            'model' => $this->model ?: ($this->provider === 'ollama' ? 'llama3' : ($this->provider === 'gemini' ? 'gemini-2.0-flash' : 'gpt-4o-mini')),
+            'model' => $this->model ?: ($this->provider === 'ollama' ? 'llama3' : ($this->provider === 'gemini' ? 'gemini-2.5-flash' : 'gpt-4o-mini')),
             'messages' => [
                 [
                     'role' => 'user',
