@@ -363,11 +363,11 @@
                                 <div class="d-flex flex-wrap align-items-center gap-2">
                                     <span class="fw-semibold text-primary" id="selected-count">0 alertas seleccionadas</span>
                                     <div class="vr d-none d-sm-block"></div>
-                                    <button type="button" class="btn btn-outline-danger btn-sm px-3" onclick="submitBulkAction('delete')">
-                                        <i class="ti ti-trash me-1"></i> Borrar
+                                    <button type="button" class="btn btn-outline-danger btn-sm px-3" onclick="submitBulkAction('delete')" title="Borrar alertas seleccionadas">
+                                        <i class="ti ti-trash me-sm-1"></i> <span class="d-none d-sm-inline">Borrar</span>
                                     </button>
-                                    <button type="button" class="btn btn-outline-success btn-sm px-3" onclick="submitBulkAction('resolve')">
-                                        <i class="ti ti-check me-1"></i> Solucionar
+                                    <button type="button" class="btn btn-outline-success btn-sm px-3" onclick="submitBulkAction('resolve')" title="Marcar seleccionadas como solucionadas">
+                                        <i class="ti ti-check me-sm-1"></i> <span class="d-none d-sm-inline">Solucionar</span>
                                     </button>
                                 </div>
                                 <button type="button" class="btn-close" onclick="deselectAll()"></button>
