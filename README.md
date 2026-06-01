@@ -66,12 +66,14 @@ Abre el archivo `.env` con un editor de texto y configura las siguientes propied
 
    Puedes ver tu ruta absoluta ejecutando el archivo `rutas.php` en tu navegador (ej: `https://tudominio.com/rutas.php`).
 
-   **NOTA: Por seguridad, elimina el archivo `rutas.php` de tu servidor una vez hayas configurado la ruta correcta.**
+   > [!WARNING]
+   > **NOTA: Por seguridad, elimina el archivo `rutas.php` de tu servidor una vez hayas configurado la ruta correcta.**
+
    ```env
    database.default.database = '/var/www/proxmox-alert/writable/database.db'
    database.default.DBDriver = 'SQLite3'
    ```
-5. **Clave de Encriptación (`encryption.key`)**: Genera una clave aleatoria de 32 bytes de forma segura para encriptar los datos internos. Puedes usar este comando rápido para generar una compatible:
+4. **Clave de Encriptación (`encryption.key`)**: Genera una clave aleatoria de 32 bytes de forma segura para encriptar los datos internos. Puedes usar este comando rápido para generar una compatible:
    ```bash
    php -r "echo 'hex2bin:' . bin2hex(random_bytes(32)) . PHP_EOL;"
    ```
@@ -79,7 +81,7 @@ Abre el archivo `.env` con un editor de texto y configura las siguientes propied
    ```env
    encryption.key = 'hex2bin:TU_CLAVE_GENERADA_AQUÍ'
    ```
-6. **Token de Cron (`cron.pingToken`)**: Configura un token aleatorio y seguro para proteger tu endpoint de ping crons de accesos no autorizados. Puedes generar uno rápidamente ejecutando:
+5. **Token de Cron (`cron.pingToken`)**: Configura un token aleatorio y seguro para proteger tu endpoint de ping crons de accesos no autorizados. Puedes generar uno rápidamente ejecutando:
    ```bash
    php -r "echo bin2hex(random_bytes(16)) . PHP_EOL;"
    ```
