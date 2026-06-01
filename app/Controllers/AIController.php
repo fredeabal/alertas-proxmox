@@ -191,6 +191,22 @@ class AIController extends BaseController
                                 ) {
                                     continue;
                                 }
+                            } elseif ($provider === 'chatgpt') {
+                                // Filtrar solo modelos OpenAI aptos para generación de texto/chat (gpt-*, o1-*, o3-*)
+                                $isChatModel = (strpos($modelId, 'gpt-') === 0 || strpos($modelId, 'o1-') === 0 || strpos($modelId, 'o3-') === 0);
+                                
+                                if (
+                                    !$isChatModel ||
+                                    strpos($modelId, 'embedding') !== false ||
+                                    strpos($modelId, 'moderation') !== false ||
+                                    strpos($modelId, 'whisper') !== false ||
+                                    strpos($modelId, 'dall-e') !== false ||
+                                    strpos($modelId, 'tts') !== false ||
+                                    strpos($modelId, 'realtime') !== false ||
+                                    strpos($modelId, 'audio') !== false
+                                ) {
+                                    continue;
+                                }
                             }
                             $models[] = $modelId;
                         }
