@@ -157,7 +157,12 @@ class InstallController extends Controller
                 chmod($dbPath, 0666);
             }
 
-            // 2. Escribir el archivo .env autogenerado de forma robusta
+            // 2. Leer el archivo .env existente si existe para no borrar las configuraciones personalizadas del usuario
+            $existingEnv = '';
+            if (file_exists(ROOTPATH . '.env')) {
+                $existingEnv = file_get_contents(ROOTPATH . '.env');
+            }
+
             $envData = [
                 'CI_ENVIRONMENT' => 'production',
                 'app.baseURL' => rtrim($appUrl, '/') . '/',
@@ -169,11 +174,31 @@ class InstallController extends Controller
                 'APP_INSTALLED' => 'true',
             ];
 
-            $content = "#--------------------------------------------------------------------\n";
-            $content .= "# CONFIGURACIÓN DE PROXMOX ALERT (AUTOGENERADO POR EL INSTALADOR)\n";
-            $content .= "#--------------------------------------------------------------------\n\n";
-            foreach ($envData as $key => $value) {
-                $content .= "{$key} = '{$value}'\n";
+            // Si ya existe .env, actualizamos las líneas correspondientes de forma inteligente o lo creamos de cero si está vacío
+            if (!empty($existingEnv)) {
+                $content = $existingEnv;
+                foreach ($envData as $key => $value) {
+                    // Si ya existe la clave de encriptación, no la sobreescribimos para evitar romper datos encriptados previos
+                    if ($key === 'encryption.key' && preg_match('/^encryption\.key\s*=\s*.+$/m', $content)) {
+                        continue;
+                    }
+
+                    $pattern = '/^' . preg_quote($key, '/') . '\s*=\s*(.*)$/m';
+                    if (preg_match($pattern, $content)) {
+                        $content = preg_replace($pattern, "{$key} = '{$value}'", $content);
+                    } else {
+                        // Si no existe, lo agregamos al final
+                        $content .= "\n{$key} = '{$value}'";
+                    }
+                }
+            } else {
+                // Si no existe, creamos el archivo de cero
+                $content = "#--------------------------------------------------------------------\n";
+                $content .= "# CONFIGURACIÓN DE PROXMOX ALERT (AUTOGENERADO POR EL INSTALADOR)\n";
+                $content .= "#--------------------------------------------------------------------\n\n";
+                foreach ($envData as $key => $value) {
+                    $content .= "{$key} = '{$value}'\n";
+                }
             }
             
             if (file_put_contents(ROOTPATH . '.env', $content) === false) {
@@ -213,10 +238,8 @@ class InstallController extends Controller
             return redirect()->to('login')->with('message', '¡Onboarding completado con éxito! Inicia sesión con tus nuevas credenciales.');
 
         } catch (\Exception $e) {
-            // Limpieza en caso de fallo crítico para poder reintentar
-            if (file_exists(ROOTPATH . '.env')) {
-                @unlink(ROOTPATH . '.env');
-            }
+            // Limpieza únicamente del archivo de bloqueo en caso de fallo para poder reintentar.
+            // Conservamos el archivo .env del usuario intacto.
             if (file_exists(WRITEPATH . 'install.lock')) {
                 @unlink(WRITEPATH . 'install.lock');
             }
