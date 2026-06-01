@@ -360,7 +360,7 @@
                         <!-- Barra de Acciones Masivas (Oculta por defecto) -->
                         <div id="bulk-actions-bar" class="bg-light-primary p-3 rounded-3 mb-4 d-none animate__animated animate__fadeIn">
                             <div class="d-flex flex-column flex-sm-row align-items-center justify-content-between gap-3">
-                                <span class="fw-semibold text-primary text-center text-sm-start" id="selected-count">Seleccionados 0 elementos</span>
+                                <span class="fw-semibold text-primary text-center text-sm-start text-nowrap" id="selected-count">Seleccionados 0 elementos</span>
                                 <div class="d-flex align-items-center gap-2 w-100 w-sm-auto justify-content-center justify-content-sm-end">
                                     <button type="button" class="btn btn-outline-danger btn-sm px-3 flex-fill flex-sm-grow-0" onclick="submitBulkAction('delete')">
                                         <i class="ti ti-trash me-1"></i> Borrar
