@@ -1,0 +1,45 @@
+#--------------------------------------------------------------------
+# PROXMOX ALERT - Archivo de Configuración de Entorno (.env)
+#--------------------------------------------------------------------
+#
+# INSTRUCCIONES:
+# Descomenta las variables (quitando el '#') y configura los valores
+# según tu entorno y rutas de instalación.
+#
+
+# 1. ENTORNO DE LA APLICACIÓN
+# Establece en 'production' para desactivar errores visibles al usuario final.
+# Útil dejarlo en 'development' si estás diagnosticando algún fallo.
+CI_ENVIRONMENT = production
+
+# 2. URL BASE DE LA APLICACIÓN
+# Configura el dominio principal o IP a través de la cual accedes al panel.
+# IMPORTANTE: 
+# - Debe empezar por http:// o https://
+# - Debe terminar OBLIGATORIAMENTE con una barra inclinada al final (/)
+app.baseURL = 'https://tudominio.com/'
+
+# 3. BASE DE DATOS (SQLite)
+# Proxmox Alert utiliza SQLite como base de datos por defecto.
+# Indica la ruta absoluta en tu servidor hacia el archivo database.db.
+# (Por defecto se crea dentro de la carpeta 'writable/').
+database.default.database = '/var/www/proxmox-alert/writable/database.db'
+database.default.DBDriver = 'SQLite3'
+
+# 4. CLAVE DE ENCRIPTACIÓN
+# Clave maestra para encriptar los datos de sesión y datos internos.
+# Debes generar una segura y pegarla aquí. Para generar una rápidamente:
+# php -r "echo 'hex2bin:' . bin2hex(random_bytes(32)) . PHP_EOL;"
+encryption.key = 'hex2bin:TU_CLAVE_GENERADA_AQUI'
+
+# 5. TOKEN DE CRON PING
+# Token secreto para proteger el endpoint que verifica la caída de tus hosts.
+# Para generar uno de forma rápida y segura, ejecuta en consola:
+# php -r "echo bin2hex(random_bytes(16)) . PHP_EOL;"
+cron.pingToken = 'TU_TOKEN_CRON_SEGURO'
+
+#--------------------------------------------------------------------
+# OPCIONALES / AVANZADOS
+#--------------------------------------------------------------------
+# Si necesitas depurar los envíos de Apprise/Webhook o la IA:
+# logger.threshold = 4
