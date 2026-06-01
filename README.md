@@ -128,6 +128,23 @@ Campos esperados:
 - `timestamp`
 - `hostname` o `node`
 
+### Integración con Apprise y ProxMenux 🐧
+El sistema es plenamente compatible con integraciones de notificaciones basadas en **Apprise**, lo que facilita el envío directo de alertas desde herramientas del ecosistema Proxmox VE.
+
+1. **ProxMenux (Guiño a Pedro)**:
+   Puedes configurar los disparos de alerta en tiempo real directamente desde la fantástica herramienta de gestión de Proxmox **[ProxMenux](https://github.com/MacRimi/ProxMenux)** desarrollada por Pedro.
+
+2. **Obtención del enlace**:
+   * Ve al listado de **Empresas** en la barra lateral.
+   * Haz clic en el menú de acciones (`...`) de la empresa correspondiente.
+   * Selecciona **Copiar URI de Apprise**.
+   * El sistema copiará automáticamente al portapapeles una dirección con el formato compatible para Apprise utilizando el protocolo `jsons://` (para HTTPS) o `json://` (para HTTP):
+     `jsons://tudominio.com/webhook/proxmox/TOKEN_EMPRESA`
+
+3. **Configuración**:
+   * Pega esta URI en la sección de notificaciones de Apprise en ProxMenux o en tus scripts personalizados.
+   * ¡Listo! Los incidentes se recibirán y categorizarán de forma totalmente transparente e instantánea en el panel.
+
 ## 8. Gestión de alertas
 Desde la vista de empresa:
 - Filtrado por severidad y estado.
