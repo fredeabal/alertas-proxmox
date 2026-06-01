@@ -192,8 +192,8 @@ class AIController extends BaseController
                                     continue;
                                 }
                             } elseif ($provider === 'chatgpt') {
-                                // Filtrar solo modelos OpenAI aptos para generación de texto/chat (gpt-*, o1-*, o3-*)
-                                $isChatModel = (strpos($modelId, 'gpt-') === 0 || strpos($modelId, 'o1-') === 0 || strpos($modelId, 'o3-') === 0);
+                                // Filtrar solo modelos OpenAI aptos para chat usando regex a prueba de futuro (gpt-* u o[número]-*)
+                                $isChatModel = preg_match('/^(gpt-|o\d+-)/i', $modelId);
                                 
                                 if (
                                     !$isChatModel ||
