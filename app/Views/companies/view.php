@@ -744,9 +744,15 @@ function refreshData() {
     // Si ya hay una recarga en curso, ignoramos esta petición
     if (isRefreshing) return;
     
-    // Si hay un modal abierto o el buscador está siendo enfocado por el usuario,
-    // posponemos la recarga automática para no interrumpir su interacción.
-    if (document.querySelector('.modal.show') || document.activeElement === document.getElementById('alerts-search-input')) {
+    // Si hay un modal abierto, un menú desplegable (dropdown) abierto, el buscador enfocado,
+    // o si el usuario tiene casillas seleccionadas (acción masiva activa),
+    // posponemos el refresco automático para no interrumpir la interacción del usuario.
+    if (
+        document.querySelector('.modal.show') || 
+        document.querySelector('.dropdown-menu.show') || 
+        document.activeElement === document.getElementById('alerts-search-input') ||
+        document.querySelectorAll('.alert-checkbox:checked').length > 0
+    ) {
         return;
     }
     
