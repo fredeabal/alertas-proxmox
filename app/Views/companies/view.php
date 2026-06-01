@@ -361,7 +361,7 @@
                         <div id="bulk-actions-bar" class="bg-light-primary p-3 rounded-3 mb-4 d-none animate__animated animate__fadeIn">
                             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2">
                                 <div class="d-flex flex-wrap align-items-center gap-2">
-                                    <span class="fw-semibold text-primary" id="selected-count">0 alertas seleccionadas</span>
+                                    <span class="fw-semibold text-primary" id="selected-count">Seleccionados 0 elementos</span>
                                     <div class="vr d-none d-sm-block"></div>
                                     <button type="button" class="btn btn-outline-danger btn-sm px-3" onclick="submitBulkAction('delete')" title="Borrar alertas seleccionadas">
                                         <i class="ti ti-trash me-sm-1"></i> <span class="d-none d-sm-inline">Borrar</span>
@@ -551,9 +551,10 @@ function updateBulkBar() {
     const selectedCountText = document.getElementById('selected-count');
     if (!bulkActionsBar || !selectedCountText) return;
     
-    // Contamos cuántas alertas tienen el checkbox marcado
+    // Contamos cuántas alertas tienen el checkbox marcado y el total disponible
     const checkedCount = document.querySelectorAll('.alert-checkbox:checked').length;
-    selectedCountText.innerText = `${checkedCount} alertas seleccionadas`;
+    const totalCount = document.querySelectorAll('.alert-checkbox').length;
+    selectedCountText.innerText = `Seleccionados ${checkedCount} de ${totalCount} elementos`;
     
     // Si hay al menos una seleccionada, mostramos la barra de acciones masivas, si no, la ocultamos
     bulkActionsBar.classList.toggle('d-none', checkedCount === 0);
