@@ -5,6 +5,9 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
+$routes->get('install', '\App\Controllers\InstallController::index');
+$routes->post('install/submit', '\App\Controllers\InstallController::submit');
+
 $routes->get('/', 'HomeController::index');
 $routes->get('dashboard/status', 'HomeController::status');
 
