@@ -21,37 +21,25 @@
                 <a href="<?= base_url('companies/view/' . $empresa->id) ?>" 
                    id="card-<?= $empresa->id ?>"
                    class="card hover-img w-100 text-decoration-none border <?= $empresa->border_class ?> shadow-sm transition-all overflow-hidden h-100">
+                    <?php $pulseColor = $empresa->pulse_color; ?>
                     <div class="card-body p-3 d-flex flex-column justify-content-between">
-                        <div class="position-relative text-center mb-3 pt-1">
-                            <!-- Logo Centrado -->
+                        <!-- Logo + Nombre -->
+                        <div class="text-center pt-1">
                             <?php $logoPath = $empresa->logo ? base_url('uploads/logos/' . $empresa->logo) : base_url('assets/images/logos/default-company.png'); ?>
                             <img src="<?= $logoPath ?>" alt="<?= esc($empresa->nombre) ?>" 
                                  class="rounded-circle shadow-sm mb-2 border border-2 border-white dashboard-company-logo" 
                                  width="65" height="65">
-                            
-                            <!-- Nombre Centrado -->
                             <h6 class="fw-bold text-dark mb-0 text-truncate px-2 fs-3"><?= esc($empresa->nombre) ?></h6>
                         </div>
 
-                        <div class="d-flex align-items-center justify-content-center mt-auto pt-2 border-top">
-                            <?php 
-                                $pulseColor = $empresa->pulse_color;
-                            ?>
-                            <div id="pulse-bg-<?= $empresa->id ?>" class="d-flex align-items-center justify-content-center bg-light-<?= $pulseColor ?> rounded-circle me-2 led-wrapper">
+                        <!-- Footer: LED + Estado -->
+                        <div class="d-flex align-items-center justify-content-center mt-auto pt-2 border-top gap-2">
+                            <div id="pulse-bg-<?= $empresa->id ?>" class="d-flex align-items-center justify-content-center bg-light-<?= $pulseColor ?> rounded-circle led-wrapper">
                                 <span id="pulse-blob-<?= $empresa->id ?>" class="blob bg-<?= $pulseColor ?> rounded-circle telemetry-led"></span>
                             </div>
-                            
                             <div id="status-text-<?= $empresa->id ?>" class="fw-semibold fs-2">
                                 <?php if ($empresa->alert_count > 0): ?>
-                                    <?php 
-                                        $textWord = 'Aviso';
-                                        if ($empresa->pulse_color === 'danger') $textWord = 'Fallo';
-                                        if ($empresa->pulse_color === 'info') $textWord = 'Info';
-                                    ?>
-                                    <span class="text-<?= $empresa->pulse_color ?>">
-                                        <strong class="me-1 text-<?= $empresa->pulse_color ?>"><?= $empresa->alert_count ?></strong>
-                                        <?= $textWord ?><?= $empresa->alert_count > 1 ? 's' : '' ?>
-                                    </span>
+                                    <span class="text-<?= $pulseColor ?>">Requiere Atención</span>
                                 <?php else: ?>
                                     <span class="text-success">Todo Correcto</span>
                                 <?php endif; ?>
@@ -93,37 +81,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     const statusText = document.getElementById(`status-text-${empresa.id}`);
 
                     if (card) {
+                        const textColor = empresa.pulse_color;
+
                         // Actualizar borde de la tarjeta
                         card.className = `card hover-img w-100 text-decoration-none border ${empresa.border_class} shadow-sm transition-all overflow-hidden h-100`;
                         
                         // Actualizar indicador LED
-                        pulseBg.className = `d-flex align-items-center justify-content-center bg-light-${empresa.pulse_color} rounded-circle me-2 led-wrapper`;
-                        pulseBlob.className = `blob bg-${empresa.pulse_color} rounded-circle telemetry-led`;
+                        pulseBg.className = `d-flex align-items-center justify-content-center bg-light-${textColor} rounded-circle led-wrapper`;
+                        pulseBlob.className = `blob bg-${textColor} rounded-circle telemetry-led`;
 
                         // Actualizar texto de estado
-                        let html = '';
                         if (empresa.alert_count > 0) {
-                            const textColor = empresa.pulse_color;
-                            let textWord = 'Aviso';
-                            if (textColor === 'danger') textWord = 'Fallo';
-                            if (textColor === 'info') textWord = 'Info';
-                            
-                            html = `<span class="text-${textColor}">
-                                        <strong class="me-1 text-${textColor}">${empresa.alert_count}</strong>
-                                        ${textWord}${empresa.alert_count > 1 ? 's' : ''}
-                                    </span>`;
+                            statusText.innerHTML = `<span class="text-${textColor}">Requiere Atención</span>`;
                         } else {
-                            html = `<span class="text-success">Todo Correcto</span>`;
+                            statusText.innerHTML = `<span class="text-success">Todo Correcto</span>`;
                         }
-                        statusText.innerHTML = html;
                     }
                 });
             })
             .catch(error => console.error('Error actualizando el dashboard:', error));
     }
 
-    // Ejecutar cada 10 segundos
-    setInterval(refreshDashboard, 10000);
+    // Ejecutar cada 60 segundos
+    setInterval(refreshDashboard, 60000);
 });
 </script>
 

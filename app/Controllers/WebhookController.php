@@ -59,10 +59,25 @@ class WebhookController extends BaseController
         };
 
         $resolvedHostname = $body['hostname'] ?? $body['node'] ?? '';
+        
+        // 1. Extraer del título si está entre paréntesis (ej. backup (pve1))
         if (empty($resolvedHostname) && preg_match('/\((.*?)\)/', $title, $matches)) {
             $resolvedHostname = $matches[1];
         }
-        $resolvedHostname = $resolvedHostname ?: 'N/A';
+
+        // 2. Buscar como un detective dentro del cuerpo del mensaje
+        if (empty($resolvedHostname)) {
+            if (preg_match('/(?:Node|Host|Servidor):\s*([^\r\n]+)/i', $message, $matches)) {
+                $resolvedHostname = trim($matches[1]);
+            } elseif (preg_match('/Source IP:\s*([^\r\n]+)/i', $message, $matches)) {
+                // Limpiamos el prefijo de IPv6 (::ffff:) si es una IPv4 mapeada
+                $ip = str_replace('::ffff:', '', trim($matches[1]));
+                $resolvedHostname = 'IP: ' . $ip;
+            }
+        }
+
+        // 3. Fallback final elegante
+        $resolvedHostname = $resolvedHostname ?: 'Sistema';
 
         if (strpos($title, ':') !== false) {
             $parts = explode(':', $title, 2);

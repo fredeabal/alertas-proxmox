@@ -62,9 +62,10 @@ class HomeController extends BaseController
                                      ->where('status', 'new')
                                      ->findAll();
                                      
-        // Filtrar 'info' puramente informativas
+        // Filtrar 'info' y 'notice' puramente informativas para que no disparen el estado de alerta
         $alertasNuevas = array_filter($alertasNuevasRaw, function($alerta) {
-            return strtolower(trim($alerta->severity)) !== 'info';
+            $sev = strtolower(trim($alerta->severity));
+            return !in_array($sev, ['info', 'notice']);
         });
                                      
         $empresa->border_class = ''; 
@@ -77,12 +78,9 @@ class HomeController extends BaseController
             foreach ($alertasNuevas as $alerta) {
                 $sev = strtolower(trim($alerta->severity));
                 
-                $isError = in_array($sev, ['error', 'critical', 'unknown']);
-                $isWarn  = in_array($sev, ['warning']);
-
-                if ($isError) {
+                if (in_array($sev, ['error', 'critical', 'unknown'])) {
                     $hasError = true;
-                } elseif ($isWarn) {
+                } elseif (in_array($sev, ['warning'])) {
                     $hasWarning = true;
                 }
             }
