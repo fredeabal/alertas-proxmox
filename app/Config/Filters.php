@@ -42,7 +42,6 @@ class Filters extends BaseFilters
         'permission'  => \CodeIgniter\Shield\Filters\PermissionFilter::class,
         'force-reset' => \CodeIgniter\Shield\Filters\ForcePasswordResetFilter::class,
         'jwt'         => \CodeIgniter\Shield\Filters\JWTAuth::class,
-        'install'     => \App\Filters\InstallFilter::class,
     ];
 
     /**
@@ -83,7 +82,6 @@ class Filters extends BaseFilters
             'csrf' => ['except' => ['webhook/*']],
             'forcehttps' => ['except' => ['webhook/*']],
             // 'invalidchars',
-            'install',
         ],
         'after' => [
             // 'honeypot',

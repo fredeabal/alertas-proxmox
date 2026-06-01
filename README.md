@@ -40,34 +40,71 @@ Capacidades principales:
 - **Composer**
 - Extensiones PHP habituales para CI4 (`intl`, `mbstring`, `json`, `pdo_sqlite`, etc.)
 
-## 3. Instalación
-Desde la raíz del proyecto:
+## 3. Instalación y Despliegue Manual (Recomendado)
 
+Esta aplicación viene pre-empaquetada con todas sus dependencias (carpeta `vendor/` ya incluida), por lo que **no necesitas tener Composer instalado** en tu servidor. Sigue estos sencillos pasos para desplegar el panel:
+
+### Paso 1: Clonar o descargar el código
+Clona este repositorio o descarga el archivo `.zip` y colócalo en el directorio de tu servidor web (ej: `/var/www/proxmox-alert/`).
+
+### Paso 2: Crear y configurar tu archivo `.env`
+Duplica el archivo de plantilla `env` y llámalo `.env` en la raíz del proyecto:
 ```bash
 cp env .env
+```
+Abre el archivo `.env` con un editor de texto y configura las siguientes propiedades clave:
 
-# O duplica el archivo env y colocale un punto (.env)
+1. **Entorno**: Establece el entorno en producción:
+   ```env
+   CI_ENVIRONMENT = production
+   ```
+2. **URL Base (`app.baseURL`)**: Modifícala con tu dominio web o IP real de acceso. **IMPORTANTE**: Debe comenzar con `http://` o `https://` y terminar obligatoriamente con una barra inclinada `/`:
+   ```env
+   app.baseURL = 'https://tudominio.com/'
+   ```
+3. **Base de Datos SQLite**: Indica la ruta absoluta hacia tu base de datos SQLite (se guardará dentro de `writable/`).
+   Puedes ver tu ruta absoluta ejecutando el archivo `rutas.php` en tu navegador (ej: `https://tudominio.com/rutas.php`).
 
-# (Opcional) php spark migrate && php spark db:seed DatabaseSeeder
-php spark serve --host 0.0.0.0 --port 8081
+   **NOTA: Por seguridad, elimina el archivo `rutas.php` de tu servidor una vez hayas configurado la ruta correcta.**
+   ```env
+   database.default.database = '/var/www/proxmox-alert/writable/database.db'
+   database.default.DBDriver = 'SQLite3'
+   ```
+4. **Clave de Encriptación (`encryption.key`)**: Genera una clave aleatoria de 32 bytes de forma segura para encriptar los datos internos. Puedes usar este comando rápido para generar una compatible:
+   ```bash
+   php -r "echo 'hex2bin:' . bin2hex(random_bytes(32)) . PHP_EOL;"
+   ```
+   Y pégala en tu `.env`:
+   ```env
+   encryption.key = 'hex2bin:TU_CLAVE_GENERADA_AQUÍ'
+   ```
+5. **Token de Cron (`cron.pingToken`)**: Configura un token aleatorio y seguro para proteger tu endpoint de ping crons de accesos no autorizados. Puedes generar uno rápidamente ejecutando:
+   ```bash
+   php -r "echo bin2hex(random_bytes(16)) . PHP_EOL;"
+   ```
+   Copia el resultado y pégalo en tu `.env`:
+   ```env
+   cron.pingToken = 'TU_TOKEN_CRON_SEGURO'
+   ```
+
+### Paso 3: Permisos de Directorios
+```bash
+# Asignar permisos de lectura y escritura
+sudo chmod -R 775 /var/www/proxmox-alert/writable
+sudo chmod -R 775 /var/www/proxmox-alert/public/uploads
 ```
 
-> [!IMPORTANT]
-> Debes editar el archivo `.env` y configurar `app.baseURL` con tu dominio o IP real (ej: `https://tudominio.com/` o `http://192.168.1.100:8080/`) para que los webhooks y las redirecciones funcionen correctamente. Adicionalmente, para un entorno real asegúrate de establecer `CI_ENVIRONMENT = production` en ese mismo archivo.
-Aplicación disponible por defecto en:
-- `https://tudominio.com`
-
 ## 4. Primer acceso
-Credenciales iniciales (seeder):
-- **Usuario**: `admin`
-- **Email**: `admin@demo.com`
-- **Password**: `admin123`
+Una vez configurado, abre tu navegador y entra en:
+* `https://tudominio.com/`
 
-Login:
-- `https://tudominio.com/login`
+Usa las credenciales de administrador iniciales:
+* **Usuario**: `admin`
+* **Email**: `admin@demo.com`
+* **Contraseña**: `admin123`
 
-Recomendado:
-- Cambiar la contraseña en el primer inicio.
+> [!TIP]
+> Por motivos de seguridad, te recomendamos encarecidamente cambiar tu nombre de usuario, email y contraseña en la pestaña **Perfil** de la barra lateral inmediatamente después de tu primer inicio de sesión.
 
 ## 5. Configuración de Canales de Alerta (Email, Telegram, Slack)
 Ruta:
@@ -103,7 +140,7 @@ Datos relevantes al crear/editar:
 
 Comportamiento:
 - El sistema genera automáticamente un `webhook_token` único por empresa.
-- En edición de empresa (`/companies/edit/{id}` se puede ejecutar un ping manual con el botón `Ping`.
+- En edición de empresa (`/companies/edit/{id}`) se puede ejecutar un ping manual con el botón `Ping`.
 
 ## 7. Integración con Proxmox (Webhook)
 Endpoint receptor:
