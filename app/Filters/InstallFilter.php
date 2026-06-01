@@ -25,9 +25,9 @@ class InstallFilter implements FilterInterface
             return;
         }
 
-        // Si ya existe el archivo .env, la app está instalada. 
+        // Si ya existe el archivo físico de bloqueo (install.lock), la app está 100% instalada.
         // No intervenimos para evitar cualquier bucle de redirección en producción.
-        if (file_exists(ROOTPATH . '.env')) {
+        if (file_exists(WRITEPATH . 'install.lock')) {
             return;
         }
 

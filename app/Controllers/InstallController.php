@@ -25,8 +25,8 @@ class InstallController extends Controller
      */
     public function index()
     {
-        // Si ya está configurado el archivo .env, no permitimos ejecutar el instalador
-        if (file_exists(ROOTPATH . '.env')) {
+        // Si ya existe el archivo físico de bloqueo (install.lock), la app está 100% instalada
+        if (file_exists(WRITEPATH . 'install.lock')) {
             return redirect()->to('login')->with('message', 'La aplicación ya se encuentra instalada.');
         }
 
@@ -106,7 +106,7 @@ class InstallController extends Controller
      */
     public function submit()
     {
-        if (file_exists(ROOTPATH . '.env')) {
+        if (file_exists(WRITEPATH . 'install.lock')) {
             return redirect()->to('login')->with('message', 'La aplicación ya se encuentra instalada.');
         }
 
