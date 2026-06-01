@@ -66,8 +66,8 @@ Abre el archivo `.env` con un editor de texto y configura las siguientes propied
 
    Puedes ver tu ruta absoluta ejecutando el archivo `rutas.php` en tu navegador (ej: `https://tudominio.com/rutas.php`).
 
-   > [!WARNING]
-   > **NOTA: Por seguridad, elimina el archivo `rutas.php` de tu servidor una vez hayas configurado la ruta correcta.**
+> [!WARNING]
+> **NOTA: Por seguridad, elimina el archivo `rutas.php` de tu servidor una vez hayas configurado la ruta correcta.**
 
    ```env
    database.default.database = '/var/www/proxmox-alert/writable/database.db'
