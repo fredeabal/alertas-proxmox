@@ -94,7 +94,7 @@ class AuthGroups extends ShieldAuthGroups
             'ai.manage',
         ],
         'user' => [
-            'empresas.view',
+            // Sin permisos por defecto, se asignan granularmente
         ],
     ];
 }
