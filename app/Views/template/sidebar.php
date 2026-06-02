@@ -53,11 +53,11 @@
         </li>
         <?php endif; ?>
 
-        <?php if (auth()->user()->can('email.manage')): ?>
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="<?= base_url('alerts-config') ?>" aria-expanded="false">
-            <span>
-              <i class="ti ti-bell"></i>
+        <?php if (auth()->user()->can('alertas.view')): ?>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="<?= base_url('alert-settings') ?>" aria-expanded="false">
+                    <span>
+                        <i class="ti ti-bell"></i>
             </span>
             <span class="hide-menu">Alertas</span>
           </a>

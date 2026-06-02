@@ -7,9 +7,9 @@ Manual operativo y técnico para desplegar, configurar y usar **Proxmox Alert**.
 ## Tabla de contenidos
 - [1. Descripción](#1-descripción)
 - [2. Requisitos](#2-requisitos)
-- [3. Instalación](#3-instalación)
+- [3. Instalación y Despliegue Manual (Recomendado)](#3-instalación-y-despliegue-manual-recomendado)
 - [4. Primer acceso](#4-primer-acceso)
-- [5. Configuración SMTP](#5-configuración-smtp)
+- [5. Configuración de Canales de Alerta (Email, Telegram, Slack)](#5-configuración-de-canales-de-alerta-email-telegram-slack)
 - [6. Gestión de empresas](#6-gestión-de-empresas)
 - [7. Integración con Proxmox (Webhook)](#7-integración-con-proxmox-webhook)
 - [8. Gestión de alertas](#8-gestión-de-alertas)
@@ -66,8 +66,8 @@ Abre el archivo `.env` con un editor de texto y configura las siguientes propied
 
    Puedes ver tu ruta absoluta ejecutando el archivo `rutas.php` en tu navegador (ej: `https://tudominio.com/rutas.php`).
 
-> [!CAUTION]
-> **NOTA: Por seguridad, elimina el archivo `rutas.php` de tu servidor una vez hayas configurado la ruta correcta.**
+   > [!CAUTION]
+   > **NOTA: Por seguridad, elimina el archivo `rutas.php` de tu servidor una vez hayas configurado la ruta correcta.**
 
    ```env
    database.default.database = '/var/www/proxmox-alert/writable/database.db'
