@@ -75,7 +75,7 @@
                         
                         <div class="row">
                             <!-- Categoría: Usuarios -->
-                            <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="col-md-6 col-lg-3 mb-4">
                                 <div class="card shadow-none border h-100">
                                     <div class="card-header bg-light-primary py-2 px-3">
                                         <h6 class="card-title fw-semibold text-primary mb-0">
@@ -85,16 +85,18 @@
                                     <div class="card-body p-3">
                                         <?php 
                                         $userPerms = [
-                                            'users.view'   => 'Ver',
-                                            'users.create' => 'Crear',
-                                            'users.edit'   => 'Editar',
-                                            'users.delete' => 'Borrar'
+                                            'users.view'   => '[Switch] Ver',
+                                            'users.create' => '[Switch] Crear',
+                                            'users.edit'   => '[Switch] Editar',
+                                            'users.delete' => '[Switch] Borrar'
                                         ];
                                         foreach ($userPerms as $perm => $label): 
                                         ?>
-                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0">
-                                                <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>">
-                                                <label class="form-check-label fw-semibold text-dark" for="perm_<?= str_replace('.', '_', $perm) ?>"><?= $label ?></label>
+                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0 perm-wrapper">
+                                                <input class="form-check-input ms-0 me-2 perm-checkbox" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>">
+                                                <label class="form-check-label fw-semibold text-dark perm-label" for="perm_<?= str_replace('.', '_', $perm) ?>">
+                                                    <?= $label ?> <span class="badge-role-placeholder"></span>
+                                                </label>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
@@ -102,7 +104,7 @@
                             </div>
 
                             <!-- Categoría: Empresas -->
-                            <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="col-md-6 col-lg-3 mb-4">
                                 <div class="card shadow-none border h-100">
                                     <div class="card-header bg-light-primary py-2 px-3">
                                         <h6 class="card-title fw-semibold text-primary mb-0">
@@ -112,40 +114,71 @@
                                     <div class="card-body p-3">
                                         <?php 
                                         $empPerms = [
-                                            'empresas.view'   => 'Ver',
-                                            'empresas.create' => 'Crear',
-                                            'empresas.edit'   => 'Editar',
-                                            'empresas.delete' => 'Borrar'
+                                            'empresas.view'   => '[Switch] Ver',
+                                            'empresas.create' => '[Switch] Crear',
+                                            'empresas.edit'   => '[Switch] Editar',
+                                            'empresas.delete' => '[Switch] Borrar'
                                         ];
                                         foreach ($empPerms as $perm => $label): 
                                         ?>
-                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0">
-                                                <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>">
-                                                <label class="form-check-label fw-semibold text-dark" for="perm_<?= str_replace('.', '_', $perm) ?>"><?= $label ?></label>
+                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0 perm-wrapper">
+                                                <input class="form-check-input ms-0 me-2 perm-checkbox" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>">
+                                                <label class="form-check-label fw-semibold text-dark perm-label" for="perm_<?= str_replace('.', '_', $perm) ?>">
+                                                    <?= $label ?> <span class="badge-role-placeholder"></span>
+                                                </label>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Categoría: SMTP -->
-                            <div class="col-md-6 col-lg-4 mb-4">
+                            <!-- Categoría: Canales de Alerta -->
+                            <div class="col-md-6 col-lg-3 mb-4">
                                 <div class="card shadow-none border h-100">
                                     <div class="card-header bg-light-primary py-2 px-3">
                                         <h6 class="card-title fw-semibold text-primary mb-0">
-                                            <i class="ti ti-settings fs-5 me-2"></i> Configuración SMTP
+                                            <i class="ti ti-bell fs-5 me-2"></i> Canales de Alerta
                                         </h6>
                                     </div>
                                     <div class="card-body p-3">
                                         <?php 
                                         $sysPerms = [
-                                            'email.manage'  => 'Gestionar Email'
+                                            'email.manage'  => '[Switch] Gestionar'
                                         ];
                                         foreach ($sysPerms as $perm => $label): 
                                         ?>
-                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0">
-                                                <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>">
-                                                <label class="form-check-label fw-semibold text-dark" for="perm_<?= str_replace('.', '_', $perm) ?>"><?= $label ?></label>
+                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0 perm-wrapper">
+                                                <input class="form-check-input ms-0 me-2 perm-checkbox" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>">
+                                                <label class="form-check-label fw-semibold text-dark perm-label" for="perm_<?= str_replace('.', '_', $perm) ?>">
+                                                    <?= $label ?> <span class="badge-role-placeholder"></span>
+                                                </label>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Categoría: Inteligencia Artificial -->
+                            <div class="col-md-6 col-lg-3 mb-4">
+                                <div class="card shadow-none border h-100">
+                                    <div class="card-header bg-light-primary py-2 px-3">
+                                        <h6 class="card-title fw-semibold text-primary mb-0">
+                                            <i class="ti ti-cpu fs-5 me-2"></i> Inteligencia Artificial
+                                        </h6>
+                                    </div>
+                                    <div class="card-body p-3">
+                                        <?php 
+                                        $aiPerms = [
+                                            'ai.view'   => '[Switch] Ver',
+                                            'ai.manage' => '[Switch] Gestionar'
+                                        ];
+                                        foreach ($aiPerms as $perm => $label): 
+                                        ?>
+                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0 perm-wrapper">
+                                                <input class="form-check-input ms-0 me-2 perm-checkbox" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>">
+                                                <label class="form-check-label fw-semibold text-dark perm-label" for="perm_<?= str_replace('.', '_', $perm) ?>">
+                                                    <?= $label ?> <span class="badge-role-placeholder"></span>
+                                                </label>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
@@ -176,4 +209,53 @@ function togglePassword() {
     const input = document.getElementById('tb-pwd');
     input.type = input.type === 'password' ? 'text' : 'password';
 }
+
+// ---------------------------------------------------------------------
+// Lógica de Sincronización Dinámica de Permisos
+// ---------------------------------------------------------------------
+const matrix = <?= json_encode(config('AuthGroups')->matrix) ?>;
+
+function updatePermissions() {
+    const selectedGroup = document.getElementById('tb-group').value;
+    const groupPerms = matrix[selectedGroup] || [];
+    
+    document.querySelectorAll('.perm-checkbox').forEach(cb => {
+        const perm = cb.value;
+        let isInherited = false;
+        
+        for (const pattern of groupPerms) {
+            if (pattern === perm || (pattern.endsWith('.*') && perm.startsWith(pattern.slice(0, -2)))) {
+                isInherited = true;
+                break;
+            }
+        }
+        
+        const wrapper = cb.closest('.perm-wrapper');
+        const label = wrapper.querySelector('.perm-label');
+        const placeholder = wrapper.querySelector('.badge-role-placeholder');
+        
+        if (isInherited) {
+            cb.checked = true;
+            cb.disabled = true;
+            wrapper.classList.add('opacity-75');
+            label.classList.remove('text-dark');
+            label.classList.add('text-muted');
+            placeholder.innerHTML = '<span class="badge bg-light-primary text-primary ms-1 px-2 py-1" style="font-size:10px;">Rol</span>';
+            cb.setAttribute('title', 'Este permiso proviene del rol asignado');
+        } else {
+            if (cb.disabled) {
+                cb.checked = false;
+                cb.disabled = false;
+                cb.removeAttribute('title');
+            }
+            wrapper.classList.remove('opacity-75');
+            label.classList.remove('text-muted');
+            label.classList.add('text-dark');
+            placeholder.innerHTML = '';
+        }
+    });
+}
+
+document.getElementById('tb-group').addEventListener('change', updatePermissions);
+document.addEventListener('DOMContentLoaded', updatePermissions);
 </script>
