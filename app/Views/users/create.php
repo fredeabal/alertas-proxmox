@@ -140,9 +140,7 @@
                                         <?php 
                                         $sysPerms = [
                                             'alertas.view'   => 'Ver',
-                                            'alertas.create' => 'Crear',
-                                            'alertas.edit'   => 'Editar',
-                                            'alertas.delete' => 'Borrar'
+                                            'alertas.manage' => 'Gestionar'
                                         ];
                                         foreach ($sysPerms as $perm => $label): 
                                         ?>
