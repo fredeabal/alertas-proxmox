@@ -47,12 +47,12 @@ $routes->group('alerts', ['namespace' => 'App\Controllers', 'filter' => 'session
 
 // Configuración de Alertas (SMTP, Telegram, Slack)
 $routes->group('alerts-config', ['namespace' => 'App\Controllers', 'filter' => 'session'], function($routes) {
-    $routes->get('/', 'AlertSettingsController::index', ['filter' => 'group:admin,superadmin']);
-    $routes->post('store', 'AlertSettingsController::store', ['filter' => 'group:admin,superadmin']);
-    $routes->post('test-email', 'AlertSettingsController::testEmail', ['filter' => 'group:admin,superadmin']);
-    $routes->post('test-telegram', 'AlertSettingsController::testTelegram', ['filter' => 'group:admin,superadmin']);
-    $routes->post('test-slack', 'AlertSettingsController::testSlack', ['filter' => 'group:admin,superadmin']);
-    $routes->post('test-discord', 'AlertSettingsController::testDiscord', ['filter' => 'group:admin,superadmin']);
+    $routes->get('/', 'AlertSettingsController::index', ['filter' => 'permission:alertas.manage']);
+    $routes->post('store', 'AlertSettingsController::store', ['filter' => 'permission:alertas.manage']);
+    $routes->post('test-email', 'AlertSettingsController::testEmail', ['filter' => 'permission:alertas.manage']);
+    $routes->post('test-telegram', 'AlertSettingsController::testTelegram', ['filter' => 'permission:alertas.manage']);
+    $routes->post('test-slack', 'AlertSettingsController::testSlack', ['filter' => 'permission:alertas.manage']);
+    $routes->post('test-discord', 'AlertSettingsController::testDiscord', ['filter' => 'permission:alertas.manage']);
 });
 
 // Configuración de IA

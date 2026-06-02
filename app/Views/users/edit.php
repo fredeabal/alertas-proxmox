@@ -154,7 +154,6 @@
                                     <div class="card-body p-3">
                                         <?php 
                                         $sysPerms = [
-                                            'alertas.view'   => 'Ver',
                                             'alertas.manage' => 'Gestionar'
                                         ];
                                         foreach ($sysPerms as $perm => $label): 
@@ -186,7 +185,6 @@
                                     <div class="card-body p-3">
                                         <?php 
                                         $aiPerms = [
-                                            'ai.view'   => 'Ver',
                                             'ai.manage' => 'Gestionar'
                                         ];
                                         foreach ($aiPerms as $perm => $label): 

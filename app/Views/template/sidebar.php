@@ -53,9 +53,9 @@
         </li>
         <?php endif; ?>
 
-        <?php if (auth()->user()->can('alertas.view')): ?>
+        <?php if (auth()->user()->can('alertas.manage')): ?>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="<?= base_url('alert-settings') ?>" aria-expanded="false">
+                <a class="sidebar-link" href="<?= base_url('alerts-config') ?>" aria-expanded="false">
                     <span>
                         <i class="ti ti-bell"></i>
             </span>
@@ -64,7 +64,7 @@
         </li>
         <?php endif; ?>
 
-        <?php if (auth()->user()->can('ai.view')): ?>
+        <?php if (auth()->user()->can('ai.manage')): ?>
         <li class="sidebar-item">
           <a class="sidebar-link" href="<?= base_url('ai') ?>" aria-expanded="false">
             <span>
