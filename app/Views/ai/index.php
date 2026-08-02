@@ -97,7 +97,7 @@
                                 <button type="submit" formaction="<?= base_url('ai/test') ?>" class="btn btn-warning text-white px-4 d-inline-flex align-items-center justify-content-center" id="test-btn">
                                     <i class="ti ti-wand me-2 fs-4"></i> Probar
                                 </button>
-                                <a href="<?= base_url() ?>" class="btn btn-outline-danger px-4 d-inline-flex align-items-center justify-content-center">
+                                <a href="<?= base_url() ?>" class="btn btn-danger px-4 d-inline-flex align-items-center justify-content-center">
                                     <i class="ti ti-x me-2 fs-4"></i> Cancelar
                                 </a>
                             </div>
