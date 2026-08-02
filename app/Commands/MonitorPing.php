@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Commands;
 
+use CodeIgniter\CLI\BaseCommand;
+use CodeIgniter\CLI\CLI;
 use App\Models\AlertModel;
 use App\Models\CompanyModel;
-use CodeIgniter\Exceptions\PageNotFoundException;
 
-class MonitoringController extends BaseController
+class MonitorPing extends BaseCommand
 {
-    // ---------------------------------------------------------------------
-    // Ejecutar chequeo masivo de ping para empresas activas (endpoint cron)
-    // ---------------------------------------------------------------------
-    public function pingCheck(string $token)
+    protected $group       = 'Monitoring';
+    protected $name        = 'monitor:ping';
+    protected $description = 'Ejecuta el chequeo masivo de ping para empresas activas.';
+
+    public function run(array $params)
     {
-        $expectedToken = (string) env('cron.pingToken');
-        if ($expectedToken === '' || ! hash_equals($expectedToken, $token)) {
-            throw PageNotFoundException::forPageNotFound();
-        }
+        CLI::write("Iniciando monitoreo de ping...", "yellow");
 
         $companyModel = new CompanyModel();
         $alertModel = new AlertModel();
@@ -27,15 +26,13 @@ class MonitoringController extends BaseController
             ->where('proxmox_host !=', '')
             ->findAll();
 
-        $summary = [
-            'total' => count($empresas),
-            'ok' => 0,
-            'failed' => 0,
-            'alerts_created' => 0,
-            'alerts_skipped' => 0,
-            'alerts_resolved' => 0,
-            'checked_at' => date('c'),
-        ];
+        $total = count($empresas);
+        CLI::write("Empresas activas encontradas: {$total}", "cyan");
+
+        if ($total === 0) {
+            CLI::write("No hay empresas activas con host configurado.", "green");
+            return;
+        }
 
         foreach ($empresas as $empresa) {
             $host = trim((string) ($empresa->proxmox_host ?? ''));
@@ -43,12 +40,16 @@ class MonitoringController extends BaseController
                 continue;
             }
 
+            CLI::write("Haciendo ping a {$empresa->nombre} ({$host})...", "yellow");
+
             [$isReachable, $output] = $this->runPing($host);
 
-            // Extraer latencia si el host responde
             $latency = null;
             if ($isReachable) {
                 $latency = $this->parseLatency($output);
+                CLI::write("  -> ONLINE - Latencia: " . ($latency !== null ? "{$latency} ms" : "desconocida"), "green");
+            } else {
+                CLI::write("  -> OFFLINE", "red");
             }
 
             // Registrar el log de disponibilidad y latencia
@@ -61,14 +62,12 @@ class MonitoringController extends BaseController
             ]);
 
             if ($isReachable) {
-                $summary['ok']++;
                 if ($this->resolveOpenPingAlert($alertModel, (int) $empresa->id, $host)) {
-                    $summary['alerts_resolved']++;
+                    CLI::write("  -> Alerta resuelta y notificada.", "green");
                 }
                 continue;
             }
 
-            $summary['failed']++;
             if ($this->shouldCreatePingAlert($alertModel, (int) $empresa->id, $host)) {
                 $downAt = date('Y-m-d H:i:s');
                 $alertaData = [
@@ -88,14 +87,13 @@ class MonitoringController extends BaseController
                 ];
 
                 if ($alertModel->insert($alertaData)) {
-                    $summary['alerts_created']++;
+                    CLI::write("  -> Nueva alerta creada en base de datos.", "red");
 
                     // Canalizar alertas a través del servicio de notificaciones global
                     $notificationService = new \App\Libraries\NotificationService();
                     $notificationService->sendAll($empresa, $alertaData);
+                    CLI::write("  -> Notificaciones enviadas.", "cyan");
                 }
-            } else {
-                $summary['alerts_skipped']++;
             }
         }
 
@@ -103,17 +101,11 @@ class MonitoringController extends BaseController
         $pingLogModel = new \App\Models\PingLogModel();
         $sevenDaysAgo = date('Y-m-d H:i:s', strtotime('-7 days'));
         $pingLogModel->where('created_at <', $sevenDaysAgo)->delete();
+        CLI::write("Limpieza de logs antiguos completada.", "green");
 
-        return $this->response->setJSON([
-            'ok' => true,
-            'message' => 'Ping check ejecutado',
-            'summary' => $summary,
-        ]);
+        CLI::write("Chequeo de ping completado correctamente.", "green");
     }
 
-    // ---------------------------------------------------------------------
-    // Ejecutar ping a un host y devolver estado/salida
-    // ---------------------------------------------------------------------
     private function runPing(string $host): array
     {
         $escapedHost = escapeshellarg($host);
@@ -128,9 +120,6 @@ class MonitoringController extends BaseController
         return [$exitCode === 0, implode("\n", $output)];
     }
 
-    // ---------------------------------------------------------------------
-    // Evitar alertas duplicadas mientras exista una alerta abierta
-    // ---------------------------------------------------------------------
     private function shouldCreatePingAlert(AlertModel $alertModel, int $empresaId, string $host): bool
     {
         $existing = $alertModel
@@ -142,9 +131,6 @@ class MonitoringController extends BaseController
         return $existing === null;
     }
 
-    // ---------------------------------------------------------------------
-    // Resolver alerta abierta de ping cuando el host vuelve a responder
-    // ---------------------------------------------------------------------
     private function resolveOpenPingAlert(AlertModel $alertModel, int $empresaId, string $host): bool
     {
         $db = \Config\Database::connect();
@@ -169,19 +155,12 @@ class MonitoringController extends BaseController
         return true;
     }
 
-
-
-    // ---------------------------------------------------------------------
-    // Extraer latencia media del comando ping (soporta Darwin y Linux)
-    // ---------------------------------------------------------------------
     private function parseLatency(string $output): ?float
     {
-        // 1. Intentar extraer latencia individual de respuesta del paquete (time=XX.XX ms)
         if (preg_match('/time=([0-9.]+)\s*ms/i', $output, $matches)) {
             return (float) $matches[1];
         }
 
-        // 2. Fallback: buscar latencia promedio en las estadísticas RTT (round-trip/rtt min/avg/max/stddev = .../avg/...)
         if (preg_match('/(?:round-trip|rtt)\s+\S+\s+=\s+[0-9.]+\/([0-9.]+)\/[0-9.]+\/[0-9.]+/i', $output, $matches)) {
             return (float) $matches[1];
         }

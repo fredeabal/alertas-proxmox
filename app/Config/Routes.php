@@ -66,8 +66,6 @@ $routes->group('ai', ['namespace' => 'App\Controllers', 'filter' => 'session'], 
 // Webhooks (Públicos o con validación de token propia)
 $routes->match(['GET', 'POST'], 'webhook/proxmox/(:any)', 'WebhookController::proxmox/$1');
 
-// Endpoint interno para cron (token en .env)
-$routes->get('monitoring/ping-check/(:segment)', 'MonitoringController::pingCheck/$1');
 
 // Mantenimiento (Configuración - requieren permisos)
 $routes->group('settings', ['namespace' => 'App\Controllers', 'filter' => ['session', 'permission:admin.access']], static function ($routes) {
