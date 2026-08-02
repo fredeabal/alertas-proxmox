@@ -1,4 +1,4 @@
-# ProxmoxAlert - Manual de Uso (v1.3)
+# ProxmoxAlert - Manual de Uso (v1.2)
 
 Manual operativo y técnico para desplegar, configurar y usar **Proxmox Alert**.
 
@@ -38,40 +38,14 @@ Capacidades principales:
 - **Composer**
 - Extensiones PHP habituales para CI4 (`intl`, `mbstring`, `json`, `pdo_sqlite`, etc.)
 
-## 🚀 Instalación en 1 Paso
+## 3. Instalación y Despliegue Manual (Recomendado)
 
-En cualquier servidor **Debian 11/12** o **Ubuntu 20.04 / 22.04 / 24.04** limpio con acceso root (VPS, máquina virtual o nodo Proxmox), ejecuta el siguiente comando en tu terminal:
+Esta aplicación viene pre-empaquetada con todas sus dependencias (carpeta `vendor/` ya incluida), por lo que **no necesitas tener Composer instalado** en tu servidor. Sigue estos sencillos pasos para desplegar el panel:
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/fredeabal/alertas-proxmox/main/install.sh -o /tmp/install.sh && bash /tmp/install.sh
-```
-
-El script se encargará automáticamente de todo: dependencias del sistema, servidor web Nginx, PHP-FPM, base de datos SQLite, migraciones y usuario administrador inicial.
-
-> **¿Por qué este formato?** El método `bash <(curl ...)` puede no funcionar en algunos entornos como Proxmox VE, contenedores LXC o shells restringidas. El comando anterior descarga primero y luego ejecuta, siendo compatible con cualquier sistema.
-
----
-
-## 🔄 Actualizar a la última versión
-
-Para actualizar un servidor Proxmox Alert existente a la última versión disponible (sin perder tus configuraciones, alertas o bases de datos), simplemente ejecuta:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/fredeabal/alertas-proxmox/main/update.sh -o /tmp/update.sh && bash /tmp/update.sh
-```
-
-Durante la actualización, el script te preguntará si también quieres **cambiar la URL o dominio** de la aplicación.
-
----
-
-## ⚙️ Despliegue Manual (Alternativo)
-
-Si prefieres realizar la instalación manualmente paso a paso, sigue estas instrucciones:
-
-#### Paso 1: Clonar o descargar el código
+### Paso 1: Clonar o descargar el código
 Clona este repositorio o descarga el archivo `.zip` y colócalo en el directorio de tu servidor web (ej: `/var/www/proxmox-alert/`).
 
-#### Paso 2: Crear y configurar tu archivo `.env`
+### Paso 2: Crear y configurar tu archivo `.env`
 Duplica el archivo de plantilla `env` y llámalo `.env` en la raíz del proyecto:
 ```bash
 cp env .env
@@ -114,7 +88,7 @@ Abre el archivo `.env` con un editor de texto y configura las siguientes propied
    cron.pingToken = 'TU_TOKEN_CRON_SEGURO'
    ```
 
-#### Paso 3: Permisos de Directorios
+### Paso 3: Permisos de Directorios
 ```bash
 # Asignar permisos de lectura y escritura
 sudo chmod -R 775 /var/www/proxmox-alert/writable
