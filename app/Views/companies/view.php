@@ -374,7 +374,7 @@
                         </div>
                         <?php endif; ?>
 
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="min-height: 200px;">
                             <table class="table table-hover align-middle mb-0" id="alertas-table">
                                 <thead>
                                     <tr class="text-muted fw-semibold">
