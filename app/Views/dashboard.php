@@ -1,3 +1,12 @@
+<link rel="stylesheet" href="<?= base_url('assets/libs/dragula/dist/dragula.min.css') ?>">
+<style>
+    .gu-mirror { position: fixed !important; margin: 0 !important; z-index: 9999 !important; opacity: 0.8; }
+    .gu-hide { display: none !important; }
+    .gu-unselectable { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; }
+    .gu-transit { opacity: 0.2; }
+    .company-card-container { cursor: grab; }
+    .company-card-container:active { cursor: grabbing; }
+</style>
 <div class="container-fluid">
     <div class="card shadow-none position-relative overflow-hidden mb-4">
         <div class="card-body px-4 py-3">
@@ -15,7 +24,7 @@
         </div>
     </div>
 
-    <div class="row g-4">
+    <div class="row g-4" id="draggable-area">
         <?php foreach ($empresas as $empresa): ?>
             <div class="col-12 col-md-6 col-lg-3 d-flex align-items-stretch company-card-container" data-id="<?= $empresa->id ?>">
                 <a href="<?= base_url('companies/view/' . $empresa->id) ?>" 
@@ -105,6 +114,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ejecutar cada 30 segundos (30s)
     setInterval(refreshDashboard, 30000);
 });
+</script>
+<script src="<?= base_url('assets/libs/dragula/dist/dragula.min.js') ?>"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dragArea = document.getElementById('draggable-area');
+        if (dragArea) {
+            dragula([dragArea]);
+        }
+    });
 </script>
 
 

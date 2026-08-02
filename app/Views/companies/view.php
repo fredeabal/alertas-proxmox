@@ -299,23 +299,26 @@
                             <h5 class="card-title fw-semibold mb-1">Historial de Notificaciones</h5>
                             <p class="card-subtitle mb-0 d-none d-sm-block">Gestión de eventos detectados por Proxmox</p>
                         </div>
-                        <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <!-- Buscador Premium -->
-                            <div class="position-relative buscador-alertas-wrapper">
-                                <input type="text" id="alerts-search-input" class="form-control form-control-sm ps-5 pe-4" 
-                                       placeholder="Buscar alertas..." style="border-radius: 8px; width: 220px; font-size: 0.85rem; height: 35px;" 
-                                       value="<?= esc($current_search ?? '') ?>">
-                                <i class="ti ti-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted fs-5"></i>
-                                <?php if (!empty($current_search)): ?>
-                                    <a href="<?= base_url('companies/view/' . $empresa->id . (empty($current_severity) ? '' : '?severity=' . $current_severity)) ?>" 
-                                       class="position-absolute top-50 end-0 translate-middle-y me-2 text-muted text-decoration-none">
-                                        <i class="ti ti-x fs-4"></i>
-                                    </a>
-                                <?php endif; ?>
-                            </div>
+                        <div class="d-flex align-items-center gap-2">
                             <div class="badge bg-white text-dark border fw-semibold fs-2 p-2 px-3 h-100 d-flex align-items-center justify-content-center" style="height: 35px !important; border-radius: 8px;">
                                 Total: <?= $pager->getTotal() ?> eventos
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Buscador Premium -->
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="position-relative w-100">
+                            <input type="text" id="alerts-search-input" class="form-control form-control-sm ps-5 pe-4" 
+                                   placeholder="Buscar alertas..." style="border-radius: 8px; font-size: 0.85rem; height: 38px;" 
+                                   value="<?= esc($current_search ?? '') ?>">
+                            <i class="ti ti-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted fs-5"></i>
+                            <?php if (!empty($current_search)): ?>
+                                <a href="<?= base_url('companies/view/' . $empresa->id . (empty($current_severity) ? '' : '?severity=' . $current_severity)) ?>" 
+                                   class="position-absolute top-50 end-0 translate-middle-y me-2 text-muted text-decoration-none">
+                                    <i class="ti ti-x fs-4"></i>
+                                </a>
+                            <?php endif; ?>
                         </div>
                     </div>
 

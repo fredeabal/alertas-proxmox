@@ -27,7 +27,7 @@
         <div class="card-body">
             <!-- Buscador de Usuarios Premium -->
             <div class="d-flex align-items-center mb-4">
-                <div class="position-relative w-100" style="max-width: 300px;">
+                <div class="position-relative w-100">
                     <input type="text" id="user-search" class="form-control ps-5" placeholder="Buscar usuario..." style="border-radius: 8px; font-size: 0.85rem; height: 38px;">
                     <i class="ti ti-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted fs-5"></i>
                 </div>
