@@ -40,8 +40,30 @@ echo -e "${NC}"
 
 # 2. Detectar IP pública o interfaz de red del servidor
 SERVER_IP=$(hostname -I | awk '{print $1}')
-read -p "👉 Ingresa la IP o Dominio del servidor [Predeterminado: ${SERVER_IP}]: " INPUT_DOMAIN
-DOMAIN=${INPUT_DOMAIN:-$SERVER_IP}
+read -p "👉 Ingresa la IP o Dominio del servidor (con o sin http/https) [Predeterminado: ${SERVER_IP}]: " INPUT_DOMAIN
+INPUT_DOMAIN=${INPUT_DOMAIN:-$SERVER_IP}
+INPUT_DOMAIN=$(echo "$INPUT_DOMAIN" | xargs)
+INPUT_DOMAIN="${INPUT_DOMAIN%/}"
+
+if [[ ! "$INPUT_DOMAIN" =~ ^https?:// ]]; then
+    if [[ "$INPUT_DOMAIN" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        DOMAIN="http://${INPUT_DOMAIN}/"
+    else
+        echo -e "👉 Has ingresado un dominio sin protocolo (http/https)."
+        read -p "❓ ¿Deseas configurar la aplicación bajo HTTPS (Recomendado)? [S/n]: " USE_HTTPS
+        USE_HTTPS=$(echo "$USE_HTTPS" | tr '[:lower:]' '[:upper:]')
+        if [[ "$USE_HTTPS" == "N" ]]; then
+            DOMAIN="http://${INPUT_DOMAIN}/"
+        else
+            DOMAIN="https://${INPUT_DOMAIN}/"
+        fi
+    fi
+else
+    DOMAIN="${INPUT_DOMAIN}/"
+fi
+
+# Extraer el host limpio para Nginx
+DOMAIN_HOST=$(echo "$DOMAIN" | sed -e 's|^[^/]*//||' -e 's|/.*$||' -e 's|:.*$||')
 
 echo -e "\n${YELLOW}⏳ [1/6] Actualizando paquetes e instalando dependencias del sistema...${NC}"
 export DEBIAN_FRONTEND=noninteractive
@@ -108,8 +130,8 @@ DB_PATH="${DB_DIR}/database.sqlite"
 # Ajustar valores en .env
 sed -i "s|# CI_ENVIRONMENT = .*|CI_ENVIRONMENT = development|g" .env
 sed -i "s|CI_ENVIRONMENT = .*|CI_ENVIRONMENT = development|g" .env
-sed -i "s|# app.baseURL = .*|app.baseURL = 'http://${DOMAIN}/'|g" .env
-sed -i "s|app.baseURL = .*|app.baseURL = 'http://${DOMAIN}/'|g" .env
+sed -i "s|# app.baseURL = .*|app.baseURL = '${DOMAIN}'|g" .env
+sed -i "s|app.baseURL = .*|app.baseURL = '${DOMAIN}'|g" .env
 sed -i "s|# database.default.hostname = .*|database.default.hostname = localhost|g" .env
 sed -i "s|# database.default.database = .*|database.default.database = ${DB_PATH}|g" .env
 sed -i "s|# database.default.DBDriver = .*|database.default.DBDriver = SQLite3|g" .env
@@ -137,7 +159,7 @@ PHP_SOCK="/var/run/php/php${PHP_VER}-fpm.sock"
 cat <<EOF > /etc/nginx/sites-available/proxmox-alert
 server {
     listen 80;
-    server_name ${DOMAIN};
+    server_name ${DOMAIN_HOST};
 
     root ${INSTALL_DIR}/public;
     index index.php index.html index.htm;

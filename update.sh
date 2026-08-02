@@ -42,7 +42,39 @@ fi
 
 cd "$INSTALL_DIR"
 
-# 3. Entrar a la carpeta e iniciar actualización
+# 3. Preguntar si desea actualizar el dominio
+CURRENT_URL=$(grep -oP "app\.baseURL\s*=\s*'\K[^']+" .env 2>/dev/null || echo "")
+echo -e "${YELLOW}🌐 URL actual en .env:${NC} ${CURRENT_URL:-No configurada}"
+read -p "❓ ¿Deseas actualizar la URL o dominio? [s/N]: " UPDATE_DOMAIN
+UPDATE_DOMAIN=$(echo "$UPDATE_DOMAIN" | tr '[:lower:]' '[:upper:]')
+
+if [[ "$UPDATE_DOMAIN" == "S" ]]; then
+    read -p "👉 Ingresa la nueva IP o Dominio (con o sin http/https): " INPUT_DOMAIN
+    INPUT_DOMAIN=$(echo "$INPUT_DOMAIN" | xargs)
+    INPUT_DOMAIN="${INPUT_DOMAIN%/}"
+
+    if [[ ! "$INPUT_DOMAIN" =~ ^https?:// ]]; then
+        if [[ "$INPUT_DOMAIN" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            NEW_DOMAIN="http://${INPUT_DOMAIN}/"
+        else
+            echo -e "👉 Has ingresado un dominio sin protocolo (http/https)."
+            read -p "❓ ¿Deseas configurar la aplicación bajo HTTPS (Recomendado)? [S/n]: " USE_HTTPS
+            USE_HTTPS=$(echo "$USE_HTTPS" | tr '[:lower:]' '[:upper:]')
+            if [[ "$USE_HTTPS" == "N" ]]; then
+                NEW_DOMAIN="http://${INPUT_DOMAIN}/"
+            else
+                NEW_DOMAIN="https://${INPUT_DOMAIN}/"
+            fi
+        fi
+    else
+        NEW_DOMAIN="${INPUT_DOMAIN}/"
+    fi
+
+    sed -i "s|app.baseURL = .*|app.baseURL = '${NEW_DOMAIN}'|g" .env
+    echo -e "${GREEN}✅ URL actualizada a: ${NEW_DOMAIN}${NC}"
+fi
+
+# 4. Entrar a la carpeta e iniciar actualización
 echo -e "${YELLOW}⏳ [1/5] Descargando última versión desde GitHub...${NC}"
 
 # Configurar Git para confiar en el directorio aunque pertenezca a www-data
@@ -73,6 +105,9 @@ chown -R www-data:www-data "$INSTALL_DIR"
 chmod -R 775 "$INSTALL_DIR/writable"
 chmod -R 775 "$INSTALL_DIR/public/uploads"
 
+# Restaurar el .env personalizado si git stash lo pisó
+# (el git reset --hard no toca .env porque está en .gitignore, así que es seguro)
+
 echo -e "${YELLOW}⏳ [5/5] Reiniciando servicios y limpiando caché (OPCache / Nginx)...${NC}"
 # Buscar dinámicamente cualquier versión de PHP-FPM instalada
 for service in $(systemctl list-unit-files --type=service 2>/dev/null | grep -oE 'php[0-9.]*-fpm\.service'); do
@@ -88,3 +123,4 @@ echo -e "${GREEN}===============================================================
 echo -e "Tu servidor Proxmox Alert ya está en la última versión."
 echo -e "Tus configuraciones, empresas y alertas están a salvo."
 echo -e "${BLUE}======================================================================${NC}"
+
