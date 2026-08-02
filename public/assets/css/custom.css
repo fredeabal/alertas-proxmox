@@ -40,6 +40,9 @@
     background-color: var(--bs-primary) !important;
     border-color: var(--bs-primary) !important;
 }
+.btn-primary.border-transparent {
+    border-color: transparent !important;
+}
 .btn-primary:hover {
     filter: brightness(0.9);
 }

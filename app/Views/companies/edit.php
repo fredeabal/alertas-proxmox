@@ -86,7 +86,7 @@
                             <label for="proxmox_host" class="form-label">IP/Hostname Proxmox</label>
                             <div class="input-group">
                                 <input type="text" class="form-control" id="proxmox_host" name="proxmox_host" placeholder="IP o hostname de Proxmox" aria-label="IP o hostname de Proxmox" aria-describedby="ping-btn" value="<?= old('proxmox_host', $empresa->proxmox_host ?? '') ?>">
-                                <button class="btn btn-outline-primary" type="button" id="ping-btn">Ping</button>
+                                <button class="btn btn-primary border-transparent" type="button" id="ping-btn">Ping</button>
                             </div>
                             <small id="ping-result" class="d-block mt-2 text-muted"></small>
                         </div>
