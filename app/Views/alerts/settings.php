@@ -205,15 +205,15 @@
                                     </div>
                                 </div>
 
-                                <div class="accordion mb-4" id="accordionTelegramHelp">
-                                    <div class="accordion-item border-0 shadow-sm rounded-3 overflow-hidden">
+                                <div class="accordion accordion-help mb-4" id="accordionTelegramHelp">
+                                    <div class="accordion-item border rounded-3 overflow-hidden">
                                         <h2 class="accordion-header" id="headingTelegramHelp">
-                                            <button class="accordion-button collapsed bg-light-primary text-primary fw-semibold p-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTelegramHelp" aria-expanded="false" aria-controls="collapseTelegramHelp">
+                                            <button class="accordion-button collapsed text-primary fw-semibold p-3 border-bottom-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTelegramHelp" aria-expanded="false" aria-controls="collapseTelegramHelp">
                                                 <i class="ti ti-help-circle fs-5 me-2"></i> ¿Cómo configurar el Bot de Telegram?
                                             </button>
                                         </h2>
                                         <div id="collapseTelegramHelp" class="accordion-collapse collapse" aria-labelledby="headingTelegramHelp" data-bs-parent="#accordionTelegramHelp">
-                                            <div class="accordion-body bg-white text-muted fs-3 p-4">
+                                            <div class="accordion-body text-muted fs-3 p-4 border-top-0">
                                                 <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-robot fs-4 me-1"></i> 1. Crear un Bot</h5>
                                                 <ol class="mb-4 ps-3">
                                                     <li class="mb-1">Abre Telegram y busca a <a href="https://t.me/BotFather" target="_blank" class="fw-semibold text-primary text-decoration-none">@BotFather</a>.</li>
@@ -240,7 +240,7 @@
                                                     <li class="mb-1">Los IDs de grupos son números negativos (ej. <code class="fs-2 text-primary px-2 py-1 rounded d-inline-block mt-2 mb-2">-1001234567890</code>).</li>
                                                 </ol>
 
-                                                <div class="bg-light-primary p-3 rounded-3 mt-4 border border-primary-subtle">
+                                                <div class="p-3 rounded-3 mt-4 border">
                                                     <p class="mb-2 fw-semibold text-primary fs-4"><i class="ti ti-bulb me-1"></i> Resumen Rápido</p>
                                                     <ul class="mb-0 ps-3 text-dark">
                                                         <li class="mb-1"><strong>Token del Bot:</strong> Identifica a tu bot (te lo da BotFather).</li>
@@ -285,15 +285,15 @@
                                     </div>
                                 </div>
 
-                                <div class="accordion mb-4" id="accordionSlackHelp">
-                                    <div class="accordion-item border-0 shadow-sm rounded-3 overflow-hidden">
+                                <div class="accordion accordion-help mb-4" id="accordionSlackHelp">
+                                    <div class="accordion-item border rounded-3 overflow-hidden">
                                         <h2 class="accordion-header" id="headingSlackHelp">
-                                            <button class="accordion-button collapsed bg-light-primary text-primary fw-semibold p-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSlackHelp" aria-expanded="false" aria-controls="collapseSlackHelp">
+                                            <button class="accordion-button collapsed text-primary fw-semibold p-3 border-bottom-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSlackHelp" aria-expanded="false" aria-controls="collapseSlackHelp">
                                                 <i class="ti ti-help-circle fs-5 me-2"></i> ¿Cómo configurar el Webhook de Slack?
                                             </button>
                                         </h2>
                                         <div id="collapseSlackHelp" class="accordion-collapse collapse" aria-labelledby="headingSlackHelp" data-bs-parent="#accordionSlackHelp">
-                                            <div class="accordion-body bg-white text-muted fs-3 p-4">
+                                            <div class="accordion-body text-muted fs-3 p-4 border-top-0">
                                                 <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-plug fs-4 me-1"></i> 1. Crear una App en Slack</h5>
                                                 <ol class="mb-4 ps-3">
                                                     <li class="mb-1">Ve a la consola web de Slack: <a href="https://api.slack.com/apps" target="_blank" class="fw-semibold text-primary text-decoration-none">Slack API Apps</a>.</li>
@@ -349,15 +349,15 @@
                                 </div>
                             </div>
 
-                            <div class="accordion mb-4" id="accordionDiscordHelp">
-                                <div class="accordion-item border-0 shadow-sm rounded-3 overflow-hidden">
+                            <div class="accordion accordion-help mb-4" id="accordionDiscordHelp">
+                                <div class="accordion-item border rounded-3 overflow-hidden">
                                     <h2 class="accordion-header" id="headingDiscordHelp">
-                                        <button class="accordion-button collapsed bg-light-primary text-primary fw-semibold p-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiscordHelp" aria-expanded="false" aria-controls="collapseDiscordHelp">
+                                        <button class="accordion-button collapsed text-primary fw-semibold p-3 border-bottom-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiscordHelp" aria-expanded="false" aria-controls="collapseDiscordHelp">
                                             <i class="ti ti-help-circle fs-5 me-2"></i> ¿Cómo configurar el Webhook de Discord?
                                         </button>
                                     </h2>
                                     <div id="collapseDiscordHelp" class="accordion-collapse collapse" aria-labelledby="headingDiscordHelp" data-bs-parent="#accordionDiscordHelp">
-                                        <div class="accordion-body bg-white text-muted fs-3 p-4">
+                                        <div class="accordion-body text-muted fs-3 p-4 border-top-0">
                                             <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-server fs-4 me-1"></i> 1. Ir a los Ajustes del Servidor</h5>
                                             <ol class="mb-4 ps-3">
                                                 <li class="mb-1">Abre Discord y selecciona tu servidor.</li>
