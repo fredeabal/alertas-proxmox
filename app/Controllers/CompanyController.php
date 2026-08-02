@@ -339,12 +339,41 @@ class CompanyController extends BaseController
         $output = [];
         $exitCode = 1;
         
+        // Lista de funciones de ejecución de comandos en orden de preferencia
+        $execFunctions = ['exec', 'popen', 'proc_open'];
+        $disabledFunctions = array_map('trim', explode(',', (string) ini_get('disable_functions')));
+        
         // Intentar exec() primero, si está disponible
-        if (function_exists('exec') && !in_array('exec', explode(',', ini_get('disable_functions')))) {
+        if (function_exists('exec') && !in_array('exec', $disabledFunctions)) {
             exec($command, $output, $exitCode);
+        } elseif (function_exists('popen') && !in_array('popen', $disabledFunctions)) {
+            // Alternativa con popen si exec está deshabilitado
+            $handle = popen($command, 'r');
+            $outputText = stream_get_contents($handle);
+            pclose($handle);
+            $output = explode("\n", trim($outputText));
+            // popen no retorna código de salida directamente, verificar con grep de salida
+            $exitCode = (strpos($outputText, 'bytes from') !== false) ? 0 : 1;
+        } elseif (function_exists('proc_open') && !in_array('proc_open', $disabledFunctions)) {
+            // Alternativa con proc_open
+            $descriptors = [
+                0 => ['pipe', 'r'],
+                1 => ['pipe', 'w'],
+                2 => ['pipe', 'w']
+            ];
+            $process = proc_open($command, $descriptors, $pipes);
+            if (is_resource($process)) {
+                $outputText = stream_get_contents($pipes[1]);
+                fclose($pipes[0]);
+                fclose($pipes[1]);
+                fclose($pipes[2]);
+                $exitCode = proc_close($process);
+                $output = explode("\n", trim($outputText));
+            } else {
+                $exitCode = -1;
+            }
         } else {
-            // Alternativa PHP pura usando fsockopen para verificar conectividad TCP
-            // Proxmox usa el puerto 8006 por defecto, pero probamos varios puertos comunes
+            // Último recurso: verificar TCP en puertos típicos de Proxmox
             $portsToTry = [8006, 443, 80, 22];
             $connected = false;
             
