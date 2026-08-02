@@ -340,12 +340,23 @@ class CompanyController extends BaseController
         $exitCode = 1;
         
         // Lista de funciones de ejecución de comandos en orden de preferencia
-        $execFunctions = ['exec', 'popen', 'proc_open'];
         $disabledFunctions = array_map('trim', explode(',', (string) ini_get('disable_functions')));
         
         // Intentar exec() primero, si está disponible
         if (function_exists('exec') && !in_array('exec', $disabledFunctions)) {
             exec($command, $output, $exitCode);
+        } elseif (function_exists('system') && !in_array('system', $disabledFunctions)) {
+            // Alternativa con system()
+            ob_start();
+            system($command, $exitCode);
+            $outputText = ob_get_clean();
+            $output = explode("\n", trim($outputText));
+        } elseif (function_exists('passthru') && !in_array('passthru', $disabledFunctions)) {
+            // Alternativa con passthru()
+            ob_start();
+            passthru($command, $exitCode);
+            $outputText = ob_get_clean();
+            $output = explode("\n", trim($outputText));
         } elseif (function_exists('popen') && !in_array('popen', $disabledFunctions)) {
             // Alternativa con popen si exec está deshabilitado
             $handle = popen($command, 'r');
