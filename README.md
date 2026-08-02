@@ -38,30 +38,31 @@ Capacidades principales:
 - **Composer**
 - Extensiones PHP habituales para CI4 (`intl`, `mbstring`, `json`, `pdo_sqlite`, etc.)
 
-## 3. Instalación y Despliegue
+## 🚀 Instalación en 1 Paso
 
-Dispones de dos alternativas para desplegar el panel en tu servidor Linux:
+En cualquier servidor **Debian 11/12** o **Ubuntu 20.04 / 22.04 / 24.04** limpio con acceso root (VPS o máquina virtual), ejecuta el siguiente comando en tu terminal:
 
-### Opción A: Instalación Automática (Recomendada)
-El proyecto incluye un script de instalación interactiva que se encarga de instalar los paquetes necesarios (Nginx, Git, PHP, etc.), descargar dependencias con Composer, configurar la base de datos SQLite y establecer el sitio web de Nginx de forma automatizada.
-
-Para iniciar la instalación, ejecuta el siguiente comando en tu terminal Linux (con privilegios de superusuario):
 ```bash
-sudo bash install.sh
+bash <(curl -s https://raw.githubusercontent.com/fredeabal/alertas-proxmox/main/install.sh)
 ```
-*El instalador te solicitará ingresar la IP o Dominio que usará el servidor, preparará el archivo de entorno `.env`, ejecutará las migraciones y sembrará la cuenta inicial de administrador.*
 
-#### Actualizaciones automáticas sin pérdida de datos
-Cuando desees actualizar a la última versión del repositorio conservando intacta tu configuración, base de datos y adjuntos, ejecuta:
+El script se encargará automáticamente de todo el proceso de instalación y configuración de dependencias, servidor web Nginx, base de datos SQLite y usuario administrador inicial.
+
+---
+
+## 🔄 Actualizar a la última versión
+
+Para actualizar un servidor Proxmox Alert existente a la última versión disponible (sin perder tus configuraciones, alertas o bases de datos), simplemente ejecuta:
+
 ```bash
-sudo bash update.sh
+bash <(curl -s https://raw.githubusercontent.com/fredeabal/alertas-proxmox/main/update.sh)
 ```
 
 ---
 
-### Opción B: Instalación y Despliegue Manual
+## ⚙️ Despliegue Manual (Alternativo)
 
-Esta aplicación viene pre-empaquetada con todas sus dependencias (carpeta `vendor/` ya incluida), por lo que **no necesitas tener Composer instalado** en tu servidor. Sigue estos sencillos pasos para desplegar el panel:
+Si prefieres realizar la instalación manualmente paso a paso, sigue estas instrucciones:
 
 #### Paso 1: Clonar o descargar el código
 Clona este repositorio o descarga el archivo `.zip` y colócalo en el directorio de tu servidor web (ej: `/var/www/proxmox-alert/`).
