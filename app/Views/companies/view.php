@@ -579,7 +579,7 @@ function submitBulkAction(action) {
         icon: isDelete ? 'warning' : 'question',
         showCancelButton: true,
         confirmButtonColor: isDelete ? '#e53935' : '#13deb9',
-        cancelButtonColor: '#6c757d',
+        cancelButtonColor: '#e53935',
         confirmButtonText: isDelete ? 'Sí, eliminar' : 'Sí, solucionar',
         cancelButtonText: 'Cancelar',
         reverseButtons: true

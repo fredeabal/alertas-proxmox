@@ -355,7 +355,7 @@
                                 <button type="submit" class="btn btn-primary font-medium px-4 d-inline-flex align-items-center justify-content-center">
                                     <i class="ti ti-device-floppy me-2 fs-4"></i> Actualizar
                                 </button>
-                                <a href="<?= base_url('users') ?>" class="btn btn-outline-primary px-4 d-inline-flex align-items-center justify-content-center">
+                                <a href="<?= base_url('users') ?>" class="btn btn-outline-danger px-4 d-inline-flex align-items-center justify-content-center">
                                     <i class="ti ti-x me-2 fs-4"></i> Cancelar
                                 </a>
                             </div>
