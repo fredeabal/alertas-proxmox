@@ -69,4 +69,16 @@ $routes->match(['GET', 'POST'], 'webhook/proxmox/(:any)', 'WebhookController::pr
 // Endpoint interno para cron (token en .env)
 $routes->get('monitoring/ping-check/(:segment)', 'MonitoringController::pingCheck/$1');
 
+// Mantenimiento (Configuración - requieren permisos)
+$routes->group('settings', ['namespace' => 'App\Controllers', 'filter' => ['session', 'permission:admin.access']], static function ($routes) {
+    $routes->get('maintenance', 'MaintenanceController::maintenance');
+    $routes->post('maintenance/clear-sessions', 'MaintenanceController::clearSessions');
+    $routes->post('maintenance/clear-debugbar', 'MaintenanceController::clearDebugbar');
+    $routes->post('maintenance/clear-logs', 'MaintenanceController::clearLogs');
+    $routes->post('maintenance/optimize-db', 'MaintenanceController::optimizeDb');
+    $routes->post('maintenance/clear-all', 'MaintenanceController::clearAll');
+    $routes->get('maintenance/backup/download', 'MaintenanceController::downloadBackup');
+    $routes->post('maintenance/backup/restore', 'MaintenanceController::restoreBackup');
+});
+
 service('auth')->routes($routes);

@@ -32,9 +32,8 @@
                     <i class="ti ti-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted fs-5"></i>
                 </div>
             </div>
-
             <div class="table-responsive">
-                <table class="table align-middle mb-0">
+                <table class="table align-middle mb-0 table-hover">
                     <thead>
                         <tr class="text-muted fw-semibold">
                             <th scope="col" class="ps-0">Usuario</th>
@@ -49,7 +48,7 @@
                     </thead>
                     <tbody class="border-top">
                         <?php foreach ($users as $user): ?>
-                            <tr>
+                            <tr class="clickable-row" data-href="<?= base_url('users/edit/' . $user->id) ?>" style="cursor: pointer;">
                                 <td class="ps-0">
                                     <div class="d-flex align-items-center">
                                         <?php 
@@ -81,7 +80,7 @@
                                 <?php if (auth()->user()->can('users.edit') || auth()->user()->can('users.delete')): ?>
                                 <td class="text-end pe-4">
                                     <div class="dropdown">
-                                        <a class="text-muted" href="javascript:void(0)" role="button" id="dropdownMenuLink-<?= $user->id ?>" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <a class="text-muted dropdown-toggle-nocaret" href="javascript:void(0)" role="button" id="dropdownMenuLink-<?= $user->id ?>" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="ti ti-dots-vertical fs-6"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink-<?= $user->id ?>">
@@ -90,9 +89,9 @@
                                                 <i class="ti ti-edit fs-4"></i> Editar
                                             </a>
                                             <?php endif; ?>
-
+ 
                                             <?php if (auth()->user()->can('users.delete') && $user->id != auth()->id()): ?>
-                                                <a class="dropdown-item d-flex align-items-center gap-2" href="javascript:void(0)" onclick="confirmDelete('<?= base_url('users/delete/' . $user->id) ?>')">
+                                                <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="javascript:void(0)" onclick="confirmDelete('<?= base_url('users/delete/' . $user->id) ?>')">
                                                     <i class="ti ti-trash fs-4"></i> Eliminar
                                                 </a>
                                             <?php endif; ?>
@@ -110,7 +109,7 @@
 </div>
 
 <script>
-// Búsqueda premium instantánea en cliente para usuarios
+// Búsqueda premium instantánea en cliente para usuarios y redirección al hacer clic
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('user-search');
     if (searchInput) {
@@ -135,5 +134,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // Redirección al hacer clic en la fila
+    document.querySelectorAll('.clickable-row').forEach(row => {
+        row.addEventListener('click', function(e) {
+            // No redirigir si se hace clic en botones, enlaces o dropdowns
+            if (e.target.closest('.dropdown') || e.target.closest('a') || e.target.closest('button')) {
+                return;
+            }
+            window.location = this.getAttribute('data-href');
+        });
+    });
 });
 </script>

@@ -73,6 +73,21 @@
           </a>
         </li>
         <?php endif; ?>
+
+        <?php if (auth()->user()->can('admin.access')): ?>
+        <li class="nav-small-cap mt-4">
+          <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+          <span class="hide-menu">Administración</span>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="<?= base_url('settings/maintenance') ?>" aria-expanded="false">
+            <span>
+              <i class="ti ti-tool"></i>
+            </span>
+            <span class="hide-menu">Mantenimiento</span>
+          </a>
+        </li>
+        <?php endif; ?>
         
       </ul>
     </nav>

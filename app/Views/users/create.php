@@ -72,108 +72,117 @@
                         </div>
 
                         <h5 class="mb-4 fw-semibold mt-2">Permisos del Sistema</h5>
-                        
-                        <div class="row">
-                            <!-- Categoría: Usuarios -->
-                            <div class="col-md-6 col-lg-3 mb-4">
-                                <div class="card shadow-none border h-100">
-                                    <div class="card-header bg-light-primary py-2 px-3">
-                                        <h6 class="card-title fw-semibold text-primary mb-0">
-                                            <i class="ti ti-users fs-5 me-2"></i> Gestión de Usuarios
-                                        </h6>
+                        <div class="card shadow-none border mb-4">
+                            <div class="card-body p-0">
+                                
+                                <!-- Categoría: Usuarios -->
+                                <div class="p-3 border-bottom d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                                    <div class="d-flex align-items-center gap-3 mb-3 mb-md-0">
+                                        <div class="p-2 bg-light-primary text-primary rounded d-flex align-items-center justify-content-center">
+                                            <i class="ti ti-users fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-semibold">Gestión de Usuarios</h6>
+                                            <small class="text-muted">Control total sobre los accesos y cuentas del sistema.</small>
+                                        </div>
                                     </div>
-                                    <div class="card-body p-3">
-                                        <?php 
-                                        $userPerms = [
-                                            'users.view'   => 'Ver',
-                                            'users.create' => 'Crear',
-                                            'users.edit'   => 'Editar',
-                                            'users.delete' => 'Borrar'
-                                        ];
-                                        foreach ($userPerms as $perm => $label): 
-                                        ?>
-                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0">
-                                                <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>">
-                                                <label class="form-check-label fw-semibold text-dark" for="perm_<?= str_replace('.', '_', $perm) ?>"><?= $label ?></label>
-                                            </div>
-                                        <?php endforeach; ?>
+                                    <div class="d-flex flex-wrap gap-4">
+                                        <div class="form-check form-switch d-flex align-items-center ps-0 mb-0">
+                                            <input class="form-check-input ms-0 me-2 category-trigger" type="checkbox" role="switch" id="cat_users" data-target="users">
+                                            <label class="form-check-label fw-semibold text-dark" for="cat_users">Habilitar Acceso</label>
+                                        </div>
+                                        <input type="checkbox" name="permissions[]" value="users.view" class="d-none" data-parent="users">
+                                        <input type="checkbox" name="permissions[]" value="users.create" class="d-none" data-parent="users">
+                                        <input type="checkbox" name="permissions[]" value="users.edit" class="d-none" data-parent="users">
+                                        <input type="checkbox" name="permissions[]" value="users.delete" class="d-none" data-parent="users">
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Categoría: Empresas -->
-                            <div class="col-md-6 col-lg-3 mb-4">
-                                <div class="card shadow-none border h-100">
-                                    <div class="card-header bg-light-primary py-2 px-3">
-                                        <h6 class="card-title fw-semibold text-primary mb-0">
-                                            <i class="ti ti-building-skyscraper fs-5 me-2"></i> Gestión de Empresas
-                                        </h6>
+                                <!-- Categoría: Empresas -->
+                                <div class="p-3 border-bottom d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                                    <div class="d-flex align-items-center gap-3 mb-3 mb-md-0">
+                                        <div class="p-2 bg-light-primary text-primary rounded d-flex align-items-center justify-content-center">
+                                            <i class="ti ti-building-skyscraper fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-semibold">Gestión de Empresas</h6>
+                                            <small class="text-muted">Administración completa de clientes y dominios.</small>
+                                        </div>
                                     </div>
-                                    <div class="card-body p-3">
-                                        <?php 
-                                        $empPerms = [
-                                            'empresas.view'   => 'Ver',
-                                            'empresas.create' => 'Crear',
-                                            'empresas.edit'   => 'Editar',
-                                            'empresas.delete' => 'Borrar'
-                                        ];
-                                        foreach ($empPerms as $perm => $label): 
-                                        ?>
-                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0">
-                                                <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>">
-                                                <label class="form-check-label fw-semibold text-dark" for="perm_<?= str_replace('.', '_', $perm) ?>"><?= $label ?></label>
-                                            </div>
-                                        <?php endforeach; ?>
+                                    <div class="d-flex flex-wrap gap-4">
+                                        <div class="form-check form-switch d-flex align-items-center ps-0 mb-0">
+                                            <input class="form-check-input ms-0 me-2 category-trigger" type="checkbox" role="switch" id="cat_empresas" data-target="empresas">
+                                            <label class="form-check-label fw-semibold text-dark" for="cat_empresas">Habilitar Acceso</label>
+                                        </div>
+                                        <input type="checkbox" name="permissions[]" value="empresas.view" class="d-none" data-parent="empresas">
+                                        <input type="checkbox" name="permissions[]" value="empresas.create" class="d-none" data-parent="empresas">
+                                        <input type="checkbox" name="permissions[]" value="empresas.edit" class="d-none" data-parent="empresas">
+                                        <input type="checkbox" name="permissions[]" value="empresas.delete" class="d-none" data-parent="empresas">
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Categoría: Canales de Alerta -->
-                            <div class="col-md-6 col-lg-3 mb-4">
-                                <div class="card shadow-none border h-100">
-                                    <div class="card-header bg-light-primary py-2 px-3">
-                                        <h6 class="card-title fw-semibold text-primary mb-0">
-                                            <i class="ti ti-bell fs-5 me-2"></i> Canales de Alerta
-                                        </h6>
+                                <!-- Categoría: Canales de Alerta -->
+                                <div class="p-3 border-bottom d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                                    <div class="d-flex align-items-center gap-3 mb-3 mb-md-0">
+                                        <div class="p-2 bg-light-primary text-primary rounded d-flex align-items-center justify-content-center">
+                                            <i class="ti ti-bell fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-semibold">Canales de Alerta</h6>
+                                            <small class="text-muted">Configuración de notificaciones (Mail, Telegram, Discord, etc).</small>
+                                        </div>
                                     </div>
-                                    <div class="card-body p-3">
-                                        <?php 
-                                        $sysPerms = [
-                                            'alertas.manage' => 'Gestionar'
-                                        ];
-                                        foreach ($sysPerms as $perm => $label): 
-                                        ?>
-                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0">
-                                                <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>">
-                                                <label class="form-check-label fw-semibold text-dark" for="perm_<?= str_replace('.', '_', $perm) ?>"><?= $label ?></label>
-                                            </div>
-                                        <?php endforeach; ?>
+                                    <div class="d-flex flex-wrap gap-4">
+                                        <div class="form-check form-switch d-flex align-items-center ps-0 mb-0">
+                                            <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="cat_alertas" class="category-trigger" data-target="alertas">
+                                            <label class="form-check-label fw-semibold text-dark" for="cat_alertas">Habilitar Acceso</label>
+                                        </div>
+                                        <input type="checkbox" name="permissions[]" value="alertas.view" class="d-none" data-parent="alertas">
+                                        <input type="checkbox" name="permissions[]" value="alertas.manage" class="d-none" data-parent="alertas">
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Categoría: Inteligencia Artificial -->
-                            <div class="col-md-6 col-lg-3 mb-4">
-                                <div class="card shadow-none border h-100">
-                                    <div class="card-header bg-light-primary py-2 px-3">
-                                        <h6 class="card-title fw-semibold text-primary mb-0">
-                                            <i class="ti ti-cpu fs-5 me-2"></i> Inteligencia Artificial
-                                        </h6>
+                                <!-- Categoría: Inteligencia Artificial -->
+                                <div class="p-3 border-bottom d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                                    <div class="d-flex align-items-center gap-3 mb-3 mb-md-0">
+                                        <div class="p-2 bg-light-primary text-primary rounded d-flex align-items-center justify-content-center">
+                                            <i class="ti ti-cpu fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-semibold">Inteligencia Artificial</h6>
+                                            <small class="text-muted">Ajustes y prompts del motor de IA.</small>
+                                        </div>
                                     </div>
-                                    <div class="card-body p-3">
-                                        <?php 
-                                        $aiPerms = [
-                                            'ai.manage' => 'Gestionar'
-                                        ];
-                                        foreach ($aiPerms as $perm => $label): 
-                                        ?>
-                                            <div class="form-check form-switch mb-2 d-flex align-items-center ps-0">
-                                                <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="perm_<?= str_replace('.', '_', $perm) ?>" name="permissions[]" value="<?= $perm ?>">
-                                                <label class="form-check-label fw-semibold text-dark" for="perm_<?= str_replace('.', '_', $perm) ?>"><?= $label ?></label>
-                                            </div>
-                                        <?php endforeach; ?>
+                                    <div class="d-flex flex-wrap gap-4">
+                                        <div class="form-check form-switch d-flex align-items-center ps-0 mb-0">
+                                            <input class="form-check-input ms-0 me-2 category-trigger" type="checkbox" role="switch" id="cat_ai" data-target="ai">
+                                            <label class="form-check-label fw-semibold text-dark" for="cat_ai">Habilitar Acceso</label>
+                                        </div>
+                                        <input type="checkbox" name="permissions[]" value="ai.view" class="d-none" data-parent="ai">
+                                        <input type="checkbox" name="permissions[]" value="ai.manage" class="d-none" data-parent="ai">
                                     </div>
                                 </div>
+
+                                <!-- Categoría: Mantenimiento -->
+                                <div class="p-3 d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                                    <div class="d-flex align-items-center gap-3 mb-3 mb-md-0">
+                                        <div class="p-2 bg-light-primary text-primary rounded d-flex align-items-center justify-content-center">
+                                            <i class="ti ti-tool fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-semibold">Mantenimiento del Sistema</h6>
+                                            <small class="text-muted">Limpieza profunda y respaldos de datos.</small>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-4">
+                                        <div class="form-check form-switch d-flex align-items-center ps-0 mb-0">
+                                            <input class="form-check-input ms-0 me-2 category-trigger" type="checkbox" role="switch" id="cat_maint" data-target="maint">
+                                            <label class="form-check-label fw-semibold text-dark" for="cat_maint">Habilitar Acceso</label>
+                                        </div>
+                                        <input type="checkbox" name="permissions[]" value="admin.access" class="d-none" data-parent="maint">
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
 
@@ -199,4 +208,16 @@ function togglePassword() {
     const input = document.getElementById('tb-pwd');
     input.type = input.type === 'password' ? 'text' : 'password';
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.category-trigger').forEach(trigger => {
+        trigger.addEventListener('change', function() {
+            const target = this.getAttribute('data-target');
+            const isChecked = this.checked;
+            document.querySelectorAll(`[data-parent="${target}"]`).forEach(cb => {
+                cb.checked = isChecked;
+            });
+        });
+    });
+});
 </script>
