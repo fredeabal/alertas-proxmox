@@ -125,8 +125,16 @@ sed -i "s|# database.default.hostname = .*|database.default.hostname = localhost
 sed -i "s|# database.default.database = .*|database.default.database = ${DB_PATH}|g" .env
 sed -i "s|# database.default.DBDriver = .*|database.default.DBDriver = SQLite3|g" .env
 
-# Generar llave de encriptación si no existe
+# Generar llave de encriptación
 php spark key:generate --force > /dev/null 2>&1 || true
+
+# Generar token seguro para el cron de ping
+CRON_TOKEN=$(openssl rand -hex 32)
+if grep -q "cron.pingToken" .env; then
+    sed -i "s|cron.pingToken = .*|cron.pingToken = '${CRON_TOKEN}'|g" .env
+else
+    echo "cron.pingToken = '${CRON_TOKEN}'" >> .env
+fi
 
 # 6. Ejecutar Migraciones y Semilla de Base de Datos
 echo -e "\n${YELLOW}⏳ [5/6] Configurando la base de datos y creando usuario inicial...${NC}"
