@@ -80,10 +80,12 @@
                         </div>
 
                         <div class="mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="proxmox_host" name="proxmox_host" placeholder=" " value="<?= old('proxmox_host') ?>">
-                                <label for="proxmox_host">IP/Hostname Proxmox</label>
+                            <label for="proxmox_host" class="form-label">IP/Hostname Proxmox</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="proxmox_host" name="proxmox_host" placeholder="IP o hostname de Proxmox" aria-label="IP o hostname de Proxmox" aria-describedby="ping-btn" value="<?= old('proxmox_host') ?>">
+                                <button class="btn btn-outline-primary" type="button" id="ping-btn">Ping</button>
                             </div>
+                            <small id="ping-result" class="d-block mt-2 text-muted"></small>
                         </div>
 
                         <div class="row mb-4">
@@ -130,4 +132,48 @@ function previewImage(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const pingBtn = document.getElementById('ping-btn');
+    const hostInput = document.getElementById('proxmox_host');
+    const resultEl = document.getElementById('ping-result');
+
+    if (!pingBtn || !hostInput || !resultEl) {
+        return;
+    }
+
+    pingBtn.addEventListener('click', async function () {
+        const host = hostInput.value.trim();
+        if (!host) {
+            resultEl.className = 'd-block mt-2 text-danger';
+            resultEl.textContent = 'Ingresa una IP o hostname para hacer ping.';
+            return;
+        }
+
+        pingBtn.disabled = true;
+        resultEl.className = 'd-block mt-2 text-muted';
+        resultEl.textContent = 'Probando conectividad...';
+
+        try {
+            const response = await fetch('<?= base_url('companies/ping') ?>?host=' + encodeURIComponent(host), {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            });
+
+            const data = await response.json();
+            if (response.ok && data.ok) {
+                resultEl.className = 'd-block mt-2 text-success';
+                resultEl.textContent = data.message || 'Ping OK';
+            } else {
+                resultEl.className = 'd-block mt-2 text-danger';
+                resultEl.textContent = data.message || 'No se pudo hacer ping.';
+            }
+        } catch (error) {
+            resultEl.className = 'd-block mt-2 text-danger';
+            resultEl.textContent = 'Error de red al ejecutar el ping.';
+        } finally {
+            pingBtn.disabled = false;
+        }
+    });
+});
 </script>
