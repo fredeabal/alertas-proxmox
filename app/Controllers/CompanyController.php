@@ -338,6 +338,7 @@ class CompanyController extends BaseController
         // Ejecutar ping y capturar salida
         $output = [];
         $exitCode = 1;
+        $pingSuccess = false;
         
         // Lista de funciones de ejecución de comandos en orden de preferencia
         $disabledFunctions = array_map('trim', explode(',', (string) ini_get('disable_functions')));
@@ -345,18 +346,21 @@ class CompanyController extends BaseController
         // Intentar exec() primero, si está disponible
         if (function_exists('exec') && !in_array('exec', $disabledFunctions)) {
             exec($command, $output, $exitCode);
+            if ($exitCode === 0) $pingSuccess = true;
         } elseif (function_exists('system') && !in_array('system', $disabledFunctions)) {
             // Alternativa con system()
             ob_start();
             system($command, $exitCode);
             $outputText = ob_get_clean();
             $output = explode("\n", trim($outputText));
+            if ($exitCode === 0) $pingSuccess = true;
         } elseif (function_exists('passthru') && !in_array('passthru', $disabledFunctions)) {
             // Alternativa con passthru()
             ob_start();
             passthru($command, $exitCode);
             $outputText = ob_get_clean();
             $output = explode("\n", trim($outputText));
+            if ($exitCode === 0) $pingSuccess = true;
         } elseif (function_exists('popen') && !in_array('popen', $disabledFunctions)) {
             // Alternativa con popen si exec está deshabilitado
             $handle = popen($command, 'r');
@@ -365,6 +369,7 @@ class CompanyController extends BaseController
             $output = explode("\n", trim($outputText));
             // popen no retorna código de salida directamente, verificar con grep de salida
             $exitCode = (strpos($outputText, 'bytes from') !== false) ? 0 : 1;
+            if ($exitCode === 0) $pingSuccess = true;
         } elseif (function_exists('proc_open') && !in_array('proc_open', $disabledFunctions)) {
             // Alternativa con proc_open
             $descriptors = [
@@ -380,11 +385,14 @@ class CompanyController extends BaseController
                 fclose($pipes[2]);
                 $exitCode = proc_close($process);
                 $output = explode("\n", trim($outputText));
+                if ($exitCode === 0) $pingSuccess = true;
             } else {
                 $exitCode = -1;
             }
-        } else {
-            // Último recurso: verificar TCP en puertos típicos de Proxmox
+        }
+        
+        if (!$pingSuccess) {
+            // Último recurso: si el comando falló (ej. bloqueo ICMP) o funciones deshabilitadas, verificar TCP
             $portsToTry = [8006, 443, 80, 22];
             $connected = false;
             
@@ -392,7 +400,7 @@ class CompanyController extends BaseController
                 $connection = @fsockopen($host, $port, $errno, $errstr, 3);
                 if ($connection) {
                     $connected = true;
-                    $output[] = "Conexión TCP exitosa a {$host}:{$port}";
+                    $output[] = "Conexión TCP exitosa a {$host}:{$port} (Ping ICMP falló o está deshabilitado)";
                     fclose($connection);
                     break;
                 }
