@@ -73,6 +73,13 @@ chown -R www-data:www-data "$INSTALL_DIR"
 chmod -R 775 "$INSTALL_DIR/writable"
 chmod -R 775 "$INSTALL_DIR/public/uploads"
 
+# Asegurar que el cron de monitoreo esté configurado para el usuario www-data
+PHP_BIN=$(which php || echo "/usr/bin/php")
+CRON_JOB="*/5 * * * * cd ${INSTALL_DIR} && ${PHP_BIN} spark monitor:ping > /dev/null 2>&1"
+(crontab -u www-data -l 2>/dev/null | grep -F "spark monitor:ping") || (
+    (crontab -u www-data -l 2>/dev/null; echo "$CRON_JOB") | crontab -u www-data -
+)
+
 echo -e "${YELLOW}⏳ [5/5] Reiniciando servicios y limpiando caché (OPCache / Nginx)...${NC}"
 # Buscar dinámicamente cualquier versión de PHP-FPM instalada
 for service in $(systemctl list-unit-files --type=service 2>/dev/null | grep -oE 'php[0-9.]*-fpm\.service'); do
