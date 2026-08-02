@@ -5,7 +5,7 @@ Manual operativo y técnico para desplegar, configurar y usar **Proxmox Alert**.
 ## Tabla de contenidos
 - [1. Descripción](#1-descripción)
 - [2. Requisitos](#2-requisitos)
-- [3. Instalación y Despliegue Manual (Recomendado)](#3-instalación-y-despliegue-manual-recomendado)
+- [3. Instalación Automática (Recomendado)](#3-instalación-automática-recomendado)
 - [4. Primer acceso](#4-primer-acceso)
 - [5. Configuración de Canales de Alerta (Email, Telegram, Slack)](#5-configuración-de-canales-de-alerta-email-telegram-slack)
 - [6. Gestión de empresas](#6-gestión-de-empresas)
@@ -38,7 +38,7 @@ Capacidades principales:
 - **Composer**
 - Extensiones PHP habituales para CI4 (`intl`, `mbstring`, `json`, `pdo_sqlite`, etc.)
 
-## 🚀 Instalación en 1 Paso
+## 3. Instalación Automática (Recomendado)
 
 En cualquier servidor **Debian 11/12** o **Ubuntu 20.04 / 22.04 / 24.04** limpio con acceso root (VPS o máquina virtual), ejecuta el siguiente comando en tu terminal:
 
@@ -58,66 +58,7 @@ Para actualizar un servidor Proxmox Alert existente a la última versión dispon
 bash <(curl -s https://raw.githubusercontent.com/fredeabal/alertas-proxmox/main/update.sh)
 ```
 
----
 
-## 3. Despliegue Manual (Alternativo)
-
-Si prefieres realizar la instalación manualmente paso a paso, sigue estas instrucciones.
-
-Esta aplicación viene pre-empaquetada con todas sus dependencias (carpeta `vendor/` ya incluida), por lo que **no necesitas tener Composer instalado** en tu servidor. Sigue estos sencillos pasos para desplegar el panel:
-
-### Paso 1: Clonar o descargar el código
-Clona este repositorio o descarga el archivo `.zip` y colócalo en el directorio de tu servidor web (ej: `/var/www/proxmox-alert/`).
-
-### Paso 2: Crear y configurar tu archivo `.env`
-Duplica el archivo de plantilla `env` y llámalo `.env` en la raíz del proyecto:
-```bash
-cp env .env
-```
-Abre el archivo `.env` con un editor de texto y configura las siguientes propiedades clave:
-
-1. **Entorno**: Establece el entorno en producción:
-   ```env
-   CI_ENVIRONMENT = production
-   ```
-2. **URL Base (`app.baseURL`)**: Modifícala con tu dominio web o IP real de acceso. **IMPORTANTE**: Debe comenzar con `http://` o `https://` y terminar obligatoriamente con una barra inclinada `/`:
-   ```env
-   app.baseURL = 'https://tudominio.com/'
-   ```
-3. **Base de Datos SQLite**: Indica la ruta absoluta hacia tu base de datos SQLite (se guardará dentro de `writable/`).
-
-   Puedes ver tu ruta absoluta ejecutando el archivo `rutas.php` en tu navegador (ej: `https://tudominio.com/rutas.php`).
-
-   > [!CAUTION]
-   > **NOTA: Por seguridad, elimina el archivo `rutas.php` de tu servidor una vez hayas configurado la ruta correcta.**
-
-   ```env
-   database.default.database = '/var/www/proxmox-alert/writable/database.db'
-   database.default.DBDriver = 'SQLite3'
-   ```
-4. **Clave de Encriptación (`encryption.key`)**: Genera una clave aleatoria de 32 bytes de forma segura para encriptar los datos internos. Puedes usar este comando rápido para generar una compatible:
-   ```bash
-   php -r "echo 'hex2bin:' . bin2hex(random_bytes(32)) . PHP_EOL;"
-   ```
-   Y pégala en tu `.env`:
-   ```env
-   encryption.key = 'hex2bin:TU_CLAVE_GENERADA_AQUÍ'
-   ```
-5. **Token de Cron (`cron.pingToken`)**: Configura un token aleatorio y seguro para proteger tu endpoint de ping crons de accesos no autorizados. Puedes generar uno rápidamente ejecutando:
-   ```bash
-   php -r "echo bin2hex(random_bytes(16)) . PHP_EOL;"
-   ```
-   Copia el resultado y pégalo en tu `.env`:
-   ```env
-   cron.pingToken = 'TU_TOKEN_CRON_SEGURO'
-   ```
-
-### Paso 3: Permisos de Directorios
-```bash
-# Asignar permisos de lectura y escritura
-sudo chmod -R 775 /var/www/proxmox-alert/writable
-sudo chmod -R 775 /var/www/proxmox-alert/public/uploads
-```
 
 ## 4. Primer acceso
 Una vez configurado, abre tu navegador y entra en:
