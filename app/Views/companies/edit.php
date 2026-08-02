@@ -48,7 +48,7 @@
                         <div class="row">
                             <div class="col-md-8 mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder=" " value="<?= old('nombre', $empresa->nombre) ?>" required>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder=" " value="<?= old('nombre', $empresa->nombre) ?>">
                                     <label for="nombre">Nombre de la Empresa</label>
                                 </div>
                             </div>

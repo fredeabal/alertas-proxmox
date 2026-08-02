@@ -831,6 +831,6 @@ function refreshData() {
         });
 }
 
-// Configurar intervalo de refresco automático cada 5 segundos (5s)
-setInterval(refreshData, 5000);
+// Configurar intervalo de refresco automático cada 30 segundos (30s)
+setInterval(refreshData, 30000);
 </script>

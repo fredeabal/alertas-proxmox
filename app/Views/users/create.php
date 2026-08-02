@@ -28,13 +28,13 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="tb-username" name="username" placeholder=" " value="<?= old('username') ?>" required>
+                                    <input type="text" class="form-control" id="tb-username" name="username" placeholder=" " value="<?= old('username') ?>">
                                     <label for="tb-username">Nombre de usuario</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="tb-email" name="email" placeholder=" " value="<?= old('email') ?>" required>
+                                    <input type="email" class="form-control" id="tb-email" name="email" placeholder=" " value="<?= old('email') ?>">
                                     <label for="tb-email">Correo Electrónico</label>
                                 </div>
                             </div>
@@ -43,7 +43,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-floating mb-3 position-relative">
-                                    <input type="password" class="form-control" id="tb-pwd" name="password" placeholder=" " required>
+                                    <input type="password" class="form-control" id="tb-pwd" name="password" placeholder=" ">
                                     <label for="tb-pwd">Contraseña</label>
                                     <button class="btn position-absolute top-50 end-0 translate-middle-y me-2 border-0" type="button" onclick="togglePassword()">
                                         <i class="ti ti-eye fs-5"></i>
@@ -52,7 +52,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="tb-group" name="group" required>
+                                    <select class="form-select" id="tb-group" name="group">
                                         <option value="">Selecciona un rol</option>
                                         <?php foreach ($groups as $id => $group): ?>
                                             <option value="<?= $id ?>" <?= old('group') == $id ? 'selected' : '' ?>><?= $group['title'] ?></option>

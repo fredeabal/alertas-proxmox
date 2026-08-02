@@ -28,13 +28,13 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="tb-username" name="username" placeholder=" " value="<?= old('username', $user->username) ?>" required>
+                                    <input type="text" class="form-control" id="tb-username" name="username" placeholder=" " value="<?= old('username', $user->username) ?>">
                                     <label for="tb-username">Nombre de usuario</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="tb-email" name="email" placeholder=" " value="<?= old('email', $user->email) ?>" required>
+                                    <input type="email" class="form-control" id="tb-email" name="email" placeholder=" " value="<?= old('email', $user->email) ?>">
                                     <label for="tb-email">Correo Electrónico</label>
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="tb-group" name="group" required>
+                                    <select class="form-select" id="tb-group" name="group">
                                         <?php $currentGroup = $user->getGroups()[0] ?? ''; ?>
                                         <?php foreach ($groups as $id => $group): ?>
                                             <option value="<?= $id ?>" <?= old('group', $currentGroup) == $id ? 'selected' : '' ?>><?= $group['title'] ?></option>

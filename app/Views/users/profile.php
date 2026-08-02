@@ -47,13 +47,13 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="username" name="username" placeholder=" " value="<?= esc($user->username) ?>" required>
+                                    <input type="text" class="form-control" id="username" name="username" placeholder=" " value="<?= esc($user->username) ?>">
                                     <label for="username">Nombre de Usuario</label>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">
-                                    <input type="email" class="form-control" id="email" name="email" placeholder=" " value="<?= esc($user->email) ?>" required>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder=" " value="<?= esc($user->email) ?>">
                                     <label for="email">Correo Electrónico</label>
                                 </div>
                             </div>

@@ -42,11 +42,11 @@
 
                   <div class="mb-3">
                     <label for="email" class="form-label">Email / Usuario</label>
-                    <input type="text" class="form-control" id="email" name="email" value="<?= old('email') ?>" required>
+                    <input type="text" class="form-control" id="email" name="email" value="<?= old('email') ?>">
                   </div>
                   <div class="mb-4">
                     <label for="password" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
+                    <input type="password" class="form-control" id="password" name="password">
                   </div>
                   <div class="d-flex align-items-center justify-content-between mb-4">
                     <div class="form-check">

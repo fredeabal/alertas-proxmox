@@ -19,16 +19,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <?php if (session()->getFlashdata('errors')): ?>
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <ul class="mb-0">
-                                <?php foreach (session()->getFlashdata('errors') as $error): ?>
-                                    <li><?= esc($error) ?></li>
-                                <?php endforeach ?>
-                            </ul>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    <?php endif ?>
+
 
                     <form action="<?= base_url('ai/store') ?>" method="post">
                         <?= csrf_field() ?>
