@@ -196,6 +196,19 @@ chmod -R 755 "$INSTALL_DIR"
 chmod -R 775 "${INSTALL_DIR}/writable"
 chmod -R 775 "${INSTALL_DIR}/public/uploads" 2>/dev/null || true
 
+# 9. Configurar permisos del sistema para permitir ping a usuarios no root
+echo -e "\n${YELLOW}⏳ Configurando permisos de red del sistema para el comando ping...${NC}"
+setcap cap_net_raw+ep $(which ping) 2>/dev/null || chmod +s $(which ping) 2>/dev/null || true
+
+# 10. Configurar Cron automático para Monitoreo de Ping (usuario www-data)
+echo -e "\n${YELLOW}⏳ Configurando Cron automático para Monitoreo de Ping...${NC}"
+PHP_BIN=$(which php || echo "/usr/bin/php")
+CRON_JOB="*/5 * * * * cd ${INSTALL_DIR} && ${PHP_BIN} spark monitor:ping > /dev/null 2>&1"
+(crontab -u www-data -l 2>/dev/null | grep -F "spark monitor:ping") || (
+    (crontab -u www-data -l 2>/dev/null; echo "$CRON_JOB") | crontab -u www-data -
+    echo -e "${GREEN}✅ Cron Job configurado para el usuario www-data.${NC}"
+)
+
 clear
 echo -e "${GREEN}"
 echo "======================================================================"
