@@ -40,7 +40,17 @@ echo -e "${NC}"
 
 # 2. Detectar IP pública o interfaz de red del servidor
 SERVER_IP=$(hostname -I | awk '{print $1}')
-read -p "👉 Ingresa la IP o Dominio del servidor [Predeterminado: ${SERVER_IP}]: " INPUT_DOMAIN
+
+echo -e "\n${BLUE}======================================================================${NC}"
+echo -e "🔗  CONFIGURACIÓN DE URL / DOMINIO"
+echo -e "${BLUE}======================================================================${NC}"
+echo -e "Por defecto, la instalación usa protocolo http y tu IP pública: ${YELLOW}http://${SERVER_IP}/${NC}"
+echo -e "Si vas a utilizar un dominio propio o SSL, ingresa el valor completo."
+echo -e "IMPORTANTE: Se recomienda incluir http:// o https:// al inicio."
+echo -e "Ejemplo: ${BLUE}https://alertas.mi-dominio.com${NC} o ${BLUE}http://${SERVER_IP}${NC}"
+echo -e "----------------------------------------------------------------------"
+
+read -p "👉 Ingresa la URL o IP del servidor [Predeterminado: ${SERVER_IP}]: " INPUT_DOMAIN
 INPUT_DOMAIN=${INPUT_DOMAIN:-$SERVER_IP}
 
 # Detectar protocolo si el usuario lo incluyó, si no, usar http por defecto
