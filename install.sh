@@ -41,7 +41,18 @@ echo -e "${NC}"
 # 2. Detectar IP pública o interfaz de red del servidor
 SERVER_IP=$(hostname -I | awk '{print $1}')
 read -p "👉 Ingresa la IP o Dominio del servidor [Predeterminado: ${SERVER_IP}]: " INPUT_DOMAIN
-DOMAIN=${INPUT_DOMAIN:-$SERVER_IP}
+INPUT_DOMAIN=${INPUT_DOMAIN:-$SERVER_IP}
+
+# Detectar protocolo si el usuario lo incluyó, si no, usar http por defecto
+if echo "$INPUT_DOMAIN" | grep -qE '^https?://'; then
+    PROTOCOL=$(echo "$INPUT_DOMAIN" | grep -oE '^https?')
+    DOMAIN=$(echo "$INPUT_DOMAIN" | sed 's|^https\?://||' | sed 's|/$||')
+else
+    PROTOCOL="http"
+    DOMAIN=$(echo "$INPUT_DOMAIN" | sed 's|/$||')
+fi
+
+BASE_URL="${PROTOCOL}://${DOMAIN}/"
 
 echo -e "\n${YELLOW}⏳ [1/6] Actualizando paquetes e instalando dependencias del sistema...${NC}"
 export DEBIAN_FRONTEND=noninteractive
@@ -108,8 +119,8 @@ DB_PATH="${DB_DIR}/database.sqlite"
 # Ajustar valores en .env
 sed -i "s|# CI_ENVIRONMENT = .*|CI_ENVIRONMENT = development|g" .env
 sed -i "s|CI_ENVIRONMENT = .*|CI_ENVIRONMENT = development|g" .env
-sed -i "s|# app.baseURL = .*|app.baseURL = 'http://${DOMAIN}/'|g" .env
-sed -i "s|app.baseURL = .*|app.baseURL = 'http://${DOMAIN}/'|g" .env
+sed -i "s|# app.baseURL = .*|app.baseURL = '${BASE_URL}'|g" .env
+sed -i "s|app.baseURL = .*|app.baseURL = '${BASE_URL}'|g" .env
 sed -i "s|# database.default.hostname = .*|database.default.hostname = localhost|g" .env
 sed -i "s|# database.default.database = .*|database.default.database = ${DB_PATH}|g" .env
 sed -i "s|# database.default.DBDriver = .*|database.default.DBDriver = SQLite3|g" .env
@@ -183,7 +194,7 @@ echo "======================================================================"
 echo "       🎉 ¡INSTALACIÓN DE PROXMOX ALERT COMPLETADA CON ÉXITO!        "
 echo "======================================================================"
 echo -e "${NC}"
-echo -e "👉 **Acceso Web:** http://${DOMAIN}"
+echo -e "👉 **Acceso Web:** ${BASE_URL}"
 echo -e "👉 **Usuario Admin:** admin"
 echo -e "👉 **Contraseña:** admin123"
 echo -e "----------------------------------------------------------------------"
