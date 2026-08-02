@@ -19,9 +19,9 @@
     --bs-success-bg-subtle: rgba(52, 199, 89, 0.15) !important;
 
     /* Color de Peligro / Error (Vibrante) */
-    --bs-danger: #b31b34 !important;
-    --bs-danger-rgb: 179, 27, 52 !important;
-    --bs-danger-bg-subtle: rgba(179, 27, 52, 0.15) !important;
+    --bs-danger: #e53935 !important;
+    --bs-danger-rgb: 229, 57, 53 !important;
+    --bs-danger-bg-subtle: rgba(229, 57, 53, 0.15) !important;
     --bs-danger-text-emphasis: #d82b4a !important;
 
     /* Color de Advertencia */
@@ -64,6 +64,16 @@
     filter: brightness(0.9);
 }
 
+.btn-outline-warning {
+    color: var(--bs-warning) !important;
+    border-color: var(--bs-warning) !important;
+    background-color: transparent !important;
+}
+.btn-outline-warning:hover {
+    background-color: var(--bs-warning) !important;
+    color: #000 !important;
+}
+
 /* Forzar Danger en componentes específicos */
 .btn-danger {
     background-color: var(--bs-danger) !important;
@@ -72,6 +82,16 @@
 }
 .btn-danger:hover {
     filter: brightness(0.9);
+}
+
+.btn-outline-danger {
+    color: var(--bs-danger) !important;
+    border-color: var(--bs-danger) !important;
+    background-color: transparent !important;
+}
+.btn-outline-danger:hover {
+    background-color: var(--bs-danger) !important;
+    color: #fff !important;
 }
 
 /* Forzar Success en componentes específicos */
@@ -83,6 +103,36 @@
 .btn-success:hover {
     background-color: #2ba84b !important;
     border-color: #2ba84b !important;
+    color: #fff !important;
+}
+
+.btn-outline-success {
+    color: var(--bs-success) !important;
+    border-color: var(--bs-success) !important;
+    background-color: transparent !important;
+}
+.btn-outline-success:hover {
+    background-color: var(--bs-success) !important;
+    color: #fff !important;
+}
+
+/* Forzar Info en componentes específicos */
+.btn-info {
+    background-color: var(--bs-info) !important;
+    border-color: var(--bs-info) !important;
+    color: #fff !important;
+}
+.btn-info:hover {
+    filter: brightness(0.9);
+}
+
+.btn-outline-info {
+    color: var(--bs-info) !important;
+    border-color: var(--bs-info) !important;
+    background-color: transparent !important;
+}
+.btn-outline-info:hover {
+    background-color: var(--bs-info) !important;
     color: #fff !important;
 }
 
@@ -347,9 +397,9 @@
 }
 
 @keyframes pulse-danger-view {
-    0% { box-shadow: 0 0 0 0 rgba(250, 137, 107, 0.7); }
-    70% { box-shadow: 0 0 0 8px rgba(250, 137, 107, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(250, 137, 107, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(229, 57, 53, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0); }
 }
 
 @keyframes pulse-secondary-view {

@@ -114,7 +114,7 @@ class NotificationService
                             <tr><td style='padding: 6px 0; color: #888; font-size: 13px; width: 80px;'>Empresa:</td><td style='font-weight: bold; color: #222;'>{$empresa->nombre}</td></tr>
                             <tr><td style='padding: 6px 0; color: #888; font-size: 13px;'>Incidencia:</td><td style='font-weight: bold; color: #222;'>{$alerta['title']}</td></tr>
                             <tr><td style='padding: 6px 0; color: #888; font-size: 13px;'>Nodo:</td><td style='font-weight: bold; color: #222;'>{$alerta['hostname']}</td></tr>
-                            <tr><td style='padding: 6px 0; color: #888; font-size: 13px;'>Severidad:</td><td><span style='background: #fa896b; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; text-transform: uppercase;'>{$alerta['severity']}</span></td></tr>
+                            <tr><td style='padding: 6px 0; color: #888; font-size: 13px;'>Severidad:</td><td><span style='background: #e53935; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; text-transform: uppercase;'>{$alerta['severity']}</span></td></tr>
                         </table>
                     </div>
 
@@ -218,12 +218,12 @@ class NotificationService
         $message  = $alerta['message'] ?? '';
 
         // Estilo de color según severidad
-        $color = '#36a64f'; // green
+        $color = '#34c759'; // green
         $sevLower = strtolower($severity);
         if (strpos($sevLower, 'warn') !== false) {
-            $color = '#ffcc00'; // yellow
+            $color = '#faad14'; // yellow
         } elseif (strpos($sevLower, 'err') !== false || strpos($sevLower, 'crit') !== false || strpos($sevLower, 'emerg') !== false) {
-            $color = '#ff0033'; // red
+            $color = '#e53935'; // red
         }
 
         $payload = [
@@ -294,12 +294,12 @@ class NotificationService
         $severity = strtoupper($alerta['severity'] ?? 'INFO');
 
         // Estilo de color (Discord usa decimales)
-        $color = 3581519; // green (#36a64f -> 3581519)
+        $color = 3423577; // green (#34c759)
         $sevLower = strtolower($severity);
         if (strpos($sevLower, 'warn') !== false) {
-            $color = 16763904; // yellow (#ffcc00 -> 16763904)
+            $color = 16544564; // yellow (#faad14)
         } elseif (strpos($sevLower, 'err') !== false || strpos($sevLower, 'crit') !== false || strpos($sevLower, 'emerg') !== false) {
-            $color = 16711731; // red (#ff0033 -> 16711731)
+            $color = 14991541; // red (#e53935)
         }
 
         $payload = [

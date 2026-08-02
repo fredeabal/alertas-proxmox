@@ -108,7 +108,7 @@
         });
 
         const statusColors = rawLogs.map(log => {
-            return log.status === 'online' ? '#13deb9' : '#ef4444'; // Rojo vibrante para caídas de servicio
+            return log.status === 'online' ? '#34c759' : '#e53935';
         });
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
@@ -142,7 +142,7 @@
                     {
                         label: 'Latencia',
                         data: latencyData,
-                        borderColor: '#13deb9',
+                        borderColor: '#539bff',
                         borderWidth: 2.5,
                         pointBackgroundColor: statusColors,
                         pointBorderColor: '#ffffff',
@@ -578,7 +578,7 @@ function submitBulkAction(action) {
         text: isDelete ? "Las alertas se eliminarán de forma definitiva." : "Esta acción se aplicará a todas las alertas marcadas.",
         icon: isDelete ? 'warning' : 'question',
         showCancelButton: true,
-        confirmButtonColor: isDelete ? '#fa896b' : '#13deb9',
+        confirmButtonColor: isDelete ? '#e53935' : '#13deb9',
         cancelButtonColor: '#6c757d',
         confirmButtonText: isDelete ? 'Sí, eliminar' : 'Sí, solucionar',
         cancelButtonText: 'Cancelar',
@@ -613,7 +613,7 @@ function initAlertsEvents() {
                 'La alerta pasará al estado OK y se considerará resuelta.', 
                 'question', 
                 '<i class="ti ti-check me-1"></i> Sí, solucionar', 
-                '#13deb9'
+                '#539bff'
             );
         });
     });

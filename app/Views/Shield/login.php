@@ -94,16 +94,16 @@
       });
       
       if (toastMessage) {
-        systemAlert.fire({ icon: 'success', title: '¡Completado!', html: `<div class="text-center">${toastMessage}</div>`, iconColor: '#10B981' });
+        systemAlert.fire({ icon: 'success', title: '¡Completado!', html: `<div class="text-center">${toastMessage}</div>`, iconColor: '#34c759' });
       }
       if (toastError) {
-        systemAlert.fire({ icon: 'error', title: 'Error', html: `<div class="text-center">${toastError}</div>`, iconColor: '#b31b34' });
+        systemAlert.fire({ icon: 'error', title: 'Error', html: `<div class="text-center">${toastError}</div>`, iconColor: '#e53935' });
       }
       if (toastErrors) {
         const errorContent = typeof toastErrors === 'object' && toastErrors !== null
           ? (Array.isArray(toastErrors) ? toastErrors : Object.values(toastErrors)).join('<br>') 
           : toastErrors;
-        systemAlert.fire({ icon: 'error', title: 'Error de Validación', html: `<div class="text-center">${errorContent}</div>`, iconColor: '#b31b34' });
+        systemAlert.fire({ icon: 'error', title: 'Error de Validación', html: `<div class="text-center">${errorContent}</div>`, iconColor: '#e53935' });
       }
     });
   </script>
