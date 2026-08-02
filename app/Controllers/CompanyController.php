@@ -338,7 +338,23 @@ class CompanyController extends BaseController
         // Ejecutar ping y capturar salida
         $output = [];
         $exitCode = 1;
-        exec($command, $output, $exitCode);
+        
+        // Intentar exec() primero, si está disponible
+        if (function_exists('exec') && !in_array('exec', explode(',', ini_get('disable_functions')))) {
+            exec($command, $output, $exitCode);
+        } else {
+            // Alternativa PHP pura usando fsockopen para verificar conectividad TCP
+            $hostParts = parse_url('tcp://' . $host . ':8006'); // Puerto 8006 es el default de Proxmox
+            $connection = @fsockopen($hostParts['host'], $hostParts['port'], $errno, $errstr, 2);
+            if ($connection) {
+                $exitCode = 0;
+                $output[] = "Conexión TCP exitosa a {$host}:8006";
+                fclose($connection);
+            } else {
+                $exitCode = 1;
+                $output[] = "No se pudo establecer conexión TCP: {$errstr} ({$errno})";
+            }
+        }
 
         $resultText = implode("\n", $output);
 
