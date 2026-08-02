@@ -23,7 +23,7 @@
                 <div class="card-body p-4">
 
                     <!-- Nav Tabs -->
-                    <ul class="nav nav-tabs mb-4" id="alertSettingsTabs" role="tablist">
+                    <ul class="nav nav-pills mb-4" id="alertSettingsTabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="email-tab" data-bs-toggle="tab" data-bs-target="#email-pane" type="button" role="tab" aria-selected="true">
                                 <i class="ti ti-mail me-1"></i> Correo
@@ -69,13 +69,13 @@
                                 <div class="row mb-4">
                                     <div class="col-md-6 mb-3">
                                         <div class="form-floating">
-                                            <input type="email" class="form-control" id="fromEmail" name="fromEmail" placeholder="noreply@tuempresa.com" value="<?= esc(old('fromEmail', $emailSettings['fromEmail'] ?? '')) ?>">
+                                            <input type="email" class="form-control" id="fromEmail" name="fromEmail" placeholder=" " value="<?= esc(old('fromEmail', $emailSettings['fromEmail'] ?? '')) ?>">
                                             <label for="fromEmail">Email del Remitente</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" id="fromName" name="fromName" placeholder="Proxmox Alert" value="<?= esc(old('fromName', $emailSettings['fromName'] ?? 'Proxmox Alert')) ?>">
+                                            <input type="text" class="form-control" id="fromName" name="fromName" placeholder=" " value="<?= esc(old('fromName', $emailSettings['fromName'] ?? 'Proxmox Alert')) ?>">
                                             <label for="fromName">Nombre del Remitente</label>
                                         </div>
                                     </div>
@@ -86,7 +86,7 @@
                                 <div class="row mb-4">
                                     <div class="col-md-12 mb-3">
                                         <div class="form-floating">
-                                            <input type="email" class="form-control" id="recipientEmail" name="recipientEmail" placeholder="admin@tudominio.com" value="<?= esc(old('recipientEmail', $emailSettings['recipientEmail'] ?? '')) ?>">
+                                            <input type="email" class="form-control" id="recipientEmail" name="recipientEmail" placeholder=" " value="<?= esc(old('recipientEmail', $emailSettings['recipientEmail'] ?? '')) ?>">
                                             <label for="recipientEmail">Correo Electrónico de Destino (Donde llegarán las alertas)</label>
                                         </div>
                                     </div>
@@ -99,25 +99,25 @@
                                 <div class="row mb-3">
                                     <div class="col-md-8 mb-3">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" id="SMTPHost" name="SMTPHost" placeholder="smtp.gmail.com" value="<?= esc(old('SMTPHost', $emailSettings['SMTPHost'] ?? '')) ?>">
+                                            <input type="text" class="form-control" id="SMTPHost" name="SMTPHost" placeholder=" " value="<?= esc(old('SMTPHost', $emailSettings['SMTPHost'] ?? '')) ?>">
                                             <label for="SMTPHost">Host</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="SMTPPort" name="SMTPPort" placeholder="587" value="<?= esc(old('SMTPPort', $emailSettings['SMTPPort'] ?? '587')) ?>">
+                                            <input type="number" class="form-control" id="SMTPPort" name="SMTPPort" placeholder=" " value="<?= esc(old('SMTPPort', $emailSettings['SMTPPort'] ?? '587')) ?>">
                                             <label for="SMTPPort">Puerto</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" id="SMTPUser" name="SMTPUser" placeholder="usuario" value="<?= esc(old('SMTPUser', $emailSettings['SMTPUser'] ?? '')) ?>">
+                                            <input type="text" class="form-control" id="SMTPUser" name="SMTPUser" placeholder=" " value="<?= esc(old('SMTPUser', $emailSettings['SMTPUser'] ?? '')) ?>">
                                             <label for="SMTPUser">Usuario</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <div class="form-floating position-relative">
-                                            <input type="password" class="form-control" id="SMTPPass" name="SMTPPass" placeholder="contraseña" value="<?= esc(old('SMTPPass', $emailSettings['SMTPPass'] ?? '')) ?>">
+                                            <input type="password" class="form-control" id="SMTPPass" name="SMTPPass" placeholder=" " value="<?= esc(old('SMTPPass', $emailSettings['SMTPPass'] ?? '')) ?>">
                                             <label for="SMTPPass">Contraseña</label>
                                             <button class="btn position-absolute top-50 end-0 translate-middle-y me-2 border-0 bg-transparent" type="button" onclick="togglePassword('SMTPPass')">
                                                 <i class="ti ti-eye fs-5 text-muted"></i>
@@ -157,14 +157,14 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex justify-content-end gap-2">
-                                    <button type="submit" formaction="<?= base_url('alerts-config/test-email') ?>" class="btn btn-outline-primary px-4">
-                                        <i class="ti ti-send me-1"></i> Enviar correo de prueba
-                                    </button>
-                                    <button type="submit" class="btn btn-primary px-4">
-                                        <i class="ti ti-device-floppy me-1"></i> Guardar Cambios
-                                    </button>
-                                </div>
+                                <div class="d-flex justify-content-center gap-2">
+                                     <button type="submit" class="btn btn-primary px-4 d-inline-flex align-items-center justify-content-center">
+                                         <i class="ti ti-device-floppy me-2 fs-4"></i> Guardar
+                                     </button>
+                                     <button type="submit" formaction="<?= base_url('alerts-config/test-email') ?>" class="btn btn-warning text-white px-4 d-inline-flex align-items-center justify-content-center">
+                                         <i class="ti ti-send me-2 fs-4"></i> Probar
+                                     </button>
+                                 </div>
                             </div>
 
                             <!-- ================================================ -->
@@ -184,7 +184,7 @@
                                 <div class="row mb-4">
                                     <div class="col-12 mb-3">
                                         <div class="form-floating position-relative">
-                                            <input type="password" class="form-control" id="telegram_bot_token" name="telegram_bot_token" placeholder="Token" value="<?= esc(old('telegram_bot_token', $telegramSettings['telegram_bot_token'] ?? '')) ?>">
+                                            <input type="password" class="form-control" id="telegram_bot_token" name="telegram_bot_token" placeholder=" " value="<?= esc(old('telegram_bot_token', $telegramSettings['telegram_bot_token'] ?? '')) ?>">
                                             <label for="telegram_bot_token">Token del Bot (HTTP API Token)</label>
                                             <button class="btn position-absolute top-50 end-0 translate-middle-y me-2 border-0 bg-transparent" type="button" onclick="togglePassword('telegram_bot_token')">
                                                 <i class="ti ti-eye fs-5 text-muted"></i>
@@ -193,13 +193,13 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" id="telegram_bot_username" name="telegram_bot_username" placeholder="@MiBot" value="<?= esc(old('telegram_bot_username', $telegramSettings['telegram_bot_username'] ?? '')) ?>">
+                                            <input type="text" class="form-control" id="telegram_bot_username" name="telegram_bot_username" placeholder=" " value="<?= esc(old('telegram_bot_username', $telegramSettings['telegram_bot_username'] ?? '')) ?>">
                                             <label for="telegram_bot_username">Username del Bot</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" id="telegram_test_chat_id" name="telegram_test_chat_id" placeholder="-100123456789" value="<?= esc(old('telegram_test_chat_id', $telegramSettings['telegram_test_chat_id'] ?? '')) ?>">
+                                            <input type="text" class="form-control" id="telegram_test_chat_id" name="telegram_test_chat_id" placeholder=" " value="<?= esc(old('telegram_test_chat_id', $telegramSettings['telegram_test_chat_id'] ?? '')) ?>">
                                             <label for="telegram_test_chat_id">Chat ID</label>
                                         </div>
                                     </div>
@@ -252,14 +252,14 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex justify-content-end gap-2">
-                                    <button type="submit" formaction="<?= base_url('alerts-config/test-telegram') ?>" class="btn btn-outline-primary px-4">
-                                        <i class="ti ti-brand-telegram me-1"></i> Probar Telegram
-                                    </button>
-                                    <button type="submit" class="btn btn-primary px-4">
-                                        <i class="ti ti-device-floppy me-1"></i> Guardar Cambios
-                                    </button>
-                                </div>
+                                <div class="d-flex justify-content-center gap-2">
+                                     <button type="submit" class="btn btn-primary px-4 d-inline-flex align-items-center justify-content-center">
+                                         <i class="ti ti-device-floppy me-2 fs-4"></i> Guardar
+                                     </button>
+                                     <button type="submit" formaction="<?= base_url('alerts-config/test-telegram') ?>" class="btn btn-warning text-white px-4 d-inline-flex align-items-center justify-content-center">
+                                         <i class="ti ti-brand-telegram me-2 fs-4"></i> Probar
+                                     </button>
+                                 </div>
                             </div>
 
                             <!-- ================================================ -->
@@ -279,7 +279,7 @@
                                 <div class="row mb-4">
                                     <div class="col-12 mb-3">
                                         <div class="form-floating">
-                                            <input type="url" class="form-control" id="slack_webhook_url" name="slack_webhook_url" placeholder="https://hooks.slack.com/services/..." value="<?= esc(old('slack_webhook_url', $slackSettings['slack_webhook_url'] ?? '')) ?>">
+                                            <input type="url" class="form-control" id="slack_webhook_url" name="slack_webhook_url" placeholder=" " value="<?= esc(old('slack_webhook_url', $slackSettings['slack_webhook_url'] ?? '')) ?>">
                                             <label for="slack_webhook_url">Incoming Webhook URL</label>
                                         </div>
                                     </div>
@@ -316,17 +316,15 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex justify-content-end gap-2">
-                                    <button type="submit" formaction="<?= base_url('alerts-config/test-slack') ?>" class="btn btn-outline-primary px-4">
-                                        <i class="ti ti-brand-slack me-1"></i> Probar Slack
-                                    </button>
-                                    <button type="submit" class="btn btn-primary px-4">
-                                        <i class="ti ti-device-floppy me-1"></i> Guardar Cambios
-                                    </button>
-                                </div>
+                                <div class="d-flex justify-content-center gap-2">
+                                     <button type="submit" class="btn btn-primary px-4 d-inline-flex align-items-center justify-content-center">
+                                         <i class="ti ti-device-floppy me-2 fs-4"></i> Guardar
+                                     </button>
+                                     <button type="submit" formaction="<?= base_url('alerts-config/test-slack') ?>" class="btn btn-warning text-white px-4 d-inline-flex align-items-center justify-content-center">
+                                         <i class="ti ti-brand-slack me-2 fs-4"></i> Probar
+                                     </button>
+                                 </div>
                             </div>
-
-                        </div><!-- /tab-content -->
 
                         <!-- ================================================ -->
                         <!-- Pestaña: Discord -->
@@ -345,7 +343,7 @@
                             <div class="row mb-4">
                                 <div class="col-12 mb-3">
                                     <div class="form-floating">
-                                        <input type="url" class="form-control" id="discord_webhook_url" name="discord_webhook_url" placeholder="https://discord.com/api/webhooks/..." value="<?= esc(old('discord_webhook_url', $discordSettings['discord_webhook_url'] ?? '')) ?>">
+                                        <input type="url" class="form-control" id="discord_webhook_url" name="discord_webhook_url" placeholder=" " value="<?= esc(old('discord_webhook_url', $discordSettings['discord_webhook_url'] ?? '')) ?>">
                                         <label for="discord_webhook_url">Discord Webhook URL</label>
                                     </div>
                                 </div>
@@ -381,17 +379,15 @@
                                 </div>
                             </div>
 
-                            <div class="d-flex justify-content-end gap-2">
-                                <button type="submit" formaction="<?= base_url('alerts-config/test-discord') ?>" class="btn btn-outline-primary px-4">
-                                    <i class="ti ti-brand-discord me-1"></i> Probar Discord
-                                </button>
-                                <button type="submit" class="btn btn-primary px-4">
-                                    <i class="ti ti-device-floppy me-1"></i> Guardar Cambios
-                                </button>
-                            </div>
-                        </div>
-
-
+                             <div class="d-flex justify-content-center gap-2">
+                                 <button type="submit" class="btn btn-primary px-4 d-inline-flex align-items-center justify-content-center">
+                                     <i class="ti ti-device-floppy me-2 fs-4"></i> Guardar
+                                 </button>
+                                 <button type="submit" formaction="<?= base_url('alerts-config/test-discord') ?>" class="btn btn-warning text-white px-4 d-inline-flex align-items-center justify-content-center">
+                                     <i class="ti ti-brand-discord me-2 fs-4"></i> Probar
+                                 </button>
+                             </div>
+                        </div><!-- /tab-content -->
 
                     </form>
                 </div>

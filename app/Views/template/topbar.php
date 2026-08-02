@@ -12,8 +12,8 @@
         </ul>
 
         <div class="d-block d-lg-none">
-          <img src="<?= base_url('assets/images/logos/logo.png') ?>" class="dark-logo" width="180" alt="" />
-          <img src="<?= base_url('assets/images/logos/logo.png') ?>" class="light-logo" width="180" alt="" />
+          <img src="<?= base_url('assets/images/logos/dark-logo.svg') ?>" class="dark-logo" alt="" />
+          <img src="<?= base_url('assets/images/logos/light-logo.svg') ?>" class="light-logo" alt="" />
         </div>
 
         <button class="navbar-toggler p-0 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +49,7 @@
 
                       <!-- Acerca de -->
                       <a href="javascript:void(0)" class="py-2 px-7 d-flex align-items-center dropdown-item gap-3" data-bs-toggle="modal" data-bs-target="#aboutModal">
-                        <span class="d-flex align-items-center justify-content-center bg-light-info rounded-1 p-2 text-info topbar-icon-wrapper">
+                        <span class="d-flex align-items-center justify-content-center bg-light-primary rounded-1 p-2 text-primary topbar-icon-wrapper">
                           <i class="ti ti-info-circle fs-6"></i>
                         </span>
                         <div class="w-75">
@@ -91,7 +91,10 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body text-center p-4">
-          <img src="<?= base_url('assets/images/logos/logo.png') ?>" width="150" alt="Logo" class="mb-3">
+          <div class="mb-3 d-flex justify-content-center">
+            <img src="<?= base_url('assets/images/logos/dark-logo.svg') ?>" class="dark-logo" width="150" alt="Logo" />
+            <img src="<?= base_url('assets/images/logos/light-logo.svg') ?>" class="light-logo" width="150" alt="Logo" />
+          </div>
           <p class="text-muted mb-3">Sistema de Notificaciones</p>
           <div class="bg-light-primary text-primary rounded-pill py-1 px-3 d-inline-block fw-bold fs-2 mb-3">
             Versión 1.2.0

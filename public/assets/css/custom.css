@@ -1,6 +1,229 @@
-/* Custom styles for Proxmox Alert UI */
+/* =====================================================================
+   Variables Globales y Paleta de Colores de FileCrew (Naranja/Oscuro)
+   ===================================================================== */
+:root, [data-bs-theme="dark"] {
+    /* Color Principal (Cloudflare Orange) */
+    --bs-primary: #F38020 !important;
+    --bs-primary-rgb: 243, 128, 32 !important;
+    --bs-primary-bg-subtle: rgba(243, 128, 32, 0.15) !important;
+    --bs-primary-text-emphasis: #c4600e !important;
 
-/* Company details views */
+    /* Color Secundario */
+    --bs-secondary: #49beff !important;
+    --bs-secondary-rgb: 73, 190, 255 !important;
+    --bs-secondary-bg-subtle: rgba(73, 190, 255, 0.15) !important;
+
+    /* Color de Éxito (Emerald Green) */
+    --bs-success: #34c759 !important;
+    --bs-success-rgb: 52, 199, 89 !important;
+    --bs-success-bg-subtle: rgba(52, 199, 89, 0.15) !important;
+
+    /* Color de Peligro / Error (Vibrante) */
+    --bs-danger: #b31b34 !important;
+    --bs-danger-rgb: 179, 27, 52 !important;
+    --bs-danger-bg-subtle: rgba(179, 27, 52, 0.15) !important;
+    --bs-danger-text-emphasis: #d82b4a !important;
+
+    /* Color de Advertencia */
+    --bs-warning: #FAAD14 !important;
+    --bs-warning-rgb: 250, 173, 20 !important;
+    --bs-warning-bg-subtle: rgba(250, 173, 20, 0.15) !important;
+
+    /* Color de Información */
+    --bs-info: #539bff !important;
+    --bs-info-rgb: 83, 155, 255 !important;
+    --bs-info-bg-subtle: rgba(83, 155, 255, 0.15) !important;
+}
+
+/* Forzar Primary en componentes específicos */
+.btn-primary {
+    background-color: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
+}
+.btn-primary:hover {
+    filter: brightness(0.9);
+}
+
+.btn-outline-primary {
+    color: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
+    background-color: transparent !important;
+}
+.btn-outline-primary:hover {
+    background-color: var(--bs-primary) !important;
+    color: #fff !important;
+}
+
+/* Forzar Warning en componentes específicos */
+.btn-warning {
+    background-color: var(--bs-warning) !important;
+    border-color: var(--bs-warning) !important;
+    color: #000;
+}
+.btn-warning:hover {
+    filter: brightness(0.9);
+}
+
+/* Forzar Danger en componentes específicos */
+.btn-danger {
+    background-color: var(--bs-danger) !important;
+    border-color: var(--bs-danger) !important;
+    color: #fff !important;
+}
+.btn-danger:hover {
+    filter: brightness(0.9);
+}
+
+/* Forzar Success en componentes específicos */
+.btn-success {
+    background-color: var(--bs-success) !important;
+    border-color: var(--bs-success) !important;
+    color: #fff !important;
+}
+.btn-success:hover {
+    background-color: #2ba84b !important;
+    border-color: #2ba84b !important;
+    color: #fff !important;
+}
+
+/* --- Botones de acción en tablas con micro-animación --- */
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+.btn-icon:hover {
+    transform: scale(1.1);
+}
+
+/* --- Paginación personalizada de FileCrew --- */
+.pagination .page-link {
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    margin: 0 4px;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 8px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bs-heading-color, #2A3547);
+    background-color: var(--bs-secondary-bg, #f8f9fa);
+    transition: all 0.2s ease;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--bs-primary) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 9px rgba(var(--bs-primary-rgb), 0.2);
+}
+
+.pagination .page-item.disabled .page-link {
+    background-color: transparent !important;
+    opacity: 0.5;
+}
+
+.pagination .page-link:hover:not(.disabled) {
+    background-color: var(--bs-primary-bg-subtle);
+    color: var(--bs-primary);
+}
+
+/* =====================================================================
+   Light Theme Overrides
+   ===================================================================== */
+[data-bs-theme="light"] body {
+    background-color: #00000004 !important;
+}
+
+/* =====================================================================
+   Premium Dark Theme Overrides (Apuestas Style de FileCrew)
+   ===================================================================== */
+[data-bs-theme="dark"] {
+    /* Backgrounds Base */
+    --bs-body-bg: #0b1114 !important;
+    --bs-body-bg-rgb: 11, 17, 20 !important;
+    --bs-dark: #0b1114 !important;
+    --bs-dark-rgb: 11, 17, 20 !important;
+    
+    /* Superficies y Tarjetas */
+    --bs-card-bg: #121a1f !important;
+    --bs-secondary-bg: #121a1f !important;
+    --bs-tertiary-bg: #1a262d !important;
+    
+    /* Bordes Generales */
+    --bs-border-color: #1a262d !important;
+
+    /* Subtle Dark */
+    --bs-dark-bg-subtle: #121a1f !important;
+    --bs-dark-border-subtle: #1a262d !important;
+}
+
+/* Cabecera y Menú Lateral Oscuros */
+[data-bs-theme="dark"] .left-sidebar,
+[data-bs-theme="dark"] .topbar {
+    background-color: #0b1114 !important;
+}
+
+[data-bs-theme="dark"] .left-sidebar {
+    border-right: 1px solid #1a262d !important;
+}
+
+/* Controles de Formulario y Buscador */
+[data-bs-theme="dark"] .form-control,
+[data-bs-theme="dark"] .form-select {
+    background-color: #0b1114 !important;
+    border: 1px solid #1a262d !important;
+    color: #a8b6c2 !important;
+}
+
+[data-bs-theme="dark"] .form-control:focus,
+[data-bs-theme="dark"] .form-select:focus {
+    background-color: #0b1114 !important;
+    border-color: rgba(var(--bs-primary-rgb), 0.5) !important;
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25) !important;
+}
+
+[data-bs-theme="dark"] .form-control::placeholder {
+    color: #8c9ca6 !important;
+}
+
+/* Tablas Premium Dark */
+[data-bs-theme="dark"] .table {
+    --bs-table-bg: transparent !important;
+    --bs-table-color: #f8f9fa !important;
+    --bs-table-border-color: rgba(255, 255, 255, 0.05) !important;
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.02) !important;
+    --bs-table-hover-bg: rgba(var(--bs-primary-rgb), 0.05) !important;
+}
+
+[data-bs-theme="dark"] .table thead th {
+    background-color: #121a1f !important;
+    color: #f6f9fc !important;
+    border-bottom: 2px solid #1a262d !important;
+}
+
+[data-bs-theme="dark"] .table tbody td {
+    background-color: #0b1114 !important;
+    color: #f8f9fa !important;
+}
+
+.cursor-pointer {
+    cursor: pointer !important;
+}
+.switch-custom-size {
+    width: 2.5em !important;
+    height: 1.25em !important;
+    cursor: pointer !important;
+}
+
+/* =====================================================================
+   Estilos Específicos de Proxmox Alert (Conservados)
+   ===================================================================== */
 .company-logo-view {
     object-fit: cover;
 }
@@ -60,8 +283,6 @@
     height: 280px;
     width: 100%;
 }
-
-
 
 /* General Layout helpers & metrics */
 .card-metric {
@@ -137,7 +358,6 @@
     100% { box-shadow: 0 0 0 0 rgba(108, 117, 125, 0); }
 }
 
-/* Erradicación de estilos inline y clases helpers */
 .col-checkbox {
     width: 40px;
 }
@@ -229,6 +449,10 @@
     100% { box-shadow: 0 0 0 0 rgba(83, 155, 255, 0); }
 }
 
-
-
+/* Color naranja para la pestaña activa (nav-pills) */
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    background-color: var(--bs-primary) !important;
+    color: #fff !important;
+}
 

@@ -28,13 +28,13 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="tb-username" name="username" placeholder="Nombre de usuario" value="<?= old('username', $user->username) ?>" required>
+                                    <input type="text" class="form-control" id="tb-username" name="username" placeholder=" " value="<?= old('username', $user->username) ?>" required>
                                     <label for="tb-username">Nombre de usuario</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="tb-email" name="email" placeholder="correo@ejemplo.com" value="<?= old('email', $user->email) ?>" required>
+                                    <input type="email" class="form-control" id="tb-email" name="email" placeholder=" " value="<?= old('email', $user->email) ?>" required>
                                     <label for="tb-email">Correo Electrónico</label>
                                 </div>
                             </div>
@@ -43,7 +43,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-floating mb-3 position-relative">
-                                    <input type="password" class="form-control" id="tb-pwd" name="password" placeholder="Contraseña">
+                                    <input type="password" class="form-control" id="tb-pwd" name="password" placeholder=" ">
                                     <label for="tb-pwd">Contraseña (dejar en blanco para no cambiar)</label>
                                     <button class="btn position-absolute top-50 end-0 translate-middle-y me-2 border-0" type="button" onclick="togglePassword()">
                                         <i class="ti ti-eye fs-5"></i>
@@ -207,14 +207,13 @@
                         </div>
 
                         <div class="col-12 mt-4 pt-4 border-top">
-                            <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
-                                <a href="<?= base_url('users') ?>" class="btn btn-outline-primary px-4">Cancelar</a>
-                                <button type="submit" class="btn btn-primary font-medium px-4">
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <i class="ti ti-device-floppy me-2 fs-4"></i>
-                                        Actualizar Usuario
-                                    </div>
+                            <div class="d-flex justify-content-center gap-2">
+                                <button type="submit" class="btn btn-primary font-medium px-4 d-inline-flex align-items-center justify-content-center">
+                                    <i class="ti ti-device-floppy me-2 fs-4"></i> Actualizar
                                 </button>
+                                <a href="<?= base_url('users') ?>" class="btn btn-outline-primary px-4 d-inline-flex align-items-center justify-content-center">
+                                    <i class="ti ti-x me-2 fs-4"></i> Cancelar
+                                </a>
                             </div>
                         </div>
                     </form>

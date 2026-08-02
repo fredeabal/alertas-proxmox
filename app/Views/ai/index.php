@@ -49,7 +49,7 @@
                             <!-- Autenticación (Dinámica) -->
                             <div class="col-md-6 d-none" id="api_key_section">
                                 <div class="form-floating mb-3 position-relative">
-                                    <input type="password" class="form-control" id="api_key" name="api_key" placeholder="API Key" value="">
+                                    <input type="password" class="form-control" id="api_key" name="api_key" placeholder=" " value="">
                                     <label for="api_key">API Key / Token</label>
                                     <button class="btn position-absolute top-50 end-0 translate-middle-y me-2 border-0" type="button" onclick="togglePassword()">
                                         <i class="ti ti-eye fs-5"></i>
@@ -61,13 +61,13 @@
                                 <div class="row g-2">
                                     <div class="col-8">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" id="ollama_host" name="ollama_host" placeholder="http://localhost" value="<?= esc($settings['ollama_host'] ?? 'http://localhost') ?>">
+                                            <input type="text" class="form-control" id="ollama_host" name="ollama_host" placeholder=" " value="<?= esc($settings['ollama_host'] ?? 'http://localhost') ?>">
                                             <label for="ollama_host">Host Ollama</label>
                                         </div>
                                     </div>
                                     <div class="col-4">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="ollama_port" name="ollama_port" placeholder="11434" value="<?= esc($settings['ollama_port'] ?? '11434') ?>">
+                                            <input type="number" class="form-control" id="ollama_port" name="ollama_port" placeholder=" " value="<?= esc($settings['ollama_port'] ?? '11434') ?>">
                                             <label for="ollama_port">Puerto</label>
                                         </div>
                                     </div>
@@ -90,19 +90,16 @@
                         </div>
 
                         <div class="col-12 mt-4 border-top pt-4">
-                            <div class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center justify-content-end gap-2">
-                                <button type="submit" formaction="<?= base_url('ai/test') ?>" class="btn btn-outline-primary font-medium px-4" id="test-btn">
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <i class="ti ti-wand me-2 fs-4"></i>
-                                        Probar Generación
-                                    </div>
+                            <div class="d-flex justify-content-center gap-2">
+                                <button type="submit" class="btn btn-primary font-medium px-4 d-inline-flex align-items-center justify-content-center">
+                                    <i class="ti ti-device-floppy me-2 fs-4"></i> Guardar
                                 </button>
-                                <button type="submit" class="btn btn-primary font-medium px-4">
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <i class="ti ti-device-floppy me-2 fs-4"></i>
-                                        Guardar Cambios
-                                    </div>
+                                <button type="submit" formaction="<?= base_url('ai/test') ?>" class="btn btn-warning text-white px-4 d-inline-flex align-items-center justify-content-center" id="test-btn">
+                                    <i class="ti ti-wand me-2 fs-4"></i> Probar
                                 </button>
+                                <a href="<?= base_url() ?>" class="btn btn-outline-primary px-4 d-inline-flex align-items-center justify-content-center">
+                                    <i class="ti ti-x me-2 fs-4"></i> Cancelar
+                                </a>
                             </div>
                         </div>
                     </form>

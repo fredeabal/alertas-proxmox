@@ -3,9 +3,8 @@
   <div>
     <div class="brand-logo d-flex align-items-center justify-content-between">
       <a href="<?= base_url() ?>" class="text-nowrap logo-img">
-        <img src="<?= base_url('assets/images/logos/logo.png') ?>" class="dark-logo" width="180" alt="Logo-Dark" />
-        <img src="<?= base_url('assets/images/logos/logo.png') ?>" class="light-logo" width="180" alt="Logo-light" />
-        <img src="<?= base_url('assets/images/logos/logo-mini.png') ?>" class="logo-mini" width="30" alt="Logo-Mini" />
+        <img src="<?= base_url('assets/images/logos/dark-logo.svg') ?>" class="dark-logo" alt="Logo-Dark" />
+        <img src="<?= base_url('assets/images/logos/light-logo.svg') ?>" class="light-logo" alt="Logo-light" />
       </a>
       <a href="javascript:void(0)" class="sidebartoggler ms-auto text-decoration-none fs-5 d-block d-xl-none">
         <i class="ti ti-x"></i>

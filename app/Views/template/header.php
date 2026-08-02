@@ -1,5 +1,18 @@
 <!DOCTYPE html>
-<html lang="es" dir="ltr" data-bs-theme="dark" data-color-theme="Blue_Theme" data-layout="vertical" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
+<html lang="es" dir="ltr" data-color-theme="Blue_Theme" data-layout="vertical" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
+<script>
+  // Tema localStorage > preferencia del sistema
+  (function() {
+    var savedTheme = localStorage.getItem('theme');
+    var theme = 'dark'; // default to dark
+    if (savedTheme === 'dark' || savedTheme === 'light') {
+        theme = savedTheme;
+    } else {
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute('data-bs-theme', theme);
+  })();
+</script>
 
 <head>
   <!-- Required meta tags -->

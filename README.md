@@ -1,6 +1,4 @@
-# ProxmoxAlert - Manual de Uso (v1.2)
-
-![ProxmoxAlert Dashboard](public/assets/images/screenshots/screenshot.png)
+# ProxmoxAlert - Manual de Uso (v1.3)
 
 Manual operativo y técnico para desplegar, configurar y usar **Proxmox Alert**.
 
@@ -40,14 +38,35 @@ Capacidades principales:
 - **Composer**
 - Extensiones PHP habituales para CI4 (`intl`, `mbstring`, `json`, `pdo_sqlite`, etc.)
 
-## 3. Instalación y Despliegue Manual (Recomendado)
+## 3. Instalación y Despliegue
+
+Dispones de dos alternativas para desplegar el panel en tu servidor Linux:
+
+### Opción A: Instalación Automática (Recomendada)
+El proyecto incluye un script de instalación interactiva que se encarga de instalar los paquetes necesarios (Nginx, Git, PHP, etc.), descargar dependencias con Composer, configurar la base de datos SQLite y establecer el sitio web de Nginx de forma automatizada.
+
+Para iniciar la instalación, ejecuta el siguiente comando en tu terminal Linux (con privilegios de superusuario):
+```bash
+sudo bash install.sh
+```
+*El instalador te solicitará ingresar la IP o Dominio que usará el servidor, preparará el archivo de entorno `.env`, ejecutará las migraciones y sembrará la cuenta inicial de administrador.*
+
+#### Actualizaciones automáticas sin pérdida de datos
+Cuando desees actualizar a la última versión del repositorio conservando intacta tu configuración, base de datos y adjuntos, ejecuta:
+```bash
+sudo bash update.sh
+```
+
+---
+
+### Opción B: Instalación y Despliegue Manual
 
 Esta aplicación viene pre-empaquetada con todas sus dependencias (carpeta `vendor/` ya incluida), por lo que **no necesitas tener Composer instalado** en tu servidor. Sigue estos sencillos pasos para desplegar el panel:
 
-### Paso 1: Clonar o descargar el código
+#### Paso 1: Clonar o descargar el código
 Clona este repositorio o descarga el archivo `.zip` y colócalo en el directorio de tu servidor web (ej: `/var/www/proxmox-alert/`).
 
-### Paso 2: Crear y configurar tu archivo `.env`
+#### Paso 2: Crear y configurar tu archivo `.env`
 Duplica el archivo de plantilla `env` y llámalo `.env` en la raíz del proyecto:
 ```bash
 cp env .env
@@ -90,7 +109,7 @@ Abre el archivo `.env` con un editor de texto y configura las siguientes propied
    cron.pingToken = 'TU_TOKEN_CRON_SEGURO'
    ```
 
-### Paso 3: Permisos de Directorios
+#### Paso 3: Permisos de Directorios
 ```bash
 # Asignar permisos de lectura y escritura
 sudo chmod -R 775 /var/www/proxmox-alert/writable

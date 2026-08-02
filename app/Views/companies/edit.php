@@ -31,7 +31,7 @@
                         
                         <h4 class="fw-semibold mb-3"><?= esc($empresa->nombre) ?></h4>
 
-                        <label for="logo" class="btn btn-primary btn-sm mb-2 cursor-pointer">
+                        <label for="logo" class="btn btn-primary btn-sm mb-2 cursor-pointer d-inline-flex align-items-center justify-content-center">
                             <i class="ti ti-upload me-1"></i> Cambiar Logo
                         </label>
                         <input class="d-none" type="file" id="logo" name="logo" accept="image/*" onchange="previewImage(this)">
@@ -48,13 +48,13 @@
                         <div class="row">
                             <div class="col-md-8 mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre de la empresa" value="<?= old('nombre', $empresa->nombre) ?>" required>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder=" " value="<?= old('nombre', $empresa->nombre) ?>" required>
                                     <label for="nombre">Nombre de la Empresa</label>
                                 </div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="cif" name="cif" placeholder="CIF/NIF" value="<?= old('cif', $empresa->cif) ?>">
+                                    <input type="text" class="form-control" id="cif" name="cif" placeholder=" " value="<?= old('cif', $empresa->cif) ?>">
                                     <label for="cif">CIF / NIF</label>
                                 </div>
                             </div>
@@ -63,13 +63,13 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email de contacto" value="<?= old('email', $empresa->email) ?>">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder=" " value="<?= old('email', $empresa->email) ?>">
                                     <label for="email">Correo Electrónico</label>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Teléfono" value="<?= old('telefono', $empresa->telefono) ?>">
+                                    <input type="text" class="form-control" id="telefono" name="telefono" placeholder=" " value="<?= old('telefono', $empresa->telefono) ?>">
                                     <label for="telefono">Teléfono</label>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
 
                         <div class="mb-3">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Dirección física" value="<?= old('direccion', $empresa->direccion) ?>">
+                                <input type="text" class="form-control" id="direccion" name="direccion" placeholder=" " value="<?= old('direccion', $empresa->direccion) ?>">
                                 <label for="direccion">Dirección</label>
                             </div>
                         </div>
@@ -109,13 +109,13 @@
                         </div>
 
                         <div class="mt-4 border-top pt-3">
-                            <div class="d-flex flex-column flex-sm-row gap-2">
-                                <button type="submit" class="btn btn-primary font-medium px-4">
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <i class="ti ti-device-floppy me-2 fs-4"></i> Guardar Cambios
-                                    </div>
+                            <div class="d-flex justify-content-center gap-2">
+                                <button type="submit" class="btn btn-primary font-medium px-4 d-inline-flex align-items-center justify-content-center">
+                                    <i class="ti ti-device-floppy me-2 fs-4"></i> Guardar
                                 </button>
-                                <a href="<?= base_url('companies') ?>" class="btn btn-outline-primary px-4">Cancelar</a>
+                                <a href="<?= base_url('companies') ?>" class="btn btn-outline-primary px-4 d-inline-flex align-items-center justify-content-center">
+                                    <i class="ti ti-x me-2 fs-4"></i> Cancelar
+                                </a>
                             </div>
                         </div>
                     </div>

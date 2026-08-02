@@ -1,5 +1,12 @@
 <!DOCTYPE html>
-<html lang="es" dir="ltr" data-bs-theme="dark" data-color-theme="Blue_Theme">
+<html lang="es" dir="ltr" data-color-theme="Blue_Theme">
+<script>
+  (function() {
+    var saved = localStorage.getItem('theme');
+    var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-bs-theme', theme);
+  })();
+</script>
 
 <head>
   <!-- Required meta tags -->
@@ -12,6 +19,7 @@
 
   <!-- Core Css -->
   <link rel="stylesheet" href="<?= base_url('assets/css/styles.css') ?>" />
+  <link rel="stylesheet" href="<?= base_url('assets/css/custom.css') ?>" />
 
   <title><?= $title ?? 'Login' ?></title>
 </head>
@@ -24,8 +32,9 @@
           <div class="col-md-8 col-lg-6 col-xxl-3 auth-card">
             <div class="card mb-0">
               <div class="card-body">
-                <a href="<?= base_url() ?>" class="text-nowrap logo-img text-center d-block mb-5 w-100">
-                  <img src="<?= base_url('assets/images/logos/logo.png') ?>" width="250" alt="Logo" />
+                 <a href="<?= base_url() ?>" class="text-nowrap logo-img text-center d-block mb-5 w-100">
+                  <img src="<?= base_url('assets/images/logos/dark-logo.svg') ?>" class="dark-logo" alt="Logo-Dark" />
+                  <img src="<?= base_url('assets/images/logos/light-logo.svg') ?>" class="light-logo" alt="Logo-light" />
                 </a>
 
                 <form action="<?= url_to('login') ?>" method="post">
@@ -59,31 +68,44 @@
   <script src="<?= base_url('assets/js/vendor.min.js') ?>"></script>
   <script src="<?= base_url('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') ?>"></script>
   <script src="<?= base_url('assets/libs/simplebar/dist/simplebar.min.js') ?>"></script>
-  <script src="<?= base_url('assets/js/theme/app.dark.init.js') ?>"></script>
+  <script src="<?= base_url('assets/js/theme/app.init.js') ?>"></script>
   <script src="<?= base_url('assets/js/theme/theme.js') ?>"></script>
   <script src="<?= base_url('assets/js/theme/app.min.js') ?>"></script>
 
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'bottom',
-      showConfirmButton: false,
-      timer: 4000,
-      timerProgressBar: true
+    document.addEventListener("DOMContentLoaded", function() {
+      const toastMessage = <?= json_encode(session()->getFlashdata('message') ?? session()->getFlashdata('success')) ?>;
+      const toastError = <?= json_encode(session()->getFlashdata('error')) ?>;
+      const toastErrors = <?= json_encode(session()->getFlashdata('errors')) ?>;
+      
+      const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+      
+      const systemAlert = Swal.mixin({
+        position: 'center',
+        showConfirmButton: false,
+        buttonsStyling: false,
+        timer: 5000,
+        timerProgressBar: true,
+        background: isDark ? '#0b1114' : '#f8f9fa',
+        color: isDark ? '#fff' : '#0b1114',
+        showCloseButton: false
+      });
+      
+      if (toastMessage) {
+        systemAlert.fire({ icon: 'success', title: '¡Completado!', html: `<div class="text-center">${toastMessage}</div>`, iconColor: '#10B981' });
+      }
+      if (toastError) {
+        systemAlert.fire({ icon: 'error', title: 'Error', html: `<div class="text-center">${toastError}</div>`, iconColor: '#b31b34' });
+      }
+      if (toastErrors) {
+        const errorContent = typeof toastErrors === 'object' && toastErrors !== null
+          ? (Array.isArray(toastErrors) ? toastErrors : Object.values(toastErrors)).join('<br>') 
+          : toastErrors;
+        systemAlert.fire({ icon: 'error', title: 'Error de Validación', html: `<div class="text-center">${errorContent}</div>`, iconColor: '#b31b34' });
+      }
     });
-
-    <?php if (session('error') !== null) : ?>
-      Toast.fire({ icon: 'error', title: <?= json_encode(session('error')) ?> });
-    <?php elseif (session('errors') !== null) : ?>
-      <?php $allErrors = ""; foreach(session('errors') as $e) { $allErrors .= "• " . $e . "<br>"; } ?>
-      Toast.fire({ icon: 'error', title: '¡Error!', html: <?= json_encode('<div class="text-start fs-2">' . $allErrors . '</div>') ?> });
-    <?php endif ?>
-
-    <?php if (session('message') !== null) : ?>
-      Toast.fire({ icon: 'success', title: <?= json_encode(session('message')) ?> });
-    <?php endif ?>
   </script>
 </body>
 
