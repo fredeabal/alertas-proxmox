@@ -38,7 +38,31 @@ Capacidades principales:
 - **Composer**
 - Extensiones PHP habituales para CI4 (`intl`, `mbstring`, `json`, `pdo_sqlite`, etc.)
 
-## 3. Instalación y Despliegue Manual (Recomendado)
+## 🚀 Instalación en 1 Paso
+
+En cualquier servidor **Debian 11/12** o **Ubuntu 20.04 / 22.04 / 24.04** limpio con acceso root (VPS o máquina virtual), ejecuta el siguiente comando en tu terminal:
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/fredeabal/alertas-proxmox/main/install.sh)
+```
+
+El script se encargará automáticamente de todo el proceso de instalación y configuración de dependencias, servidor web Nginx, base de datos SQLite y usuario administrador inicial.
+
+---
+
+## 🔄 Actualizar a la última versión
+
+Para actualizar un servidor Proxmox Alert existente a la última versión disponible (sin perder tus configuraciones, alertas o bases de datos), ejecuta:
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/fredeabal/alertas-proxmox/main/update.sh)
+```
+
+---
+
+## 3. Despliegue Manual (Alternativo)
+
+Si prefieres realizar la instalación manualmente paso a paso, sigue estas instrucciones.
 
 Esta aplicación viene pre-empaquetada con todas sus dependencias (carpeta `vendor/` ya incluida), por lo que **no necesitas tener Composer instalado** en tu servidor. Sigue estos sencillos pasos para desplegar el panel:
 
