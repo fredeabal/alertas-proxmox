@@ -40,13 +40,15 @@ Capacidades principales:
 
 ## 🚀 Instalación en 1 Paso
 
-En cualquier servidor **Debian 11/12** o **Ubuntu 20.04 / 22.04 / 24.04** limpio con acceso root (VPS o máquina virtual), ejecuta el siguiente comando en tu terminal:
+En cualquier servidor **Debian 11/12** o **Ubuntu 20.04 / 22.04 / 24.04** limpio con acceso root (VPS, máquina virtual o nodo Proxmox), ejecuta el siguiente comando en tu terminal:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/fredeabal/alertas-proxmox/main/install.sh)
+curl -fsSL https://raw.githubusercontent.com/fredeabal/alertas-proxmox/main/install.sh -o /tmp/install.sh && bash /tmp/install.sh
 ```
 
-El script se encargará automáticamente de todo el proceso de instalación y configuración de dependencias, servidor web Nginx, base de datos SQLite y usuario administrador inicial.
+El script se encargará automáticamente de todo: dependencias del sistema, servidor web Nginx, PHP-FPM, base de datos SQLite, migraciones y usuario administrador inicial.
+
+> **¿Por qué este formato?** El método `bash <(curl ...)` puede no funcionar en algunos entornos como Proxmox VE, contenedores LXC o shells restringidas. El comando anterior descarga primero y luego ejecuta, siendo compatible con cualquier sistema.
 
 ---
 
@@ -55,8 +57,10 @@ El script se encargará automáticamente de todo el proceso de instalación y co
 Para actualizar un servidor Proxmox Alert existente a la última versión disponible (sin perder tus configuraciones, alertas o bases de datos), simplemente ejecuta:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/fredeabal/alertas-proxmox/main/update.sh)
+curl -fsSL https://raw.githubusercontent.com/fredeabal/alertas-proxmox/main/update.sh -o /tmp/update.sh && bash /tmp/update.sh
 ```
+
+Durante la actualización, el script te preguntará si también quieres **cambiar la URL o dominio** de la aplicación.
 
 ---
 
