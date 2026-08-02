@@ -49,21 +49,25 @@
                     </thead>
                     <tbody class="border-top">
                         <?php foreach ($empresas as $empresa): ?>
-                            <tr>
-                                <td class="ps-0">
-                                    <div class="d-flex align-items-center">
-                                        <?php 
-                                            $logoPath = $empresa->logo ? base_url('uploads/logos/' . $empresa->logo) : base_url('assets/images/logos/default-company.png');
-                                        ?>
-                                        <img src="<?= $logoPath ?>" class="rounded shadow-sm d-none d-sm-block company-logo-thumbnail" width="40" height="40" alt="" />
-                                        <div class="ms-0 ms-sm-3">
-                                            <h6 class="fw-semibold mb-0"><?= esc($empresa->nombre) ?></h6>
-                                            <?php if ($empresa->email): ?>
-                                                <a href="mailto:<?= esc($empresa->email) ?>" class="fs-2 text-muted d-md-none"><?= esc($empresa->email) ?></a>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </td>
+                            <tr onclick="if(!event.target.closest('a, button, .dropdown, .form-check-input')) window.location.href='<?= base_url('companies/view/' . $empresa->id) ?>';" style="cursor: pointer;">
+<td class="ps-0">
+                    <div class="d-flex align-items-center">
+                        <?php 
+                            $logoPath = $empresa->logo ? base_url('uploads/logos/' . $empresa->logo) : base_url('assets/images/logos/default-company.png');
+                        ?>
+                        <img src="<?= $logoPath ?>" class="rounded shadow-sm d-none d-sm-block company-logo-thumbnail" width="40" height="40" alt="" />
+                        <div class="ms-0 ms-sm-3">
+                            <h6 class="fw-semibold mb-0">
+                                <a href="<?= base_url('companies/view/' . $empresa->id) ?>" class="text-dark text-decoration-none">
+                                    <?= esc($empresa->nombre) ?>
+                                </a>
+                            </h6>
+                            <?php if ($empresa->email): ?>
+                                <a href="mailto:<?= esc($empresa->email) ?>" class="fs-2 text-muted d-md-none"><?= esc($empresa->email) ?></a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </td>
                                 <td class="d-none d-lg-table-cell text-center">
                                     <p class="mb-0 fs-3"><?= esc($empresa->cif) ?: '---' ?></p>
                                 </td>
