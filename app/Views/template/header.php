@@ -33,7 +33,7 @@
   <!-- PWA Support -->
   <link rel="manifest" href="<?= base_url('manifest.json') ?>" />
   <meta name="theme-color" content="#5d87ff" />
-  <link rel="apple-touch-icon" href="<?= base_url('assets/images/logos/logo-app.png?v=2') ?>" />
+  <link rel="apple-touch-icon" href="<?= base_url('assets/images/logos/logo-app.png?v=3') ?>" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
