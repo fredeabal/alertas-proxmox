@@ -344,15 +344,35 @@ class CompanyController extends BaseController
             exec($command, $output, $exitCode);
         } else {
             // Alternativa PHP pura usando fsockopen para verificar conectividad TCP
-            $hostParts = parse_url('tcp://' . $host . ':8006'); // Puerto 8006 es el default de Proxmox
-            $connection = @fsockopen($hostParts['host'], $hostParts['port'], $errno, $errstr, 2);
-            if ($connection) {
+            // Proxmox usa el puerto 8006 por defecto, pero probamos varios puertos comunes
+            $portsToTry = [8006, 443, 80, 22];
+            $connected = false;
+            
+            foreach ($portsToTry as $port) {
+                $connection = @fsockopen($host, $port, $errno, $errstr, 3);
+                if ($connection) {
+                    $connected = true;
+                    $output[] = "Conexión TCP exitosa a {$host}:{$port}";
+                    fclose($connection);
+                    break;
+                }
+            }
+            
+            if ($connected) {
                 $exitCode = 0;
-                $output[] = "Conexión TCP exitosa a {$host}:8006";
-                fclose($connection);
             } else {
+                // Si no podemos conectar a ningún puerto, probar resolución DNS
+                $ip = @gethostbyname($host);
+                if ($ip !== $host) {
+                    // El hostname se resolvió, pero no pudimos conectar a ningún puerto
+                    $output[] = "Hostname resuelto a IP {$ip}, pero sin conexión en puertos probados";
+                } elseif (filter_var($host, FILTER_VALIDATE_IP)) {
+                    // Es una IP, pero no respondió
+                    $output[] = "IP alcanzable pero sin conexión en puertos probados";
+                } else {
+                    $output[] = "No se pudo resolver el hostname: {$host}";
+                }
                 $exitCode = 1;
-                $output[] = "No se pudo establecer conexión TCP: {$errstr} ({$errno})";
             }
         }
 
