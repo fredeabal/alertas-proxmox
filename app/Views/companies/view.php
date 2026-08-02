@@ -401,7 +401,7 @@
                                         $isResolved = ($alerta->status === 'resolved');
                                         $canDelete = ($isResolved || !$isActionable);
                                     ?>
-                                        <tr class="transition-all">
+                                        <tr class="transition-all" style="cursor: pointer;" onclick="if(!event.target.closest('a, button, .dropdown, .form-check-input')) { var modalEl = document.getElementById('alertaModal<?= $alerta->id ?>'); if(modalEl){ var m = bootstrap.Modal.getOrCreateInstance(modalEl); m.show(); } }">
                                             <?php if ($canEdit): ?>
                                             <td>
                                                 <div class="form-check">
