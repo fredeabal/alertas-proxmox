@@ -279,3 +279,13 @@ Seguridad:
 - `GET /companies/ping?host=IP_O_HOSTNAME` (ping manual desde UI)
 - `POST /webhook/proxmox/{token}`
 - `GET /monitoring/ping-check/{token}` (cron interno)
+
+<br>
+
+---
+
+<p align="center">
+  <a href="https://donate.stripe.com/5kQ7sEdPB0IY3g49aCgnK00">
+    <img src="https://img.shields.io/badge/☕_%C2%A1Invítame_un_café!-%23635BFF.svg?style=for-the-badge&logo=Stripe&logoColor=white" alt="Donar con Stripe" />
+  </a>
+</p>
