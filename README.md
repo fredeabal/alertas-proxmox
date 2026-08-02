@@ -2,6 +2,8 @@
 
 Manual operativo y técnico para desplegar, configurar y usar **Proxmox Alert**.
 
+![ProxmoxAlert Dashboard](https://github.com/user-attachments/assets/4eb081ca-5c4f-468c-a9a7-846b9dfb367e)
+
 ## Tabla de contenidos
 - [1. Descripción](#1-descripción)
 - [2. Requisitos](#2-requisitos)
