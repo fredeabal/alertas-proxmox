@@ -193,6 +193,20 @@
     background-color: #00000004 !important;
 }
 
+[data-bs-theme="light"] .dropdown-menu .dropdown-item {
+    color: #2A3547 !important;
+}
+
+[data-bs-theme="light"] .dropdown-menu .dropdown-item:hover {
+    background-color: rgba(0,0,0,0.05) !important;
+    color: var(--bs-primary) !important;
+}
+
+[data-bs-theme="light"] .dropdown-menu .dropdown-item.text-danger,
+[data-bs-theme="light"] .dropdown-menu .dropdown-item.text-danger i {
+    color: var(--bs-danger) !important;
+}
+
 /* =====================================================================
    Premium Dark Theme Overrides (Apuestas Style de FileCrew)
    ===================================================================== */
